@@ -6,19 +6,26 @@ namespace Project.Runtime.AI
 {
     public class AICombatManager : MonoBehaviour
     {
-        internal AIAwareness behaviourSet;
+        
 
         [Header("Enemy Stats")]
         public string enemyName;
         public double health;
 
-        [Header("Combat Info")]
+        [Header("Combat Info")] 
+        public LayerMask attackLayers;
         public float minAttackRange = 2;
         public float maxAttackRange = 6;
-
-        Ray damageRay;
-        RaycastHit damageHit;
         public Transform raySpawnPoint;
+
+        #region Inernal Variables
+        
+        internal AIAwareness behaviourSet;
+        
+        private Ray _damageRay;
+        private RaycastHit _damageHit;
+
+        #endregion
         
         public void InitCombat()
         {
@@ -27,7 +34,7 @@ namespace Project.Runtime.AI
 
         public void Update()
         {
-            damageRay = new Ray(raySpawnPoint.position, Vector3.forward+transform.position);
+            _damageRay = new Ray(raySpawnPoint.position, Vector3.forward+transform.position);
             if (health <= 0)
             {
                 Debug.Log("Died at " + behaviourSet.currentAIStep.ToString());
@@ -54,16 +61,14 @@ namespace Project.Runtime.AI
 
         public virtual void Attack(float damage)
         {
-            Debug.DrawRay(transform.position, transform.forward, Color.red);
+            Debug.DrawRay(raySpawnPoint.position, raySpawnPoint.forward, Color.red);
             // Debug: Temp only, remove as soon as finished
-            GameManager.instance.playerVitals.healthStat.RemoveValue(damage);
-                
-            Debug.Log("Attacked at " + behaviourSet.currentAIStep.ToString());
-            
-            if(Physics.Raycast(damageRay, out damageHit, maxAttackRange))
+
+            if(Physics.Raycast(_damageRay, out _damageHit, maxAttackRange, attackLayers))
             {
-                
-                Debug.Log(damageHit.transform.name);
+                GameManager.instance.playerVitals.healthStat.RemoveValue(damage);
+                Debug.Log("Attacked at " + behaviourSet.currentAIStep.ToString());
+                Debug.Log(_damageHit.transform.name);
                 //damageHit.transform.SendMessage("TakeDamage", (double)damage, SendMessageOptions.RequireReceiver);
             }
         }

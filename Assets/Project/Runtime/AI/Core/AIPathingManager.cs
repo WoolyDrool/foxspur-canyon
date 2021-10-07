@@ -9,32 +9,63 @@ namespace Project.Runtime.AI
     [RequireComponent(typeof(NavMeshAgent))]
     public class AIPathingManager : MonoBehaviour
     {
+        public bool path = false;
+        [Space(5)]
+        
+        [Header("Variables")]
+        public float distanceToPlayer;
+        public float distanceToTarget;
+        public Vector3 currentTarget;
+
+        #region Internal Variables
+
+        internal AIAwareness _behaviourSet;
         internal NavMeshAgent agent;
-
-        [SerializeField] internal float distanceToTarget;
-        internal Vector3 currentTarget;
         internal Vector3 currentPosition;
-
         internal Transform playerTransform;
         internal Vector3 playerPosition;
-        [SerializeField] internal float distanceToPlayer;
-        [SerializeField] AIAwareness behaviourSet;
         
-        bool trackingPlayer = false;
-        public bool path = false;
-        internal bool lookAtPlayer;
+        private bool _trackingPlayer = false;
+
+        #endregion
 
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
         }
-
+        
+        #region Intialization
+        
         public void InitPathing()
         {
-            playerTransform = behaviourSet.playerManager.playerTransform;
-            Debug.Log(playerTransform);
-            Debug.Log("Current player is " + playerTransform.ToString());
+            playerTransform = _behaviourSet.playerManager.playerTransform;
         }
+        
+        public void EnableRepathing(bool pathToPlayer)
+        {
+            path = true;
+            
+            _behaviourSet.stateMachine.ChangeState(_behaviourSet.stateMachine.defaultState);
+            
+            if (pathToPlayer)
+            {
+                _trackingPlayer = true;
+                Debug.Log("Enabled repathing at " + _behaviourSet.currentAIStep.ToString());
+            }
+            else
+            {
+                _trackingPlayer = false;
+                return;
+            }
+        }
+
+        public void DisableRepathing()
+        {
+            path = false;
+            Debug.Log("Disabled repathing at " + _behaviourSet.currentAIStep.ToString());
+        }
+
+        #endregion
 
         public void PongUpdate()
         {
@@ -56,11 +87,11 @@ namespace Project.Runtime.AI
 
             if (agent.enabled)
             {
-                if (path && !trackingPlayer)
+                if (path && !_trackingPlayer)
                 { 
                     
                 }
-                else if (trackingPlayer)
+                else if (_trackingPlayer)
                 {
                     currentTarget = playerPosition;
                     agent.SetDestination(currentTarget);
@@ -68,6 +99,8 @@ namespace Project.Runtime.AI
             }
                      
         }
+        
+        #region Movement Functions
 
         public void LockAgent(bool locked)
         {
@@ -84,34 +117,7 @@ namespace Project.Runtime.AI
                 agent.updateRotation = false;
             }
         }
-
-        public void EnableRepathing(bool pathToPlayer)
-        {
-            // Usage:
-            // Enables pathing of the agent globally
-            // if pathToPlayer = true, track the player
-            // if pathToPlayer = false, do nothing yet
-            
-            behaviourSet.stateMachine.ChangeState(AIStates.STATE_IDLE);
-            
-            path = true;
-            if (pathToPlayer)
-            {
-                trackingPlayer = true;
-                Debug.Log("Enabled repathing at " + behaviourSet.currentAIStep.ToString());
-            }
-            else
-            {
-                trackingPlayer = false;
-                return;
-            }
-        }
-
-        public void DisableRepathing()
-        {
-            path = false;
-            Debug.Log("Disabled repathing at " + behaviourSet.currentAIStep.ToString());
-        }
+        
         public void SetNewDestination(Vector3 destination)
         {
             // Usage:
@@ -124,7 +130,7 @@ namespace Project.Runtime.AI
         {
             // Usage:
             // Stops the agent immediately
-            Debug.Log("StopOnPath called at " + behaviourSet.currentAIStep.ToString() + " with a value of " + stop.ToString());
+            Debug.Log("StopOnPath called at " + _behaviourSet.currentAIStep.ToString() + " with a value of " + stop.ToString());
 
             if(!stop)
             {
@@ -141,10 +147,12 @@ namespace Project.Runtime.AI
 
         public void LookAtPlayer()
         {
-            lookAtPlayer = true;
             Vector3 direction = (playerPosition - transform.position).normalized;
             Quaternion lookAtRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookAtRotation, Time.deltaTime * 10);
         }
+
+        #endregion
+        
     }
 }

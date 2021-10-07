@@ -21,69 +21,74 @@ namespace Project.Runtime.AI
 
     public class AIAwareness : MonoBehaviour
     {
-        [SerializeField] internal AIPathingManager pathingManager;
-        [SerializeField] internal AICombatManager combatManager;
-        [SerializeField] internal AIStateMachine stateMachine;
-
+        public bool unitEnabled = false;
+        [Space(5)]
+        
+        [Header("References")]
+        public PlayerManager playerManager;
         public AIEnemyData enemyDataSet;
         
-        
-        public bool unitEnabled = false;
-
-        [Space(5)]
         [Header("Awareness Settings")]
-        public PlayerManager playerManager;
-        public float activationRange = 20;
-        public float deactivationRange = 30;
+        public float unitActivationRange = 20;
+        public float unitDeactivationRange = 30;
 
         [Header("Awareness - Line Of Sight")]
-        public float viewRadius = 90;
-        [Range(0, 360)]
-        public float viewAngle = 70;
-
         public LayerMask targetMask;
         public LayerMask obstacleMask;
-
-        [Space(5)]
+        [Range(0, 360)] public float viewRadius = 90;
+        public float viewAngle = 70;
+        
         [Header("Updates")]
         public float decisionStepInterval = 0.5f;
         public  int currentAIStep;
         public bool trackingPlayer = false;
-        bool hasEngagedPlayer = false;
-
-        [Space(5)]
+        
         [Header("Behaviour Randomizer")]
         public float randomizerSpeed = 10;
         public float randomizerChance = 50;
 
+        #region Internal Variables
+
+        private bool _hasEngagedPlayer = false;
+        
+        internal AIPathingManager pathingManager;
+        internal AICombatManager combatManager; 
+        internal AIStateMachine stateMachine;
+
+        #endregion
+
+        private void Awake()
+        {
+            //Get components
+            pathingManager = GetComponent<AIPathingManager>();
+            combatManager = GetComponent<AICombatManager>();
+            stateMachine = GetComponent<AIStateMachine>();
+        }
+
         public virtual void Start()
         {
-            
-            //stateMachine = GetComponent<AIStateMachine>();
-            //pathingManager = GetComponent<AIPathingManager>();
-            //combatManager = GetComponent<AICombatManager>();
             StartCoroutine(IncrementStep());
         }
 
+        /// <summary>
+        /// Usage:
+        /// Makes update calls to AIPathingManager and AICombatManager
+        /// This is done to avoid overloading the game with too many AI update calls at runtime. Might be refined lated
+        /// </summary>
+        
         public virtual IEnumerator IncrementStep()
         {
-            // Usage:
-            // Makes update calls to AIPathingManager and AICombatManager
-            // This is done to avoid overloading the game with too many 
-            // AI Update calls at runtime. Might be refined later.
-            // It also updates a value called currentAIStep for tracking and debug purposes.
-
             currentAIStep++;
 
             // Ping scripts
             pathingManager.PongUpdate();
 
-            if (pathingManager.distanceToPlayer < activationRange && !unitEnabled)
+            if (pathingManager.distanceToPlayer < unitActivationRange && !unitEnabled)
             {
                 ActivateUnit();
             }
 
-            if (pathingManager.distanceToPlayer > deactivationRange && hasEngagedPlayer)
+            if (pathingManager.distanceToPlayer > unitDeactivationRange && _hasEngagedPlayer)
             {
                 DeactivateUnit();
             }
@@ -103,21 +108,20 @@ namespace Project.Runtime.AI
         public virtual void ActivateUnit()
         {
             Debug.LogWarning("Enemy Activated");
+            
+            //Initialize pathing
+            pathingManager._behaviourSet = this;
             pathingManager.InitPathing();
             pathingManager.EnableRepathing(false);
             pathingManager.LockAgent(false);
-        
-            // Prep Agent
-
-            playerManager = GameManager.instance.playerManager;
-            unitEnabled = true;
-            
             stateMachine.EnableStateMachine();
-           
+            
+            //Start combat functions
             combatManager.behaviourSet = this;
             combatManager.InitCombat();
             
-            
+            playerManager = GameManager.instance.playerManager;
+            unitEnabled = true;
         }
 
         public virtual void DeactivateUnit()
@@ -125,21 +129,13 @@ namespace Project.Runtime.AI
             Debug.LogError("Enemy Disabled");
 
             unitEnabled = false;
-            hasEngagedPlayer = false;
+            _hasEngagedPlayer = false;
 
             stateMachine.DisableStateMachine();
             pathingManager.DisableRepathing();
             pathingManager.LockAgent(true);
         }
         #endregion
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                ActivateUnit();
-            }
-        }
 
         #region Line Of Sight
         void FindVisibleTargets()
@@ -163,7 +159,7 @@ namespace Project.Runtime.AI
                         if (target.tag == "Player" && !trackingPlayer)
                         {
                             trackingPlayer = true;
-                            hasEngagedPlayer = true;
+                            _hasEngagedPlayer = true;
                             stateMachine.ChangeState(AIStates.STATE_MOVETOPLAYER);
                             Debug.Log("Player found at " + currentAIStep.ToString());
                         }
