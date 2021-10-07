@@ -18,6 +18,8 @@ namespace Project.Runtime.AI
         public float attackRayLength = 6;
         public Transform raySpawnPoint;
 
+        public float tooFarDistance = 10;
+
         #region Inernal Variables
         
         internal AIAwareness behaviourSet;
@@ -45,10 +47,22 @@ namespace Project.Runtime.AI
 
         public virtual void PongUpdate()
         {
-            if (behaviourSet.pathingManager.distanceToPlayer < minAttackRange)
+            if (behaviourSet.unitEnabled)
             {
-                behaviourSet.stateMachine.ChangeState(AIStates.STATE_ATTACK);
+                if (behaviourSet.pathingManager.distanceToPlayer < minAttackRange)
+                {
+                    behaviourSet.stateMachine.ChangeState(AIStates.STATE_ATTACK);
+                }
+
+                if (behaviourSet.pathingManager.distanceToTarget > tooFarDistance)
+                {
+                    if (behaviourSet.stateMachine.currentState == AIStates.STATE_MOVETOPLAYER)
+                    {
+                        behaviourSet.stateMachine.ChangeState(AIStates.STATE_CLOSEDISTANCE);
+                    }
+                }
             }
+            
         }
 
         

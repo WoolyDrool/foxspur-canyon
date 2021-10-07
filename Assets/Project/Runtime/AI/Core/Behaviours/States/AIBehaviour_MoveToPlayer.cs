@@ -9,14 +9,15 @@ namespace Project.Runtime.AI.States
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             base.OnStateEnter(animator, stateInfo, layerIndex);
-            if(behaviourSet.pathingManager.path)
+            if(!behaviourSet.pathingManager.path)
             {
                 behaviourSet.pathingManager.EnableRepathing(true);
+                behaviourSet.pathingManager.StopOnPath(false);
+                behaviourSet.pathingManager.LockAgent(false);
                 Debug.Log("Did not have path to player, resolving");
             }
 
-            behaviourSet.pathingManager.StopOnPath(false);
-            behaviourSet.pathingManager.LockAgent(false);
+            
             //behaviourSet.pathingManager.lookAtPlayer = true;
         }
 

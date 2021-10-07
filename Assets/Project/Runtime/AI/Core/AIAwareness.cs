@@ -17,6 +17,7 @@ namespace Project.Runtime.AI
         public static string STATE_MOVETOPLAYER = "MOVETOPLAYER";
         public static string STATE_ATTACK = "ATTACK";
         public static string STATE_DIE = "DIE";
+        public static string STATE_CLOSEDISTANCE = "CLOSETHEDISTANCE";
     }
 
     public class AIAwareness : MonoBehaviour
@@ -79,7 +80,7 @@ namespace Project.Runtime.AI
         public virtual IEnumerator IncrementStep()
         {
             currentAIStep++;
-
+            
             // Ping scripts
             pathingManager.PongUpdate();
 
@@ -139,6 +140,18 @@ namespace Project.Runtime.AI
             pathingManager.LockAgent(true);
         }
         #endregion
+
+        public void BeginStateCooldown(AIBaseBehaviour behaviour)
+        {
+            StartCoroutine(Cooldown(behaviour.stateCooldown, behaviour));
+            
+        }
+
+        IEnumerator Cooldown(float cooldown, AIBaseBehaviour behaviour)
+        {
+            yield return new WaitForSeconds(cooldown);
+            behaviour.canEnterState = true;
+        }
 
         #region Line Of Sight
         void FindVisibleTargets()

@@ -16,9 +16,12 @@ namespace Project.Runtime.AI
         public float distanceToPlayer;
         public float distanceToTarget;
         public Vector3 currentTarget;
+        public float movementSpeed;
 
         #region Internal Variables
 
+        private float _previousSpeed;
+        
         internal AIAwareness _behaviourSet;
         internal NavMeshAgent agent;
         internal Vector3 currentPosition;
@@ -44,8 +47,8 @@ namespace Project.Runtime.AI
         public void EnableRepathing(bool pathToPlayer)
         {
             path = true;
-            
-            _behaviourSet.stateMachine.ChangeState(_behaviourSet.stateMachine.defaultState);
+            agent.speed = movementSpeed;
+            //_behaviourSet.stateMachine.ChangeState(_behaviourSet.stateMachine.defaultState);
             
             if (pathToPlayer)
             {
@@ -152,6 +155,19 @@ namespace Project.Runtime.AI
             transform.rotation = Quaternion.Slerp(transform.rotation, lookAtRotation, Time.deltaTime * 10);
         }
 
+        public void ChangeCurrentSpeed(float newSpeed)
+        {
+            _previousSpeed = movementSpeed;
+            movementSpeed = newSpeed;
+            agent.speed = movementSpeed;
+        }
+
+        public void ResetCurrentSpeed()
+        {
+            movementSpeed = _previousSpeed;
+            agent.speed = movementSpeed;
+        }
+        
         #endregion
         
     }
