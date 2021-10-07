@@ -52,17 +52,27 @@ namespace Project.Runtime.UI.Elements
         
         #endregion
 
+        /// <summary>
+        /// The code from your tutorial is mostly the same, but I have separated the functions into disparate classes.
+        /// InventoryMath.cs handles all of the collision, intersections, grid math etc
+        /// InventoryDraw.cs handles most of the drawing functions like putting the grid/item prefabs on the screen etc
+        /// UIInventoryView.cs handles the global functions like adding/removing items, item interactions etc
+        /// StoredItem is referred to as UIStoredItem
+        /// </summary>
         private void Awake()
         {
             drawing = GetComponent<InventoryDraw>();
             
             playerInventory = GameManager.instance.playerInventory;
             inventoryData = playerInventory.inventoryData;
-
+            
+            // Size is 10x10
             sizeX = inventoryData.size.x;
             sizeY = inventoryData.size.y;
             
             playerInventory.updateUIList.AddListener(UpdateItems);
+            
+            //Initializes the maths and drawing classes
             maths = new InventoryMath(sizeX, sizeY, itemsInGrid, drawing.grid, this, drawing);
             drawing.WakeUp();
             
@@ -86,27 +96,8 @@ namespace Project.Runtime.UI.Elements
         {
             drawing.DrawInventory();
         }
-
-        #region Drawing
-        private void UpdateItems()
-        {
-            //This might not be the most elegant solution but fuck it
-            
-            itemsInGrid.Clear();
-            
-            foreach (Item i in playerInventory.inventoryItems)
-            {
-                AddItem(i);
-            }
-            
-            foreach (Item i in playerInventory.trashItems)
-            {
-                AddItem(i);
-            }
-        }
-
-
-        public void DrawItem(UIStoredItem uiStoredItem, GameObject obj)
+        
+        public void HandleItemInteraction(UIStoredItem uiStoredItem, GameObject obj)
         {
             UpdateHoveredItem hovUpdater = obj.GetComponent<UpdateHoveredItem>();
             hovUpdater.item = drawing.storedItem.item;
@@ -134,12 +125,6 @@ namespace Project.Runtime.UI.Elements
                     
                 });
         }
-
-        #endregion
-        
-        #region Grid Calculations
-
-        #endregion
 
         #region Item Interactions
         public void AddItem(Item item)
@@ -200,6 +185,23 @@ namespace Project.Runtime.UI.Elements
             Notify();
         }
         
+        private void UpdateItems()
+        {
+            //This might not be the most elegant solution but fuck it
+            
+            itemsInGrid.Clear();
+            
+            foreach (Item i in playerInventory.inventoryItems)
+            {
+                AddItem(i);
+            }
+            
+            foreach (Item i in playerInventory.trashItems)
+            {
+                AddItem(i);
+            }
+        }
+
         #endregion
     }
 }

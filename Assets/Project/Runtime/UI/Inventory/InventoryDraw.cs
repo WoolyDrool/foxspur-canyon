@@ -21,8 +21,14 @@ namespace Project.Runtime.UI.Elements
         private GameObject _itemView;
         internal UIStoredItem storedItem;
 
+        /// <summary>
+        /// This class handles all of the drawing functions for the inventory
+        /// Makes frequent calls to InventoryMaths.cs for all of the math functions
+        /// </summary>
+        
         public void WakeUp()
         {
+            //Called by UIInventoryView for initialization 
             _view = GetComponent<UIInventoryView>();
             maths = _view.maths;
             size.x = _view.sizeX;
@@ -34,7 +40,7 @@ namespace Project.Runtime.UI.Elements
         {
             CleanUpGrid();
             DrawGrid();
-            HandleItemsInitial();
+            HandleItems();
         }
 
         #region Grid
@@ -64,7 +70,7 @@ namespace Project.Runtime.UI.Elements
 
         #endregion
         
-        private void HandleItemsInitial()
+        private void HandleItems()
         {
             foreach (UIStoredItem item in _view.itemsInGrid.ToList())
             {
@@ -87,7 +93,7 @@ namespace Project.Runtime.UI.Elements
             img.sprite = item.icon;
             
             storedItem = uiStoredItem;
-            _view.DrawItem(storedItem, _itemView);
+            _view.HandleItemInteraction(storedItem, _itemView);
         }
         
         public void MoveItem(GameObject gridObj, UIStoredItem item)

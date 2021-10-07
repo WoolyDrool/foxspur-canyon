@@ -43,6 +43,12 @@ namespace Project.Runtime.AI
             UpdateAggressionLevel();
         }
 
+        public void RemoveAggression(int amount)
+        {
+            currentAggression -= amount;
+            UpdateAggressionLevel();
+        }
+
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.J))

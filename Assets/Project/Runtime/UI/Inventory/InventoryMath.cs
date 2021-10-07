@@ -16,6 +16,12 @@ namespace Project.Runtime.UI.Elements
         public GameObject movingObject;
         public UIStoredItem movingItem;
 
+        /// <summary>
+        /// This class handles all of the calculation and collision functions for the inventory
+        /// InventoryDraw and UIInventoryView make frequent calls to this class
+        /// All of the math code is relatively unchanged from the tutorial, I have reverted most of the fixes I attempted to make it easier to read
+        /// </summary>
+        
         public InventoryMath(int sizeX, int sizeY, List<UIStoredItem> inventory, RectTransform gridContainer, UIInventoryView view, InventoryDraw drawer)
         {
             _sizeX = sizeX;
