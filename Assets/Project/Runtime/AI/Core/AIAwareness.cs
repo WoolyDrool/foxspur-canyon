@@ -21,17 +21,18 @@ namespace Project.Runtime.AI
 
     public class AIAwareness : MonoBehaviour
     {
-        internal AIPathingManager pathingManager;
-        internal AICombatManager combatManager;
-        internal AIStateMachine stateMachine;
+        [SerializeField] internal AIPathingManager pathingManager;
+        [SerializeField] internal AICombatManager combatManager;
+        [SerializeField] internal AIStateMachine stateMachine;
 
         public AIEnemyData enemyDataSet;
-        public PlayerManager playerManager;
+        
         
         public bool unitEnabled = false;
 
         [Space(5)]
         [Header("Awareness Settings")]
+        public PlayerManager playerManager;
         public float activationRange = 20;
         public float deactivationRange = 30;
 
@@ -57,12 +58,10 @@ namespace Project.Runtime.AI
 
         public virtual void Start()
         {
-            playerManager = GameManager.instance.playerManager;
-            stateMachine = GetComponent<AIStateMachine>();
-            pathingManager = GetComponent<AIPathingManager>();
-            combatManager = GetComponent<AICombatManager>();
-            combatManager.behaviourSet = this;
-            // Prep Agent
+            
+            //stateMachine = GetComponent<AIStateMachine>();
+            //pathingManager = GetComponent<AIPathingManager>();
+            //combatManager = GetComponent<AICombatManager>();
             StartCoroutine(IncrementStep());
         }
 
@@ -104,12 +103,21 @@ namespace Project.Runtime.AI
         public virtual void ActivateUnit()
         {
             Debug.LogWarning("Enemy Activated");
-
-            unitEnabled = true;
-
-            stateMachine.EnableStateMachine();
+            pathingManager.InitPathing();
             pathingManager.EnableRepathing(false);
             pathingManager.LockAgent(false);
+        
+            // Prep Agent
+
+            playerManager = GameManager.instance.playerManager;
+            unitEnabled = true;
+            
+            stateMachine.EnableStateMachine();
+           
+            combatManager.behaviourSet = this;
+            combatManager.InitCombat();
+            
+            
         }
 
         public virtual void DeactivateUnit()

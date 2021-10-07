@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,23 +18,24 @@ namespace Project.Runtime.AI
         internal Transform playerTransform;
         internal Vector3 playerPosition;
         [SerializeField] internal float distanceToPlayer;
-        AIAwareness behaviourSet;
+        [SerializeField] AIAwareness behaviourSet;
         
         bool trackingPlayer = false;
         public bool path = false;
         internal bool lookAtPlayer;
 
-        void Awake()
+        private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
-            //agent.enabled = false;
+        }
 
-            behaviourSet = GetComponent<AIAwareness>();
-            
+        public void InitPathing()
+        {
             playerTransform = behaviourSet.playerManager.playerTransform;
+            Debug.Log(playerTransform);
             Debug.Log("Current player is " + playerTransform.ToString());
         }
-        
+
         public void PongUpdate()
         {
             // Usage:
@@ -41,12 +43,16 @@ namespace Project.Runtime.AI
             // This is done in place of a regular Update function to avoid
             // slowing down the game with too many AI calls at runtime.
 
-            currentPosition = transform.position;
-            playerPosition = playerTransform.position;
+            if (playerTransform)
+            {
+                currentPosition = transform.position;
+                playerPosition = playerTransform.position;
 
-            distanceToPlayer = Vector3.Distance(currentPosition, playerPosition);
+                distanceToPlayer = Vector3.Distance(currentPosition, playerPosition);
 
-            distanceToTarget = Vector3.Distance(currentPosition, currentTarget);
+                distanceToTarget = Vector3.Distance(currentPosition, currentTarget);
+            }
+            
 
             if (agent.enabled)
             {
@@ -85,6 +91,8 @@ namespace Project.Runtime.AI
             // Enables pathing of the agent globally
             // if pathToPlayer = true, track the player
             // if pathToPlayer = false, do nothing yet
+            
+            behaviourSet.stateMachine.ChangeState(AIStates.STATE_IDLE);
             
             path = true;
             if (pathToPlayer)

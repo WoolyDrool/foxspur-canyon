@@ -7,10 +7,10 @@ namespace Project.Runtime.AI
     [RequireComponent(typeof(Animator))]
     public class AIStateMachine : MonoBehaviour
     {
-        [SerializeField]
-        internal string currentState;
+        public string currentState;
         public string defaultState;
-        internal string previousState;
+        public string previousState;
+        
         internal string nullState = "ANY STATE";
         internal Animator machine;
         internal bool machineEnabled = false;

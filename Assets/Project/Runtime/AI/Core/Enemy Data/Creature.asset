@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1866a873553cdad4babb5e53f1be1695, type: 3}
   m_Name: Creature
   m_EditorClassIdentifier: 
-  enemyName: NULL
-  baseHealth: 10
+  enemyName: La Creatura
+  baseHealth: 9999
   lightAttack: 5
   normalAttack: 10
   heavyAttack: 20

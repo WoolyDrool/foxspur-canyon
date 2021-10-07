@@ -19,12 +19,10 @@ namespace Project.Runtime.AI
         Ray damageRay;
         RaycastHit damageHit;
         public Transform raySpawnPoint;
-
-
-        // Start is called before the first frame update
-        void Start()
+        
+        public void InitCombat()
         {
-            health = GetComponent<AIAwareness>().enemyDataSet.baseHealth;
+            health = behaviourSet.enemyDataSet.baseHealth;
         }
 
         public void Update()
@@ -57,13 +55,16 @@ namespace Project.Runtime.AI
         public virtual void Attack(float damage)
         {
             Debug.DrawRay(transform.position, transform.forward, Color.red);
+            // Debug: Temp only, remove as soon as finished
+            GameManager.instance.playerVitals.healthStat.RemoveValue(damage);
+                
+            Debug.Log("Attacked at " + behaviourSet.currentAIStep.ToString());
             
             if(Physics.Raycast(damageRay, out damageHit, maxAttackRange))
             {
-                Debug.Log("Attacked at " + behaviourSet.currentAIStep.ToString());
-                Debug.Log(damageHit.transform.name);
-                damageHit.transform.SendMessage("TakeDamage", (double)damage, SendMessageOptions.RequireReceiver);
                 
+                Debug.Log(damageHit.transform.name);
+                //damageHit.transform.SendMessage("TakeDamage", (double)damage, SendMessageOptions.RequireReceiver);
             }
         }
     }

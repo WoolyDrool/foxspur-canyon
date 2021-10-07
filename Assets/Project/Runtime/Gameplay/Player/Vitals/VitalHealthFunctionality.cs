@@ -1,4 +1,5 @@
-﻿using Project.Runtime.Global;
+﻿using System;
+using Project.Runtime.Global;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -28,6 +29,11 @@ namespace Project.Runtime.Gameplay.Player
         private PlayerVitals _vitals;
         private AudioClip[] _damageSounds;
         private const string DEATH_TRIGGER = "Death";
+
+        private void OnEnable()
+        {
+            
+        }
 
         public void Start()
         {
