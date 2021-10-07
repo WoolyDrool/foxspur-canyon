@@ -15,7 +15,7 @@ namespace Project.Runtime.AI
         [Header("Combat Info")] 
         public LayerMask attackLayers;
         public float minAttackRange = 2;
-        public float maxAttackRange = 6;
+        public float attackRayLength = 6;
         public Transform raySpawnPoint;
 
         #region Inernal Variables
@@ -64,12 +64,10 @@ namespace Project.Runtime.AI
             Debug.DrawRay(raySpawnPoint.position, raySpawnPoint.forward, Color.red);
             // Debug: Temp only, remove as soon as finished
 
-            if(Physics.Raycast(_damageRay, out _damageHit, maxAttackRange, attackLayers))
+            if(Physics.Raycast(_damageRay, out _damageHit, attackRayLength, attackLayers))
             {
-                GameManager.instance.playerVitals.healthStat.RemoveValue(damage);
-                Debug.Log("Attacked at " + behaviourSet.currentAIStep.ToString());
                 Debug.Log(_damageHit.transform.name);
-                //damageHit.transform.SendMessage("TakeDamage", (double)damage, SendMessageOptions.RequireReceiver);
+                _damageHit.transform.SendMessage("TakeDamage", damage, SendMessageOptions.RequireReceiver);
             }
         }
     }

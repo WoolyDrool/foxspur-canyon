@@ -10,7 +10,6 @@ namespace Project.Runtime.AI.States
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             base.OnStateEnter(animator, stateInfo, layerIndex);
-            Debug.Log("Started idling at " + behaviourSet.currentAIStep.ToString());
         }
 
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -95,8 +95,11 @@ namespace Project.Runtime.AI
 
             if (unitEnabled)
             {
-                combatManager.PongUpdate();
-                FindVisibleTargets();
+                if (pathingManager.distanceToPlayer > 0)
+                {
+                    combatManager.PongUpdate();
+                    FindVisibleTargets();
+                }
             }
 
             yield return new WaitForSeconds(decisionStepInterval);

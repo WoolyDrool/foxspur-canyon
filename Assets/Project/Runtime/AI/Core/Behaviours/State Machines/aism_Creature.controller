@@ -63,7 +63,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 190, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -7452809141269649396}
+  m_DefaultState: {fileID: -2066944532826009063}
 --- !u!1102 &-7452809141269649396
 AnimatorState:
   serializedVersion: 6
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTickRange: 1
   maxTickRange: 5
-  walkRadius: 10
+  walkRadius: 3
 --- !u!1102 &4493452469869565441
 AnimatorState:
   serializedVersion: 6
@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackLength: 1
+  countDown: 0
   attackDamage: 15
 --- !u!114 &5455288712853510364
 MonoBehaviour:
