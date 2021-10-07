@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
+  m_Name: Chopped Log
+  m_EditorClassIdentifier: 
+  canBeDropped: 1
+  canBeUsed: 0
+  itemName: Chopped Log
+  description: Segment of a fallen tree. Lovingly chopped by yours truly
+  effectsDescription: 'Use: Trash - Deposit in receptacles to improve trail score'
+  icon: {fileID: 21300000, guid: bd33fb4d843069f4dba57fbb44a1841d, type: 3}
+  img: {fileID: 21300000, guid: bd33fb4d843069f4dba57fbb44a1841d, type: 3}
+  size:
+    x: 3
+    y: 3
+  use: []
+  isTrash: 1
+  useSound: {fileID: 0}

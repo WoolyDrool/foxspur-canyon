@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
+  m_Name: Hatchet
+  m_EditorClassIdentifier: 
+  itemClass: 1
+  isCurrentlyEquipped: 0
+  currentlyEquippedSlot: 0
+  canBeDropped: 0
+  canBeMoved: 1
+  canBeUsed: 0
+  itemName: Survival Hatchet
+  description: Sturdy, rubber grip. Ranger standard issue.
+  effectsDescription: 'Use: Chop fallen logs into smaller chunks for transport'
+  icon: {fileID: 21300000, guid: 24823586588e714449ae425d065e0325, type: 3}
+  img: {fileID: 21300000, guid: 24823586588e714449ae425d065e0325, type: 3}
+  size:
+    x: 2
+    y: 2
+  use: []
+  isTrash: 0
+  useSound: {fileID: 0}

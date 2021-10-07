@@ -1,0 +1,46 @@
+[devbuild 2]
+Added a main menu and pause menu
+Added and tweaked several UI elements
+Added health, hunger, thirst, and sleep meters (they count down but currently have no purpose)
+Redid the cars programming to make it easier to extend and work with
+Added 2 music tracks (1 for the main menu and 1 as a random track that can play when you get in the car)
+Added some new textures to the world but they're still WIP
+Added a rudimentary cloud system
+Removed bloat from the project file to make it load faster
+
+[devbuild 3]
+Trees!
+Binoculars - use B to access them
+There are now road signs on the road
+Added a clocktower building to the starting area
+
+[devbuild 4]
+- Additions
+Added a new car model
+Added a UI volume slider
+Added a car UI to show current gear and speed
+Added non-functional character creator and save select (to be implemented later)
+
+- Bugfixes/Tweaks
+The suns position now updates in increments which should help with general performance
+Continued to tweak vehicle controls to make them more responsive
+Tweaked the player ui and time ui to only show while checking the watch
+Tweaked the FPS counter to be more accurate
+Moved the compass from the watch to a global UI element
+Split the terrains into segments to help with occlusion culling and performance
+
+[devbuild 5]
+- Additions
+Added interactable doors
+Added new snow, grass, and dirt textures
+Added new homes to the starting area
+Added different locations with hud elements and sound
+Added battery hud indicator for the headlamp, and implemented a general battery system for future use
+Added basic inventory system with item descriptions and usages
+
+- Bugfixed/Tweaks
+Tweaked the games lighting and fog to look better
+The starting town is now called Mackenzie
+Massively reorganized project to help improve compile times
+
+[devbuild 6]

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
+  m_Name: Water Bottle (Large)
+  m_EditorClassIdentifier: 
+  itemName: Water Bottle (Medium)
+  description: Cool and refreshing. Replenishes a medium amount of Hydration
+  icon: {fileID: 21300000, guid: 127ef1d68274a054b870dc152761d472, type: 3}
+  img: {fileID: 21300000, guid: 127ef1d68274a054b870dc152761d472, type: 3}
+  size:
+    x: 2
+    y: 2
+  use: {fileID: 11400000, guid: 06657a4974763914a943dbfac050df80, type: 2}

@@ -17,6 +17,7 @@
 /[Aa]ssets/Terrain/
 /[Aa]ssets/Rendering/
 /[Aa]ssets/TextMesh Pro/
+/[Aa]ssets/Plugins/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
