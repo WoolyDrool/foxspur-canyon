@@ -27,7 +27,7 @@ namespace Project.Runtime.AI
         public int hyperThreshold;
 
         [Header("Events")] 
-        public Dictionary<string, Action<Dictionary<string, RuntimeAIEvent>>> aiEvents;
+        public Dictionary<string, Action<Dictionary<string, object>>> aiEvents;
 
         #region Internal Variables
 
@@ -65,13 +65,13 @@ namespace Project.Runtime.AI
         {
             if (aiEvents == null)
             {
-                aiEvents = new Dictionary<string, Action<Dictionary<string, RuntimeAIEvent>>>();
+                aiEvents = new Dictionary<string, Action<Dictionary<string, object>>>();
             }
         }
 
-        public static void StartListening(string eventName, Action<Dictionary<string, RuntimeAIEvent>> listener)
+        public static void StartListening(string eventName, Action<Dictionary<string, object>> listener)
         {
-            Action<Dictionary<string, RuntimeAIEvent>> thisEvent;
+            Action<Dictionary<string, object>> thisEvent;
 
             if (instance.aiEvents.TryGetValue(eventName, out thisEvent))
             {
@@ -85,10 +85,10 @@ namespace Project.Runtime.AI
             }
         }
         
-        public static void StopListening(string eventName, Action<Dictionary<string, RuntimeAIEvent>> listener)
+        public static void StopListening(string eventName, Action<Dictionary<string, object>> listener)
         {
             if (_aiManager == null) return;
-            Action<Dictionary<string, RuntimeAIEvent>> thisEvent;
+            Action<Dictionary<string, object>> thisEvent;
             if (instance.aiEvents.TryGetValue(eventName, out thisEvent))
             {
                 thisEvent -= listener;
@@ -96,9 +96,9 @@ namespace Project.Runtime.AI
             }
         }
 
-        public static void TriggerEvent(string eventName, Dictionary<string, RuntimeAIEvent> message)
+        public static void TriggerEvent(string eventName, Dictionary<string, object> message)
         {
-            Action<Dictionary<string, RuntimeAIEvent>> thisEvent = null;
+            Action<Dictionary<string, object>> thisEvent = null;
             if (instance.aiEvents.TryGetValue(eventName, out thisEvent))
             {
                 thisEvent.Invoke(message);
