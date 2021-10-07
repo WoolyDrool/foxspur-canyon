@@ -32,11 +32,11 @@ namespace Project.Runtime.Gameplay.Tools
             }
         }
         
-        public void SwingHatchet()
+        public void SwingShovel()
         {
             if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.TransformDirection(Vector3.forward), out _rayHit, rangeOfSwing, digLayers))
             {
-                _rayHit.collider.SendMessage("ProcessDig", 1);
+                _rayHit.collider.SendMessage("ProcessDig", SendMessageOptions.DontRequireReceiver);
             }
             
             objectAnimator.SetTrigger(DIG_TRIGGER);
