@@ -10,6 +10,7 @@ namespace Project.Runtime.Gameplay.Tools
         [SerializeField] private Transform playerCamera;
         private RaycastHit _rayHit;
         public AudioClip digSound;
+        public AudioClip hitSound;
         private AudioSource _source;
         
         public override void Awake()
@@ -37,6 +38,7 @@ namespace Project.Runtime.Gameplay.Tools
             if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.TransformDirection(Vector3.forward), out _rayHit, rangeOfSwing, digLayers))
             {
                 _rayHit.collider.SendMessage("ProcessDig", SendMessageOptions.DontRequireReceiver);
+                _source.PlayOneShot(hitSound);
             }
             
             objectAnimator.SetTrigger(DIG_TRIGGER);

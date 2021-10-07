@@ -9,9 +9,12 @@ namespace Project.Runtime.Gameplay.Interactables
         public int swingsToComplete;
         public int currentSwings;
         public Transform pileObject;
+
+        private InteractableTrailScoreManager _scoreManager;
+        public Vector3[] positions;
         void Start()
         {
-            currentSwings = swingsToComplete;
+            _scoreManager = GetComponentInParent<InteractableTrailScoreManager>();
         }
 
         void Update()
@@ -21,6 +24,7 @@ namespace Project.Runtime.Gameplay.Interactables
 
         public void ProcessDig()
         {
+            Debug.Log("Digging");
             currentSwings++;
             ChangeState();
         }
@@ -29,24 +33,22 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             if (currentSwings == 1)
             {
-                pileObject.position = new Vector3(pileObject.localPosition.x, pileObject.localPosition.y - 0.5f,
-                    pileObject.localPosition.z);
+                pileObject.localPosition = positions[0];
             }
 
             if (currentSwings == 2)
             {
-                pileObject.position = new Vector3(pileObject.localPosition.x, pileObject.localPosition.y - 1f,
-                    pileObject.localPosition.z);
+                pileObject.localPosition = positions[1];
             }
 
             if (currentSwings == 3)
             {
-                pileObject.position = new Vector3(pileObject.localPosition.x, pileObject.localPosition.y - 1.5f,
-                    pileObject.localPosition.z);
+                pileObject.localPosition = positions[2];
             }
 
             if (currentSwings == 4)
             {
+                _scoreManager.AddScore(1);
                 Destroy(gameObject);
             }
         }
