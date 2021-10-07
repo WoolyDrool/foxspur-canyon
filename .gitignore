@@ -9,13 +9,6 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
-/[Aa]ssets/Art/
-/[Aa]ssets/Sound/
-/[Aa]ssets/Prefabs/
-/[Aa]ssets/Scenes/
-/[Aa]ssets/Terrain/
-/[Aa]ssets/Animations/
-/[Aa]ssets/Rendering/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
