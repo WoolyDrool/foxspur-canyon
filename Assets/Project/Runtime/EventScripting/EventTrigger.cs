@@ -64,5 +64,6 @@ public class EventTrigger : MonoBehaviour
     void EventTriggerSound()
     {
         GameManager.instance.audioManager.SpawnAudioNearPlayer(playerPos, minDistance, maxDistance, soundCue);
+        gameObject.SetActive(false);
     }
 }
