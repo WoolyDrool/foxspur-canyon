@@ -7,13 +7,13 @@ namespace Project.Runtime.AI
 {
     public class AIBaseBehaviour : StateMachineBehaviour
     {
-        internal AIBaseBehaviourSet behaviourSet;
+        internal AIAwareness behaviourSet;
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             base.OnStateEnter(animator, stateInfo, layerIndex);
 
-            behaviourSet = animator.gameObject.GetComponent<AIBaseBehaviourSet>();
+            behaviourSet = animator.gameObject.GetComponent<AIAwareness>();
         }
 
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

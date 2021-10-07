@@ -6,21 +6,28 @@ using Project.Runtime.AI.States;
 
 namespace Project.Runtime.AI
 {
-    public class AIBaseBehaviourSet : MonoBehaviour
+    public struct AIStates
+    {
+        /// <summary>
+        /// Usage: Defines the list of available states
+        /// Names are tied explicitly to the StateMachine AnimatorController behaviour names.
+        /// </summary>
+        public static string STATE_IDLE = "IDLE";
+        public static string STATE_WANDER = "WANDER";
+        public static string STATE_MOVETOPLAYER = "MOVETOPLAYER";
+        public static string STATE_ATTACK = "ATTACK";
+        public static string STATE_DIE = "DIE";
+    }
+
+    public class AIAwareness : MonoBehaviour
     {
         internal AIPathingManager pathingManager;
-        internal AIBaseCombatSet combatManager;
+        internal AICombatManager combatManager;
         internal AIStateMachine stateMachine;
 
         public AIEnemyData enemyDataSet;
         public PlayerManager playerManager;
-
-        const string STATE_IDLE = "IDLE";
-        const string STATE_WANDER = "WANDER";
-        const string STATE_MOVE_TO_PLAYER = "MOVETOPLAYER";
-        const string STATE_ATTACK = "ATTACK";
-        const string STATE_DIE = "DIE";
-
+        
         public bool unitEnabled = false;
 
         [Space(5)]
@@ -48,20 +55,12 @@ namespace Project.Runtime.AI
         public float randomizerSpeed = 10;
         public float randomizerChance = 50;
 
-
-        public virtual void Awake()
-        {
-            
-            
-            
-        }
-
         public virtual void Start()
         {
             playerManager = GameManager.instance.playerManager;
             stateMachine = GetComponent<AIStateMachine>();
             pathingManager = GetComponent<AIPathingManager>();
-            combatManager = GetComponent<AIBaseCombatSet>();
+            combatManager = GetComponent<AICombatManager>();
             combatManager.behaviourSet = this;
             // Prep Agent
             StartCoroutine(IncrementStep());
@@ -137,24 +136,27 @@ namespace Project.Runtime.AI
         #region Line Of Sight
         void FindVisibleTargets()
         {
+            //Define a general list of colliders within the view radius
             Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
+            //Loop through targetsInViewRadius to find a valid target
             for (int i = 0; i < targetsInViewRadius.Length; i++)
             {
                 Transform target = targetsInViewRadius[i].transform;
-
                 Vector3 dirToTarget = (target.position - transform.position).normalized;
+
+                //If the target is within the view angle
                 if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
                 {
-                    
                     float dstToTarget = Vector3.Distance(transform.position, target.position);
+                    
                     if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                     {
                         if (target.tag == "Player" && !trackingPlayer)
                         {
                             trackingPlayer = true;
                             hasEngagedPlayer = true;
-                            stateMachine.ChangeState(STATE_MOVE_TO_PLAYER);
+                            stateMachine.ChangeState(AIStates.STATE_MOVETOPLAYER);
                             Debug.Log("Player found at " + currentAIStep.ToString());
                         }
                     }

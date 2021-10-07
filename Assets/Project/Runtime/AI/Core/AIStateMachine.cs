@@ -21,18 +21,6 @@ namespace Project.Runtime.AI
             //currentState = nullState;
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            //machineEnabled = machine.enabled ? false : true;
-        }
-
         public void ChangeState(string nextState)
         {
             if (nextState == currentState)
@@ -56,14 +44,14 @@ namespace Project.Runtime.AI
 
         public void DisableStateMachine()
         {
-            Debug.LogWarning("Disabled stated machine at " + GetComponent<AIBaseBehaviourSet>().currentAIStep.ToString());
+            Debug.LogWarning("Disabled stated machine at " + GetComponent<AIAwareness>().currentAIStep.ToString());
             ChangeState(nullState);
             machine.enabled = false;
         }
 
         public void EnableStateMachine()
         {
-            Debug.LogWarning("Enabled stated machine at " + GetComponent<AIBaseBehaviourSet>().currentAIStep.ToString());
+            Debug.LogWarning("Enabled stated machine at " + GetComponent<AIAwareness>().currentAIStep.ToString());
             machine.enabled = true;
             ChangeState(defaultState);
         }

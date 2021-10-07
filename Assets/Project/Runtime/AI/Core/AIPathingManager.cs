@@ -17,9 +17,8 @@ namespace Project.Runtime.AI
         internal Transform playerTransform;
         internal Vector3 playerPosition;
         [SerializeField] internal float distanceToPlayer;
-        AIBaseBehaviourSet behaviourSet;
+        AIAwareness behaviourSet;
         
-
         bool trackingPlayer = false;
         public bool path = false;
         internal bool lookAtPlayer;
@@ -29,19 +28,16 @@ namespace Project.Runtime.AI
             agent = GetComponent<NavMeshAgent>();
             //agent.enabled = false;
 
-            behaviourSet = GetComponent<AIBaseBehaviourSet>();
-
-            // Note: temporary and for debug only. Will be replaced with
-            // a singleton or whatever to avoid GameObject.Find()
+            behaviourSet = GetComponent<AIAwareness>();
+            
             playerTransform = behaviourSet.playerManager.playerTransform;
             Debug.Log("Current player is " + playerTransform.ToString());
         }
-
-        // Update is called once per frame
+        
         public void PongUpdate()
         {
             // Usage:
-            // Gets called at regular intervals by AIDecisionManager.
+            // Gets called at regular intervals by AIAwareness.
             // This is done in place of a regular Update function to avoid
             // slowing down the game with too many AI calls at runtime.
 

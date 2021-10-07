@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Project.Runtime.AI
 {
-    public class AIBaseCombatSet : MonoBehaviour
+    public class AICombatManager : MonoBehaviour
     {
-        internal AIBaseBehaviourSet behaviourSet;
+        internal AIAwareness behaviourSet;
 
         [Header("Enemy Stats")]
         public string enemyName;
@@ -24,7 +24,7 @@ namespace Project.Runtime.AI
         // Start is called before the first frame update
         void Start()
         {
-            health = GetComponent<AIBaseBehaviourSet>().enemyDataSet.baseHealth;
+            health = GetComponent<AIAwareness>().enemyDataSet.baseHealth;
         }
 
         public void Update()
@@ -40,12 +40,9 @@ namespace Project.Runtime.AI
 
         public virtual void PongUpdate()
         {
-            
-
             if (behaviourSet.pathingManager.distanceToPlayer < minAttackRange)
             {
-                behaviourSet.stateMachine.ChangeState("ATTACK");
-
+                behaviourSet.stateMachine.ChangeState(AIStates.STATE_ATTACK);
             }
         }
 
