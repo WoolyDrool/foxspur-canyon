@@ -18,6 +18,7 @@
 /[Aa]ssets/Rendering/
 /[Aa]ssets/TextMesh Pro/
 /[Aa]ssets/Plugins/
+/[Aa]ssets/Resources/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
