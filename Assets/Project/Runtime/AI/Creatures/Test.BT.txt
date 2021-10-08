@@ -1,12 +1,5 @@
 tree "Root"
     sequence
-        SetColor(1.0, 0.0, 0.0)
-        Wait 1.0
-
-        SetColor(0.0, 1.0, 0.0)
-        Wait 1.0
-
-        SetColor(0.0, 0.0, 1.0)
-        Wait 1.0
+        RealtimeWait 10
         
-        SetRandomPositionInRadius()
+        MoveToPlayerPosition()

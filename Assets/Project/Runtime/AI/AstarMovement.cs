@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Panda;
 using Pathfinding;
 using UnityEngine;
 
@@ -34,8 +35,9 @@ public class AstarMovement : MonoBehaviour
             _currentWaypoint = 0;
         }
     }
-    
-    void Update()
+
+    [Task]
+    void MoveToPlayerPosition()
     {
         targetPosition = playerTransform.position;
         
@@ -71,6 +73,45 @@ public class AstarMovement : MonoBehaviour
             _currentWaypoint++;
             return;
         }
+    }
+    
+    
+    void Update()
+    {
+        /*targetPosition = playerTransform.position;
+        
+        if (Time.time > _lastRepath + repathRate && _seeker.IsDone())
+        {
+            _lastRepath = Time.time;
+
+            _seeker.StartPath(transform.position, targetPosition, OnPathComplete);
+        }
+
+
+        if (path == null)
+        {
+            return;
+        }
+        
+        if(_currentWaypoint > path.vectorPath.Count) return;
+        if (_currentWaypoint == path.vectorPath.Count)
+        {
+            _currentWaypoint++;
+            return;
+        }
+
+        Vector3 dir = (path.vectorPath[_currentWaypoint] - transform.position).normalized;
+
+        Vector3 velocity = dir * speed;
+
+        _controller.SimpleMove(velocity);
+
+        if ((transform.position - path.vectorPath[_currentWaypoint]).sqrMagnitude <
+            nextWaypointDistance * nextWaypointDistance)
+        {
+            _currentWaypoint++;
+            return;
+        }*/
     }
     
     public void OnDisable()
