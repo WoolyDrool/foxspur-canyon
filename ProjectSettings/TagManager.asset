@@ -23,7 +23,11 @@ TagManager:
   - Environment
   - Volume
   - Clouds
+<<<<<<< HEAD
   - Diggable
+=======
+  - Obstacle
+>>>>>>> feature-AI
   - 
   - 
   - 
