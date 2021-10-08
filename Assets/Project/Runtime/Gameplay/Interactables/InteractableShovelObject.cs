@@ -9,12 +9,15 @@ namespace Project.Runtime.Gameplay.Interactables
         public int swingsToComplete;
         public int currentSwings;
         public Transform pileObject;
+        private AudioSource _source;
+        public AudioClip completionClip;
 
         private InteractableTrailScoreManager _scoreManager;
         public Vector3[] positions;
         void Start()
         {
             _scoreManager = GetComponentInParent<InteractableTrailScoreManager>();
+            _source = GetComponent<AudioSource>();
         }
 
         void Update()
@@ -48,7 +51,9 @@ namespace Project.Runtime.Gameplay.Interactables
             if (currentSwings == 4)
             {
                 _scoreManager.AddScore(1);
-                Destroy(gameObject);
+                pileObject.gameObject.SetActive(false);
+                _source.PlayOneShot(completionClip);
+                Destroy(gameObject, 5f);
             }
         }
     }
