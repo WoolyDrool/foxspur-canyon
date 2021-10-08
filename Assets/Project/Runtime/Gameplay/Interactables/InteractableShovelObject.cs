@@ -24,7 +24,6 @@ namespace Project.Runtime.Gameplay.Interactables
 
         public void ProcessDig()
         {
-            Debug.Log("Digging");
             currentSwings++;
             ChangeState();
         }
