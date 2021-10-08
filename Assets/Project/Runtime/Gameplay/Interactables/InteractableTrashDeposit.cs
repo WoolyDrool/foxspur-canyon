@@ -104,7 +104,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             PlaySound(playerInventory.trashInInventory);
             
-            _scoreManager.AddScore(playerInventory.trashItems.Count);
+            _scoreManager.AddScore(playerInventory.trashInInventory);
             playerInventory.ClearAllTrash();
             
             _source.clip = null;

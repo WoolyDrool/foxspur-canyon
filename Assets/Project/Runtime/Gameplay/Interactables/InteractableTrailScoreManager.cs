@@ -18,13 +18,11 @@ namespace Project.Runtime.Gameplay.Interactables
         public TextMeshProUGUI percentageText;
         void Start()
         {
-            totalItemsInTrail = trashContainer.transform.childCount;
+            //totalItemsInTrail = trashContainer.transform.childCount;
             foreach (Transform i in trashContainer.transform)
             {
-                if (i.GetComponent<InteractableLog>())
-                {
-                    totalItemsInTrail += 2;
-                }
+                int score = i.GetComponent<InteractableTrailItemScore>().itemScore;
+                totalItemsInTrail += score;
             }
             percentageText.text = "0/100.0"; 
         }
@@ -37,7 +35,7 @@ namespace Project.Runtime.Gameplay.Interactables
         public void AddScore(int scoreToAdd)
         {
             currentTrailScore = (float) scoreToAdd / totalItemsInTrail;
-            itemsCollected++;
+            itemsCollected += scoreToAdd;
             trailCompletionPercentage += currentTrailScore;
 
             normalisedCompletionPercentage = (trailCompletionPercentage * 100).ToString("F1");
