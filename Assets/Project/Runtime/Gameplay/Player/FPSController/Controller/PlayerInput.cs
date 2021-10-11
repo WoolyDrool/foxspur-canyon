@@ -83,7 +83,12 @@ public class PlayerInput : MonoBehaviour
 
     public bool shooting
     {
-        get { return Input.GetMouseButton(0); }
+        get { return Input.GetMouseButtonDown(0); }
+    }
+
+    public bool grabbing
+    {
+        get { return Input.GetKeyDown(KeyCode.G); }
     }
 
     public float mouseScroll

@@ -27,7 +27,7 @@ namespace Project.Runtime.Gameplay.Tools
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (_input.shooting)
             {
                 _source.PlayOneShot(swingSound);
                 objectAnimator.SetTrigger(SWING_TRIGGER);

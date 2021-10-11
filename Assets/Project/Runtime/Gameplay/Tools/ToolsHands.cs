@@ -20,6 +20,7 @@ namespace Project.Runtime.Gameplay.Tools
         private RaycastHit _rayHit;
         private Rigidbody tempRigidbodyComponent;
         private bool grabbingObject = false;
+       
 
         public override void Awake()
         {
@@ -36,7 +37,7 @@ namespace Project.Runtime.Gameplay.Tools
             if (Physics.Raycast(playerCamera.transform.position,
                 playerCamera.transform.TransformDirection(Vector3.forward), out _rayHit, grabRange, grabLayers))
             {
-                if (Input.GetKeyDown(KeyCode.G) && objectToHold == null)
+                if (_input.grabbing && objectToHold == null)
                 {
                     if (_rayHit.collider.TryGetComponent(out InteractableThrowableItem throwableItem))
                     {
@@ -47,7 +48,7 @@ namespace Project.Runtime.Gameplay.Tools
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.G) && !grabbingObject)
+            if (_input.grabbing && !grabbingObject)
             {
                 if (objectToHold)
                 {

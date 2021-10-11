@@ -48,13 +48,13 @@ namespace Project.Runtime.Gameplay.Tools
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (_input.shooting)
             {
                 _source.PlayOneShot(swingSound);
                 objectAnimator.SetTrigger(PICK_TRIGGER);
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (_input.reload)
             {
                 if (_inventory.currentBags > 0)
                 {

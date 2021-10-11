@@ -26,7 +26,7 @@ namespace Project.Runtime.Gameplay.Tools
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (_input.shooting)
             {
                 _source.PlayOneShot(digSound);
                 objectAnimator.SetTrigger(DIG_TRIGGER);
