@@ -14,27 +14,45 @@ namespace Project.Runtime.Gameplay.Interactables
         public Image progressBar;
         private PlayerInput _input;
         private InteractableTrailScoreManager _scoreManager;
+        private HudInteractableController _hudInteractable;
+        private Interactable _interactable;
+        private bool _canFix = true;
         void Start()
         {
             _input = FindObjectOfType<PlayerInput>();
             _scoreManager = GetComponentInParent<InteractableTrailScoreManager>();
+            _hudInteractable = FindObjectOfType<HudInteractableController>();
+            _interactable = GetComponent<Interactable>();
+            completePrefab.SetActive(false);
+            fallenPrefab.gameObject.SetActive(true);
         }
 
         void Update()
         {
-            if (_input.fixAction)
+            if (_hudInteractable.currentInteractable == this._interactable)
             {
-                currentCompletion += 1 * Time.deltaTime;
-
-                if (currentCompletion >= timeToComplete)
+                if (_input.fixAction)
                 {
-                    CompleteAction();
+                    currentCompletion += 1 * Time.deltaTime;
+                    progressBar.fillAmount = (currentCompletion / timeToComplete);
+
+                    if (currentCompletion >= timeToComplete && _canFix)
+                    {
+                        CompleteAction();
+                    }
                 }
             }
+            else
+            {
+                return;
+            }
+            
         }
 
         private void CompleteAction()
         {
+            _canFix = false;
+            progressBar.gameObject.SetActive(false);
             _scoreManager.AddScore(1);
             fallenPrefab.gameObject.SetActive(false);
             completePrefab.SetActive(true);

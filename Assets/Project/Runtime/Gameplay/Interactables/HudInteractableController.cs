@@ -10,6 +10,8 @@ namespace Project.Runtime.Gameplay.Interactables
         public LayerMask collisionLayer;
         public LayerMask interactionLayer;
 
+        public Interactable currentInteractable;
+        
         PlayerInput input;
         HudInteraction ui;
         Transform mainCamera;
@@ -42,6 +44,7 @@ namespace Project.Runtime.Gameplay.Interactables
             if (Physics.Raycast(mainCamera.position, mainCamera.forward, out var interact, dis, interactionLayer))
             {
                 Interactable inFront = interact.transform.GetComponent<Interactable>();
+                currentInteractable = inFront;
                 if (inFront == null) return;
                 if (dis > inFront.interactRange + 0.5f)
                     inFront = null;
@@ -53,6 +56,10 @@ namespace Project.Runtime.Gameplay.Interactables
                     if (input.interact)
                         interactWith.Interact();
                 }
+            }
+            else
+            {
+                currentInteractable = null;
             }
 
             if (ui) ui.InteractableSelected(interactWith != null);
