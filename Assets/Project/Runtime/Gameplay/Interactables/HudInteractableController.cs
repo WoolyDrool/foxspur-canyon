@@ -38,9 +38,10 @@ namespace Project.Runtime.Gameplay.Interactables
                 Debug.DrawRay(mainCamera.position, mainCamera.forward * 30f, Color.red);
                 //Get the distance then send another ray for only the interaction layer using that distance
                 
-                float dis = Vector3.Distance(mainCamera.position, hit.point);
+                float dis = Vector3.Distance(mainCamera.position, hit.point) + 5;
                 if (Physics.Raycast(mainCamera.position, mainCamera.forward, out var interact, dis, interactionLayer))
                 {
+                   
                     Interactable inFront = interact.transform.GetComponent<Interactable>();
                     currentInteractable = inFront;
                     if (inFront == null) return;
@@ -51,6 +52,7 @@ namespace Project.Runtime.Gameplay.Interactables
                     if (interactWith != null)
                     {
                         if (ui) ui.UpdateInteract(interactWith.description);
+                        if (ui) ui.currentInteractType = inFront.interact;
                         if (input.interact)
                             interactWith.Interact();
                     }
