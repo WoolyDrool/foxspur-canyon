@@ -27,6 +27,7 @@ namespace Project.Runtime.Gameplay.Player
         public float hungerTickRate = 0.1f;
         public float hydrationTickRate = 0.1f;
         public float sleepTickRate = 0.2f;
+        public float sprintSleepTickRate = 0.5f;
 
         #region Internal Variables
 
@@ -36,7 +37,7 @@ namespace Project.Runtime.Gameplay.Player
         private int maxSleep = 100;
 
         private float startingSleepTickRate;
-        private float sprintSleepTickRate = 0.5f;
+        
 
         #endregion
 

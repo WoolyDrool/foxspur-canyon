@@ -9,9 +9,10 @@ public class Interactable : MonoBehaviour
     public float interactRange = 3f;
     public string description;
     public UnityEvent onInteract;
+    public bool canUse = true;
     public virtual void Start()
     {
-
+        
     }
 
     public virtual void Interact()

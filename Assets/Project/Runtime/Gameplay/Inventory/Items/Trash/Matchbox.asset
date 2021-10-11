@@ -17,8 +17,8 @@ MonoBehaviour:
   canBeDropped: 1
   canBeMoved: 1
   canBeUsed: 0
-  itemName: Chip Bag
-  description: A discarded bag of potato chips. They're the store brand
+  itemName: Matchbox
+  description: An empty matchbox.
   effectsDescription: 'Use: Trash - Deposit in receptacles to improve trail score'
   icon: {fileID: 21300000, guid: 3d0ec3c1006cdea4b956e4caa2f85463, type: 3}
   img: {fileID: 21300000, guid: 3d0ec3c1006cdea4b956e4caa2f85463, type: 3}

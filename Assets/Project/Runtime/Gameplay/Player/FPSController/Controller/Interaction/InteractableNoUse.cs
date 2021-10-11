@@ -16,6 +16,6 @@ public class InteractableNoUse : Interactable
 
     public override void Interact()
     {
-        return;
+        base.Interact();
     }
 }

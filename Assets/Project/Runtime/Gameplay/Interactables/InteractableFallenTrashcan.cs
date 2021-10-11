@@ -51,8 +51,8 @@ namespace Project.Runtime.Gameplay.Interactables
 
         private void CompleteAction()
         {
+            progressBar.fillAmount = 0;
             _canFix = false;
-            progressBar.gameObject.SetActive(false);
             _scoreManager.AddScore(1);
             fallenPrefab.gameObject.SetActive(false);
             completePrefab.SetActive(true);
