@@ -71,6 +71,11 @@ public class PlayerInput : MonoBehaviour
         get { return Input.GetKeyDown(KeyCode.R); }
     }
 
+    public bool fixAction
+    {
+        get { return Input.GetKey(KeyCode.R); }
+    }
+
     public bool aim
     {
         get { return Input.GetMouseButtonDown(1); }

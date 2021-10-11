@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.Gameplay.Interactables
 {
-    public class UIElementHudInteractionController : MonoBehaviour
+    public class HudInteractableController : MonoBehaviour
     {
         public LayerMask collisionLayer;
         public LayerMask interactionLayer;
 
         PlayerInput input;
-        UIElementHudInteraction ui;
+        HudInteraction ui;
         Transform mainCamera;
 
         private RaycastHit hit;
@@ -21,7 +21,7 @@ namespace Project.Runtime.UI.Elements
             input = GetComponentInParent<PlayerInput>();
             mainCamera = Camera.main.GetComponent<CameraMovement>().transform;
 
-            ui = FindObjectOfType<UIElementHudInteraction>();
+            ui = FindObjectOfType<HudInteraction>();
             if (ui == null) Debug.LogError("InteractionControllerUI not found, please add PlayerUI prefab");
             if (ui) ui.SetCode(input.interactKey.ToString());
         }

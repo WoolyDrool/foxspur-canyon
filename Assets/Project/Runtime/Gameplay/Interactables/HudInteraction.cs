@@ -5,11 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.Gameplay.Interactables
 {
-    public class UIElementHudInteraction : MonoBehaviour
+    public class HudInteraction : MonoBehaviour
     {
-        public static UIElementHudInteraction Controller;
+        public static HudInteraction Controller;
         public RectTransform buttonImg;
         public TextMeshProUGUI buttonText;
         public TextMeshProUGUI interactText;

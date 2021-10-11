@@ -19,12 +19,23 @@ namespace Project.Runtime.Gameplay.Interactables
         void Start()
         {
             //totalItemsInTrail = trashContainer.transform.childCount;
-            foreach (Transform i in trashContainer.transform)
+            if (trashContainer.transform.childCount != 0)
             {
-                int score = i.GetComponent<InteractableTrailItemScore>().itemScore;
-                totalItemsInTrail += score;
+                foreach (Transform i in trashContainer.transform)
+                {
+                    if (i.TryGetComponent(out InteractableTrailScoreGroup scoreobj))
+                    {
+                        int score = scoreobj.groupScore;
+                        totalItemsInTrail += score;
+                    }
+                }
+                percentageText.text = "0/100.0"; 
             }
-            percentageText.text = "0/100.0"; 
+            else
+            {
+                percentageText.text = "No items in trail";
+                percentageText.color = Color.red;
+            }
         }
 
         void Update()
