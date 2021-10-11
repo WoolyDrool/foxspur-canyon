@@ -12,7 +12,6 @@ namespace Project.Runtime.Gameplay.Player
         void Start()
         {
             _playerVitals = FindObjectOfType<VitalHealthFunctionality>();
-            Debug.Log(_playerVitals);
         }
 
         void Update()

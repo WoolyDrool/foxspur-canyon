@@ -22,7 +22,7 @@ namespace Project.Runtime.Serialization
 
             if (interpreter == null)
             {
-                Debug.Log("No runtime interpreter found. Game running in no save mode");
+                Debug.LogWarning("No runtime interpreter found. Game running in no save mode");
                 return;
             }
 
