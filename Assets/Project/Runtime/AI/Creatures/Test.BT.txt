@@ -1,5 +1,0 @@
-tree "Root"
-    sequence
-        RealtimeWait 10
-        
-        MoveToPlayerPosition()
