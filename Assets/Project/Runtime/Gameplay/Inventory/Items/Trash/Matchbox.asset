@@ -18,10 +18,10 @@ MonoBehaviour:
   canBeMoved: 1
   canBeUsed: 0
   itemName: Matchbox
-  description: An empty matchbox.
+  description: An empty box of "Burn-E's" matches.
   effectsDescription: 'Use: Trash - Deposit in receptacles to improve trail score'
-  icon: {fileID: 21300000, guid: 3d0ec3c1006cdea4b956e4caa2f85463, type: 3}
-  img: {fileID: 21300000, guid: 3d0ec3c1006cdea4b956e4caa2f85463, type: 3}
+  icon: {fileID: 21300000, guid: c8e1f630ac9681645b2de2eeaf50f2f9, type: 3}
+  img: {fileID: 21300000, guid: c8e1f630ac9681645b2de2eeaf50f2f9, type: 3}
   size:
     x: 1
     y: 1

@@ -38,6 +38,7 @@ namespace Project.Runtime.Gameplay.Tools
             if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.TransformDirection(Vector3.forward), out _rayHit, rangeOfSwing, digLayers))
             {
                 _rayHit.collider.SendMessage("ProcessDig", SendMessageOptions.DontRequireReceiver);
+                _source.pitch = UnityEngine.Random.Range(0.9f, 1.2f);
                 _source.PlayOneShot(hitSound);
             }
             

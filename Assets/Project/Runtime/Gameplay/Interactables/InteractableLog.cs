@@ -32,8 +32,9 @@ public class InteractableLog : MonoBehaviour
     {
         _randPitch = UnityEngine.Random.Range(0.85f, 1f);
         logHealth -= damage;
+        _source.pitch = UnityEngine.Random.Range(0.9f, 1.2f);
         _source.PlayOneShot(impactSound);
-        _source.pitch = _randPitch;
+        
         
         if(damage > logHealth)
             DestroyLog();
