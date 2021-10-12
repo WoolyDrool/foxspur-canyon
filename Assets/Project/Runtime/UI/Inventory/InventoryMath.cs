@@ -86,12 +86,13 @@ namespace Project.Runtime.UI.Elements
             return InBounds(item.size, row, col) && !IsColliding(item.size, row, col, ignoreWith);
         }
 
+        //Thank you to Francisco Gázquez for his help in fixing this function
         public bool InBounds(IntPair itemSize, int row, int col)
         {
             return row >= 0 && row < _sizeX &&
-                   row + itemSize.x < _sizeX &&
+                   row + itemSize.x <= _sizeX &&
                    col >= 0 && col < _sizeY &&
-                   col + itemSize.y < _sizeY;
+                   col + itemSize.y <= _sizeY;
         }
         
         public IntPair FindValidPosition(Item item)
