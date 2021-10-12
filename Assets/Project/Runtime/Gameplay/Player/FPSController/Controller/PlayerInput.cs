@@ -65,6 +65,11 @@ public class PlayerInput : MonoBehaviour
     {
         get { return Input.GetKeyDown(interactKey); }
     }
+    
+    public bool hold_interact
+    {
+        get { return Input.GetKey(interactKey); }
+    }
 
     public bool reload
     {
