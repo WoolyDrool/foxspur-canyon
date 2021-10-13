@@ -48,8 +48,11 @@ namespace Project.Runtime.UI.Elements
 
         internal InventoryMath maths;
         internal InventoryDraw drawing;
+        internal InventorySort sorting;
         private GlobalAudioMixer _audioMixer;
-        
+
+        private UpdateItemEvent u_UpdateEvent;
+
         #endregion
 
         /// <summary>
@@ -69,12 +72,16 @@ namespace Project.Runtime.UI.Elements
             // Size is 10x10
             sizeX = inventoryData.size.x;
             sizeY = inventoryData.size.y;
-            
+
             playerInventory.updateUIList.AddListener(UpdateItems);
+            playerInventory.resortUIList.AddListener(ResortItems);
+            //u_UpdateEvent.AddListener(UpdateItems);
             
             //Initializes the maths and drawing classes
             maths = new InventoryMath(sizeX, sizeY, itemsInGrid, drawing.grid, this, drawing);
             drawing.WakeUp();
+
+            //sorting = new InventorySort(this, maths);
             
             foreach (Item i in playerInventory.inventoryItems)
             {
@@ -130,7 +137,7 @@ namespace Project.Runtime.UI.Elements
         public void AddItem(Item item)
         {
             int totalSize = item.size.x * item.size.y;
-        
+
             if (maths.FreeSlotsCount() >= totalSize)
             {
                 IntPair position = maths.FindValidPosition(item);
@@ -138,6 +145,7 @@ namespace Project.Runtime.UI.Elements
                 {
                     _lastKnownItemCount++;
                     itemsInGrid.Add(new UIStoredItem(item, position));
+                    playerInventory.availableSlots = maths.FreeSlotsCount();
                     Notify();
                     //drawing.AddNewItem(itemsToBeSorted);
                 }
@@ -185,10 +193,28 @@ namespace Project.Runtime.UI.Elements
             Notify();
         }
         
-        private void UpdateItems()
+        private void UpdateItems(Item newItem)
         {
             //This might not be the most elegant solution but fuck it
             
+            AddItem(newItem);
+            
+            /*itemsInGrid.Clear();
+            
+            foreach (Item i in playerInventory.inventoryItems)
+            {
+                AddItem(i);
+            }
+            
+            foreach (Item i in playerInventory.trashItems)
+            {
+                AddItem(i);
+            }*/
+            
+        }
+
+        private void ResortItems()
+        {
             itemsInGrid.Clear();
             
             foreach (Item i in playerInventory.inventoryItems)

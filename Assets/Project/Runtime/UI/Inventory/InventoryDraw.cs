@@ -72,7 +72,7 @@ namespace Project.Runtime.UI.Elements
         
         private void HandleItems()
         {
-            foreach (UIStoredItem item in _view.itemsInGrid.ToList())
+            foreach (UIStoredItem item in _view.itemsInGrid)
             {
                 DrawItem(item);
             }

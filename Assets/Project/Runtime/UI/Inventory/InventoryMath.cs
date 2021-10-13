@@ -144,6 +144,9 @@ namespace Project.Runtime.UI.Elements
                     _view._canUseItem = false;
                     _view.DropItem(movingItem);
                 }
+
+                //movingItem.position.x = row;
+                //movingItem.position.y = col;
                 _view.Notify();
                 movingObject = null;
                 movingItem = null;

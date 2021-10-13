@@ -9,9 +9,15 @@ using Project.Runtime.UI.Elements;
 
 namespace Project.Runtime.Gameplay.Inventory
 {
+    [System.Serializable]
+    public class UpdateItemEvent : UnityEvent<Item>
+    {
+        
+    }
+
     public class PlayerInventory : MonoBehaviour
     {
-        public float availableSlots;
+        public int availableSlots;
         public List<Item> inventoryItems = new List<Item>();
         public List<Item> trashItems = new List<Item>();
         public InventoryData inventoryData;
@@ -30,7 +36,8 @@ namespace Project.Runtime.Gameplay.Inventory
         [SerializeField] private GameObject itemToDiscard;
         [SerializeField] private Transform _trackedItemContainer;
 
-        [HideInInspector] public UnityEvent updateUIList = new UnityEvent();
+        [HideInInspector] public UpdateItemEvent updateUIList;
+        public UnityEvent resortUIList;
 
         public void Awake()
         {
@@ -59,8 +66,8 @@ namespace Project.Runtime.Gameplay.Inventory
                         inventoryItems.Add(item);
                     }
                     TrackItem(pickupObj.gameObject);
-                    updateUIList?.Invoke();
-                    availableSlots -= (item.size.x * item.size.y);
+                    updateUIList?.Invoke(item);
+                    //availableSlots -= (item.size.x * item.size.y);
                     UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMADD, item.itemName);
                 }
                 else
@@ -100,7 +107,7 @@ namespace Project.Runtime.Gameplay.Inventory
                 availableSlots += (i.size.x * i.size.y);
             }
             trashItems.Clear();
-            updateUIList?.Invoke();
+            resortUIList?.Invoke();
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, trashInInventory.ToString() + " Trash");
             trashInInventory = 0;
         }
@@ -122,7 +129,7 @@ namespace Project.Runtime.Gameplay.Inventory
             }
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
             availableSlots += (item.size.x * item.size.y);
-            updateUIList?.Invoke();
+            //updateUIList?.Invoke();
             UntrackItem(item, false);
         }
 
@@ -143,7 +150,7 @@ namespace Project.Runtime.Gameplay.Inventory
             }
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
             availableSlots += (item.size.x * item.size.y);
-            updateUIList?.Invoke();
+            resortUIList?.Invoke();
             UntrackItem(item, true);
         }
 
