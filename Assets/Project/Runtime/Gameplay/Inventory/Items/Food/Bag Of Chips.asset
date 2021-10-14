@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Bag Of Chips
   m_EditorClassIdentifier: 
+  itemClass: 0
+  isCurrentlyEquipped: 0
   canBeDropped: 1
+  canBeMoved: 1
   canBeUsed: 1
   itemName: Bag Of Chips
-  description: 'A bag of salty chips. Store brand. '
+  description: A bag of salty chips. The best flavor.
   effectsDescription: +15 Hunger, -15 Hydration
   icon: {fileID: 21300000, guid: 3d0ec3c1006cdea4b956e4caa2f85463, type: 3}
   img: {fileID: 21300000, guid: 3d0ec3c1006cdea4b956e4caa2f85463, type: 3}

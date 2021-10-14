@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
-  m_Name: Empty Bottle
+  m_Name: Takeout Box
   m_EditorClassIdentifier: 
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1
   canBeMoved: 1
   canBeUsed: 0
-  itemName: Empty Bottle
-  description: A discarded bottle of beer. The creature on the front is strangely
-    alluring
+  itemName: Takeout Box
+  description: Empty styrofoam box from a local restaurant. Far out.
   effectsDescription: 'Use: Trash - Deposit in receptacles to improve trail score'
-  icon: {fileID: 21300000, guid: dbe01dcb047f662489c39b2481db72ab, type: 3}
-  img: {fileID: 21300000, guid: dbe01dcb047f662489c39b2481db72ab, type: 3}
+  icon: {fileID: 21300000, guid: 1888aa003ddcb3b4a84f1acb9c487fe7, type: 3}
+  img: {fileID: 21300000, guid: 1888aa003ddcb3b4a84f1acb9c487fe7, type: 3}
   size:
     x: 2
     y: 2

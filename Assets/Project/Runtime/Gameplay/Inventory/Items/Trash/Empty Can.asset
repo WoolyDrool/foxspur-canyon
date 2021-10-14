@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Empty Can
   m_EditorClassIdentifier: 
+  itemClass: 0
+  isCurrentlyEquipped: 0
   canBeDropped: 1
+  canBeMoved: 1
   canBeUsed: 0
-  itemName: Empty Can
+  itemName: Empty Beer Can
   description: A discarded can of cheap beer. Unfortunately empty.
   effectsDescription: 'Use: Trash - Deposit in receptacles to improve trail score'
   icon: {fileID: 21300000, guid: 94692aae4f135494c957fbebeba29924, type: 3}
