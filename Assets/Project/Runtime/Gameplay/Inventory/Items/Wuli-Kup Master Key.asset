@@ -17,9 +17,9 @@ MonoBehaviour:
   canBeDropped: 1
   canBeMoved: 1
   canBeUsed: 0
-  itemName: Firewatch Tower South Key
-  description: Key to the gate near the Firewatch tower.
-  effectsDescription: 'Use: Unlock gate'
+  itemName: Wuli-Kup Master Key
+  description: Master key to all doors and gates on Wuli-Kup trail.
+  effectsDescription: 'Use: Unlock gates, doors, and more...'
   icon: {fileID: 21300000, guid: 1dca65b81e705554f80a36a57b09d69b, type: 3}
   img: {fileID: 21300000, guid: 1dca65b81e705554f80a36a57b09d69b, type: 3}
   size:

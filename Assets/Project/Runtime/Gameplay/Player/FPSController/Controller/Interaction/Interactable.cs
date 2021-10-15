@@ -15,7 +15,7 @@ public class Interactable : MonoBehaviour
     public InteractType interact;
     
     [Range(1f, 10f)]
-    public float interactRange = 3f;
+    public float interactRange = 7f;
     public string description;
     public UnityEvent onInteract;
     public virtual void Start()
