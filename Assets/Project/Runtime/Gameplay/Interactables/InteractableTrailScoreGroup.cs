@@ -11,12 +11,10 @@ namespace Project.Runtime.Gameplay.Interactables
         public int groupScore;
         
         private float _currentDistanceToPlayer = 0;
-        private Transform playerTransform;
-        
+
         private void Start()
         {
-            playerTransform = GameManager.instance.playerManager.playerTransform;
-            
+
             if (transform.childCount != 0)
             {
                 foreach (Transform i in groupOfItems)
@@ -34,7 +32,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             if (groupOfItems != null && groupScore > 0)
             {
-                _currentDistanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
+                _currentDistanceToPlayer = Vector3.Distance(GameManager.instance.currentPlayerPosition, transform.position);
 
                 if (_currentDistanceToPlayer > 100)
                 {

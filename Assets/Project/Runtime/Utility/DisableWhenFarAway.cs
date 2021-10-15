@@ -18,8 +18,7 @@ public class DisableWhenFarAway : MonoBehaviour
     void Update()
     {
         float currentDistance = Vector3.Distance(playerTransform.position, transform.position);
-
-
+        
         if (currentDistance > disableDistance)
         {
             objectToEnable.open = true;
