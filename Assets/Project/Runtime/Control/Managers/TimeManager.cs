@@ -7,6 +7,9 @@ using UnityEngine.PlayerLoop;
 
 public class TimeManager : MonoBehaviour
 {
+    [Header("Control")] 
+    public bool updateTime = true;
+    
     [Header("Time")] 
     [Range(0.0f, 24f)] public float currentTime;
     public float dayLength;
@@ -68,11 +71,32 @@ public class TimeManager : MonoBehaviour
 
     private void Start()
     {
-        _currentTimeAsInt = (int)currentTime;
+        PerformInitialCheck();
+    }
+
+    private void PerformInitialCheck()
+    {
+        if(_currentTimeAsInt < 12)
+            morningEvent.Invoke();
+        else if(_currentTimeAsInt > 12)
+            noonEvent?.Invoke();
+        else if(_currentTimeAsInt > 17)
+            eveningEvent?.Invoke();
+        else if(_currentTimeAsInt > 20)
+            eveningEvent?.Invoke();
+    }
+    
+    void Update()
+    {
+        if(!updateTime)
+            return;
+        
+        IncrementTime();
+        
         UpdateTOD();
     }
 
-    void Update()
+    private void IncrementTime()
     {
         //Increment time
         currentTime += _timeRate * Time.deltaTime;
@@ -85,8 +109,6 @@ public class TimeManager : MonoBehaviour
         //Set the current minute as an int
         currentMinute = (int)(_currentHourMinute * 60);
         currentHour = (int)currentTime;
-        
-        UpdateTOD();
         
         //Reset the timer at midnight
         if (currentTime >= dayLength)
@@ -113,7 +135,7 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    void UpdateTOD()
+    private void UpdateTOD()
     {
         //Increment time of day events
         switch (_currentTimeAsInt)

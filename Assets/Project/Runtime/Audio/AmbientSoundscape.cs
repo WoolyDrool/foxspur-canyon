@@ -28,12 +28,15 @@ namespace Project.Runtime.Audio
             time.nightEvent.AddListener(HandleNightMusic);
             time.noonEvent.AddListener(HandleDayMusic);
             time.midnightEvent.AddListener(ResetMusic);
-            
-        }
 
-        void Update()
-        {
-
+            if (time.time == TimeManager.TimeOfDay.Night)
+            {
+                HandleNightSounds();
+            }
+            else
+            {
+                HandleDaySounds();
+            }
         }
 
         private void ResetMusic()

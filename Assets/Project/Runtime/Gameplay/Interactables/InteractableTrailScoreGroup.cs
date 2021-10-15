@@ -7,11 +7,13 @@ namespace Project.Runtime.Gameplay.Interactables
 {
     public class InteractableTrailScoreGroup : MonoBehaviour
     {
-        private float _currentDistanceToPlayer = 0;
-        private Transform playerTransform;
         public Transform groupOfItems;
         public int groupScore;
-        void Start()
+        
+        private float _currentDistanceToPlayer = 0;
+        private Transform playerTransform;
+        
+        private void Start()
         {
             playerTransform = GameManager.instance.playerManager.playerTransform;
             
