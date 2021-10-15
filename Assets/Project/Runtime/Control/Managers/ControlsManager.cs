@@ -50,7 +50,11 @@ public class ControlsManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
-
+        _isPaused = false;
+        _showMouse = false;
+        _freeLook = true;
+        
+        Debug.Log(_isPaused);
     }
 
     public void ToggleMouse(Dictionary<string, object> message)
