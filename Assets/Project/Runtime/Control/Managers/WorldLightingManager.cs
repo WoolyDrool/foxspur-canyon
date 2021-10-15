@@ -12,7 +12,7 @@ public class WorldLightingManager : MonoBehaviour
     [SerializeField, Range(0, 24)] private float inspectorTimeVisualization;
     private Vector3 adjustedSunPosition;
     public bool updateSun = true;
-    [SerializeField] private float tickRate = 10;
+    [SerializeField] //private float tickRate = 10;
     public TimeManager timeManager;
     public bool useStartTime = true;
     public float stopTime;
@@ -75,8 +75,7 @@ public class WorldLightingManager : MonoBehaviour
         RenderSettings.fogColor = preset.FogColor.Evaluate(timePercent);
         //RenderSettings.fogDensity = preset.FogDensity.Evaluate(timePercent);
         //RenderSettings.ambientIntensity = preset.AtmosphereIntensity.Evaluate(timePercent);
-
-
+        
         if (Sun != null)
         {
             Sun.color = preset.SunColor.Evaluate(timePercent);

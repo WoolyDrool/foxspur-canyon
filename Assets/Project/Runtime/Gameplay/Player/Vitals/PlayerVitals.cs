@@ -119,10 +119,10 @@ namespace Project.Runtime.Gameplay.Player
             {
                 sleepStat.currentValue -= sprintSleepTickRate * Time.deltaTime;
             }
-            else
+            /*else
             {
                 sleepStat.currentValue = sleepStat.currentValue;
-            }
+            }*/
 
             if (Input.GetKeyDown(KeyCode.Space))
             {

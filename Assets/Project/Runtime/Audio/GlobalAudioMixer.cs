@@ -186,7 +186,7 @@ namespace Project.Runtime.Audio
 
             knownPosition += new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * distance;
             //knownPosition.x = Mathf.Clamp(knownPosition.x, minDistance, maxDistance);
-            knownPosition.y = knownPosition.y;
+            //knownPosition.y = knownPosition.y;
             // knownPosition.z = Mathf.Clamp(knownPosition.z, minDistance, maxDistance);
 
             GameObject clone;

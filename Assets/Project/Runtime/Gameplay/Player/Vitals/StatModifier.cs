@@ -100,7 +100,6 @@ public class StatModifier
             }
             case OperationType.FREEZE:
             {
-                value = value;
                 break;
             }
         }
