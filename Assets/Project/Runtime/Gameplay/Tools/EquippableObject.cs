@@ -9,7 +9,6 @@ namespace Project.Runtime.Gameplay.Tools
         public Animator objectAnimator;
         public bool isCurrentlyEquipped = false;
         public PlayerInput _input;
-
         public virtual void Awake()
         {
             objectAnimator = GetComponent<Animator>();

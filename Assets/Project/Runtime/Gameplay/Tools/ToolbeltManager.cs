@@ -27,16 +27,17 @@ namespace Project.Runtime.Gameplay.Tools
 
         #region Internal Variables
 
-        [SerializeField]private Quaternion _containerRot;
-        [SerializeField] private Quaternion _trackerRot;
-        [SerializeField] private Vector3 _containerStartPos;
-        [SerializeField] private Vector3 _containerPosCrouch;
-        private int _equippableIndex;
+        private Quaternion _containerRot;
+        private Quaternion _trackerRot;
+        private Vector3 _containerStartPos;
+        private Vector3 _containerPosCrouch;
+        
+        private int _equipIndex;
         private int _selectedTool = 0;
         private PlayerController _controller;
         private PlayerInput _input;
         private bool isCalled;
-        [SerializeField] private bool canScroll;
+        [SerializeField] private bool canHandleMouseInput;
 
         #endregion
         
@@ -54,20 +55,21 @@ namespace Project.Runtime.Gameplay.Tools
 
         private void Update()
         {
-            canScroll = !GameManager.instance.controlsManager._showInventory;
+            canHandleMouseInput = !GameManager.instance.controlsManager._showInventory;
+            
 
-        if (canScroll)
+            if (canHandleMouseInput)
             {
                 int previousSelectedTool = _selectedTool;
                 
-                if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+                if (_input.mouseScroll > 0f)
                 {
                     if (_selectedTool >= equippableInventory.Length - 1)
                         _selectedTool = 0;
                     else
                         _selectedTool++;
                 }
-                if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+                if (_input.mouseScroll < 0f)
                 {
                     if (_selectedTool <= 0)
                         _selectedTool = equippableInventory.Length - 1;
@@ -80,8 +82,6 @@ namespace Project.Runtime.Gameplay.Tools
                     SwitchEquipped();
                 }
             }
-            
-            
             HandleLerp();
         }
 
@@ -115,23 +115,24 @@ namespace Project.Runtime.Gameplay.Tools
         {
             if(!selectedText.gameObject.activeSelf)
                 selectedText.gameObject.SetActive(true);
-            _equippableIndex = 0;
+            _equipIndex = 0;
+
             foreach (EquippableObject tool in equippableInventory)
             {
-                if (_equippableIndex == _selectedTool)
+                if (_equipIndex == _selectedTool)
                 {
                     selectedText.gameObject.SetActive(true);
                     selectedText.text = tool.toolName;
-                    toolbarIcons[_equippableIndex].color = selectedColor;
+                    toolbarIcons[_equipIndex].color = selectedColor;
                     tool.ToggleEquip(true);
                 }
                 else
                 {
-                    toolbarIcons[_equippableIndex].color = normalColor;
+                    toolbarIcons[_equipIndex].color = normalColor;
                     tool.ToggleEquip(false);
                 }
 
-                _equippableIndex++;
+                _equipIndex++;
             }
             
         }
