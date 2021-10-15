@@ -104,9 +104,7 @@ namespace Project.Runtime.UI.Menus
             {
                 case MenuState.NONE:
                 {
-                    Time.timeScale = 1;
-                    EventManager.TriggerEvent("ToggleMouse", null);
-                    EventManager.TriggerEvent("FreeLook", null);
+                    EventManager.TriggerEvent("ReturnToNormal", null);
                     break;
                 }
                 case MenuState.INVENTORY:

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class ControlsManager : MonoBehaviour
 {
-    private bool _isPaused;
-    private bool _showInventory;
+    public bool _isPaused;
+    public bool _showInventory;
     private bool _showMouse = false;
     private bool _freeLook = true;
 
@@ -18,6 +18,7 @@ public class ControlsManager : MonoBehaviour
         EventManager.StartListening("PauseMenu", Pause);
         EventManager.StartListening("InventoryMenu", Inventory);
         EventManager.StartListening("FreeLook", ToggleFreeLook);
+        EventManager.StartListening("ReturnToNormal", ReturnToNormal);
     }
 
     private void OnDisable()
@@ -26,6 +27,14 @@ public class ControlsManager : MonoBehaviour
         EventManager.StopListening("PauseMenu", Pause);
         EventManager.StopListening("InventoryMenu", Inventory);
         EventManager.StopListening("FreeLook", ToggleFreeLook);
+        EventManager.StopListening("ReturnToNormal", ReturnToNormal);
+    }
+
+    void Awake()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        _showMouse = false;
     }
 
     void Update()
@@ -33,6 +42,15 @@ public class ControlsManager : MonoBehaviour
         //TODO: Migrate player controls over into this class
 
         _isPaused = GameManager.instance.isPaused;
+    }
+
+    public void ReturnToNormal(Dictionary<string, object> message)
+    {
+        GameManager.instance.cameraManager.canLook = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1;
+
     }
 
     public void ToggleMouse(Dictionary<string, object> message)
@@ -49,6 +67,7 @@ public class ControlsManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             _showMouse = false;
         }
+        
     }
 
     public void ToggleFreeLook(Dictionary<string, object> message)

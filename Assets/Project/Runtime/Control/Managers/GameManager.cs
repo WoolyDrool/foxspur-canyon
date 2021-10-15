@@ -39,9 +39,6 @@ public class GameManager : MonoBehaviour
         
         if(!fade.activeSelf)
             fade.SetActive(true);
-        
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
 
         if (sceneLoader == null)
         {
