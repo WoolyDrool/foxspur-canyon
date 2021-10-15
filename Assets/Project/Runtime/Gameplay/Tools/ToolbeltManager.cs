@@ -113,8 +113,7 @@ namespace Project.Runtime.Gameplay.Tools
 
         void SwitchEquipped()
         {
-            if(!selectedText.gameObject.activeSelf)
-                selectedText.gameObject.SetActive(true);
+            selectedText.gameObject.SetActive(true);
             _equipIndex = 0;
 
             foreach (EquippableObject tool in equippableInventory)

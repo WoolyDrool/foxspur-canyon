@@ -36,6 +36,7 @@ namespace Project.Runtime.UI.Elements
 
         public bool showOnEnable;
         public bool workOnDisable;
+        private CanvasGroup _currentCanvasGroup;
 
         private void OnEnable()
         {
@@ -54,7 +55,6 @@ namespace Project.Runtime.UI.Elements
         public void Restart()
         {
             HandleTween();
-            //Debug.Log("Restarting");
         }
 
         private void HandleTween()
@@ -116,7 +116,7 @@ namespace Project.Runtime.UI.Elements
         {
             if (gameObject.GetComponent<CanvasGroup>() == null)
             {
-                gameObject.AddComponent<CanvasGroup>();
+                _currentCanvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
 
             if (startPositionOffset)
@@ -131,7 +131,7 @@ namespace Project.Runtime.UI.Elements
         {
             if (gameObject.GetComponent<CanvasGroup>() == null)
             {
-                gameObject.AddComponent<CanvasGroup>();
+                _currentCanvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
 
             if (startPositionOffset)
