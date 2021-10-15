@@ -5,6 +5,7 @@ using Project.Runtime.Audio;
 using Project.Runtime.Global;
 using Project.Runtime.Gameplay.Inventory;
 using Project.Runtime.Gameplay.Player;
+using Project.Runtime.Serialization;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -26,6 +27,9 @@ public class GameManager : MonoBehaviour
     public PlayerInventory playerInventory;
     public PlayerVitals playerVitals;
     public CameraMovement cameraManager;
+
+    [Header("Player Information")] 
+    public Vector3 currentPlayerPosition;
 
     [Header("Control Booleans")]
     public bool isPaused;
@@ -49,10 +53,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        currentPlayerPosition = playerManager.playerTransform.position;
     }
 
     public void QuitToMenu()
