@@ -5,17 +5,12 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    
     public Transform playerTransform;
     internal PlayerController _playerController;
     internal PlayerInput _playerInput;
     internal PlayerMovement _playerMovement;
     internal CharacterController _playerCharacterController;
-
-    public string currentLocation = "World";
-
-    public delegate void ChangeCurrentLocation();
-
-    public static event ChangeCurrentLocation OnLocationChanged;
     
     private void Awake()
     {
@@ -25,11 +20,4 @@ public class PlayerManager : MonoBehaviour
         _playerCharacterController = playerTransform.GetComponent<CharacterController>();
     }
 
-    public void ChangeLocation(string newLocation)
-    {
-        currentLocation = newLocation;
-
-        if (OnLocationChanged != null)
-            OnLocationChanged();
-    }
 }

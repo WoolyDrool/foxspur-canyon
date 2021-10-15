@@ -62,7 +62,6 @@ namespace Project.Runtime.UI.Elements
             ToolsBinoculars.OnRaise += ShowBinocularHud;
             VehicleInteractions.OnEnter += ShowDrivingHud;
             ToolsWatch.OnRaise += ShowPlayerHud;
-            PlayerManager.OnLocationChanged += ShowLocationIndicator;
             InteractableBatteryDevice.OnToggle += ShowBatteryIndicator;
             EventManager.StartListening("cantAddItem", OnCantAddItem);
             EventManager.StartListening("cantAddItemToTrash", OnCantAddItemToTrash);
@@ -74,7 +73,6 @@ namespace Project.Runtime.UI.Elements
             ToolsBinoculars.OnRaise -= ShowBinocularHud;
             VehicleInteractions.OnEnter -= ShowDrivingHud;
             ToolsWatch.OnRaise -= ShowPlayerHud;
-            PlayerManager.OnLocationChanged -= ShowLocationIndicator;
             InteractableBatteryDevice.OnToggle -= ShowBatteryIndicator;
             EventManager.StopListening("cantAddItem", OnCantAddItem);
             EventManager.StopListening("cantAddItemToTrash", OnCantAddItemToTrash);
@@ -260,19 +258,6 @@ namespace Project.Runtime.UI.Elements
             {
                 inventoryHud.SetActive(false);
             }
-        }
-        
-        void ShowLocationIndicator()
-        {
-            Debug.Log("Changing location");
-            string location = GameManager.instance.playerManager.currentLocation;
-            if (locationOverlay.activeSelf)
-            {
-                locationOverlay.SetActive(false);
-            }
-            
-            locationOverlay.SetActive(true);
-            locationName.text = location;
         }
 
         void ShowBatteryIndicator()
