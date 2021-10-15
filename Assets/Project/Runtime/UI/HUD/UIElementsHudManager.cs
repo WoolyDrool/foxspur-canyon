@@ -32,9 +32,7 @@ namespace Project.Runtime.UI.Elements
         [Header("Elements - Overlays")] public GameObject binocularsOverlay;
         public GameObject speedometerDial;
         public GameObject gearShift;
-        public GameObject locationOverlay;
         public GameObject parkingBrake;
-        public TextMeshProUGUI locationName;
         public GameObject uiCantAddItem;
         public GameObject uiCantAddItemToTrash;
         public GameObject uiOutOfBags;
