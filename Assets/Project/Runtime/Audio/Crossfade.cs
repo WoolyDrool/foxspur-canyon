@@ -29,7 +29,6 @@ namespace Project.Runtime.Audio
 
         public IEnumerator CrossFade()
         {
-            Debug.Log("Called");
             while (isCrossfading)
             {
                 t += crossfadeDuration * Time.deltaTime;

@@ -53,8 +53,6 @@ public class ControlsManager : MonoBehaviour
         _isPaused = false;
         _showMouse = false;
         _freeLook = true;
-        
-        Debug.Log(_isPaused);
     }
 
     public void ToggleMouse(Dictionary<string, object> message)
