@@ -34,7 +34,9 @@ namespace Project.Runtime.Gameplay.Tools
         private int _equippableIndex;
         private int _selectedTool = 0;
         private PlayerController _controller;
+        private PlayerInput _input;
         private bool isCalled;
+        [SerializeField] private bool canScroll;
 
         #endregion
         
@@ -42,6 +44,7 @@ namespace Project.Runtime.Gameplay.Tools
         private void Awake()
         {
             _controller = GetComponentInParent<PlayerController>();
+            _input = GetComponentInParent<PlayerInput>();
         }
 
         private void Start()
@@ -51,28 +54,32 @@ namespace Project.Runtime.Gameplay.Tools
 
         private void Update()
         {
-            int previousSelectedTool = _selectedTool;
-            
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
-            {
-                if (_selectedTool >= equippableInventory.Length - 1)
-                    _selectedTool = 0;
-                else
-                    _selectedTool++;
-            }
-            if (Input.GetAxis("Mouse ScrollWheel") < 0f)
-            {
-                if (_selectedTool <= 0)
-                    _selectedTool = equippableInventory.Length - 1;
-                else
-                    _selectedTool--;
-            }
+            canScroll = !GameManager.instance.controlsManager._showInventory;
 
-            if (previousSelectedTool != _selectedTool)
+        if (canScroll)
             {
-                SwitchEquipped();
+                int previousSelectedTool = _selectedTool;
+                
+                if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+                {
+                    if (_selectedTool >= equippableInventory.Length - 1)
+                        _selectedTool = 0;
+                    else
+                        _selectedTool++;
+                }
+                if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+                {
+                    if (_selectedTool <= 0)
+                        _selectedTool = equippableInventory.Length - 1;
+                    else
+                        _selectedTool--;
+                }
+                
+                if (previousSelectedTool != _selectedTool)
+                {
+                    SwitchEquipped();
+                }
             }
-
             
             
             HandleLerp();
@@ -94,7 +101,7 @@ namespace Project.Runtime.Gameplay.Tools
 
         void HandleLerp()
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            if (_input.crouch)
             {
                 ChangeCrouchPosition();
             }
