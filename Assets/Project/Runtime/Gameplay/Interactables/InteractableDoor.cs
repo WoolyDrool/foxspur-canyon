@@ -9,47 +9,59 @@ namespace Project.Runtime.Gameplay.Interactables
 {
     public class InteractableDoor : MonoBehaviour
     {
+        [Header("Door Info")]
+        public bool locked = false;
+        public Item key;
+        
+        [Header("Animation")]
         public AnimationCurve openSpeedCurve = new AnimationCurve(new Keyframe[] { new Keyframe(0, 1, 0, 0), new Keyframe(0.8f, 1, 0, 0), new Keyframe(1, 0, 0, 0) });
         public float openSpeedMultiplier = 2.0f; 
         public float doorOpenAngle = 90.0f;
 
-        public Transform hinge;
-
-        public bool locked = false;
-        public Item key;
-
+        [Header("Sounds")]
         public AudioClip openSound;
         public AudioClip closeSound;
 
+        public Transform objectToRotate;
         private PlayerInventory _inventory;
+        
+        #region Internal Variables
 
         private bool _open = false;
-        private bool _enter = false;
-
-        [SerializeField] private float _defaultRotationAngle;
+        private float _defaultRotationAngle;
         private float _currentRotationAngle;
         private float _openTime = 0;
         private AudioSource source;
+
+        #endregion
         
         void Start()
         {
-            _defaultRotationAngle = transform.localEulerAngles.y;
-            _currentRotationAngle = transform.localEulerAngles.y;
             source = GetComponent<AudioSource>();
-
             _inventory = GameManager.instance.playerInventory;
+            
+            try
+            {
+                _defaultRotationAngle = objectToRotate.localEulerAngles.y;
+                _currentRotationAngle = objectToRotate.localEulerAngles.y;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         void Update()
         {
-            if (hinge != null)
+            if (objectToRotate)
             {
                 if (_openTime < 1)
                 {
                     _openTime += Time.deltaTime * openSpeedMultiplier * openSpeedCurve.Evaluate(_openTime);
                 }
 
-                hinge.localEulerAngles = new Vector3(hinge.localEulerAngles.x, Mathf.LerpAngle(_currentRotationAngle, _defaultRotationAngle + (_open ? doorOpenAngle : 0), _openTime), hinge.localEulerAngles.y);
+                objectToRotate.localEulerAngles = new Vector3(objectToRotate.localEulerAngles.x, Mathf.LerpAngle(_currentRotationAngle, _defaultRotationAngle + (_open ? doorOpenAngle : 0), _openTime),objectToRotate.localEulerAngles.z);
             }
             else
             {
@@ -91,7 +103,7 @@ namespace Project.Runtime.Gameplay.Interactables
             
             source.Play();
             _open = !_open;
-            _currentRotationAngle = transform.localEulerAngles.z;
+            _currentRotationAngle = objectToRotate.localEulerAngles.y;
             _openTime = 0;
         }
     }
