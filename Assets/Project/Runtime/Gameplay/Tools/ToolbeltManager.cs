@@ -29,8 +29,8 @@ namespace Project.Runtime.Gameplay.Tools
 
         private Quaternion _containerRot;
         private Quaternion _trackerRot;
-        private Vector3 _containerStartPos;
-        private Vector3 _containerPosCrouch;
+        [SerializeField] private Vector3 _containerStartPos;
+        [SerializeField] private Vector3 _containerPosCrouch;
         
         private int _equipIndex;
         private int _selectedTool = 0;
@@ -46,6 +46,7 @@ namespace Project.Runtime.Gameplay.Tools
         {
             _controller = GetComponentInParent<PlayerController>();
             _input = GetComponentInParent<PlayerInput>();
+            _containerStartPos = container.localPosition;
         }
 
         private void Start()
@@ -57,7 +58,6 @@ namespace Project.Runtime.Gameplay.Tools
         {
             canHandleMouseInput = !GameManager.instance.controlsManager._showInventory;
             
-
             if (canHandleMouseInput)
             {
                 int previousSelectedTool = _selectedTool;
@@ -85,9 +85,20 @@ namespace Project.Runtime.Gameplay.Tools
             HandleLerp();
         }
 
+        
+
+        void HandleLerp()
+        {
+            ChangeCrouchPosition();
+
+            _containerRot = container.localRotation;
+            _trackerRot = cameraMovement.localRotation;
+            container.localRotation = _trackerRot;
+        }
+        
         void ChangeCrouchPosition()
         {
-            if (!isCalled)
+            if (_controller.status == Status.crouching)
             {
                 container.localPosition = _containerPosCrouch;
                 isCalled = true;
@@ -97,18 +108,6 @@ namespace Project.Runtime.Gameplay.Tools
                 isCalled = false;
                 container.localPosition = _containerStartPos;
             }
-        }
-
-        void HandleLerp()
-        {
-            if (_input.crouch)
-            {
-                ChangeCrouchPosition();
-            }
-            
-            _containerRot = container.localRotation;
-            _trackerRot = cameraMovement.localRotation;
-            container.localRotation = _trackerRot;
         }
 
         void SwitchEquipped()
