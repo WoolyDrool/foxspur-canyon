@@ -20,6 +20,7 @@ public class InteractableCaveDoor : MonoBehaviour
     private WorldLightingManager _lightingManager;
     private AudioSource _source;
     public AudioClip doorSound;
+    public AudioClip lockedSound;
 
     public bool reverseOrder = false;
 
@@ -57,6 +58,7 @@ public class InteractableCaveDoor : MonoBehaviour
             }
             else
             {
+                _source.PlayOneShot(lockedSound);
                 UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE, "Need " + key.itemName);
             }
         }

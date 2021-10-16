@@ -21,7 +21,8 @@ namespace Project.Runtime.Gameplay.Interactables
         [Header("Sounds")]
         public AudioClip openSound;
         public AudioClip closeSound;
-
+        public AudioClip lockedSound;
+        
         public Transform objectToRotate;
         private PlayerInventory _inventory;
         
@@ -84,6 +85,7 @@ namespace Project.Runtime.Gameplay.Interactables
                 }
                 else
                 {
+                    source.PlayOneShot(lockedSound);
                     UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE, "Need " + key.itemName);
                 }
             }
