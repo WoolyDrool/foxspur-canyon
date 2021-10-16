@@ -12,7 +12,8 @@ namespace Project.Runtime.UI.Elements
         ITEMREMOVE,
         PLUSSTAT,
         NEGATIVESTAT,
-        GENERALUPDATE
+        GENERALUPDATE,
+        SECRET
     }
     public class UIElementStatusMessage : MonoBehaviour
     {
@@ -20,6 +21,7 @@ namespace Project.Runtime.UI.Elements
         public Sprite plusIcon;
         public Sprite negativeIcon;
         public Sprite generalIcon;
+        public Sprite secretsIcon;
         public TextMeshProUGUI statusText;
         public Image iconContainer;
 
@@ -55,6 +57,11 @@ namespace Project.Runtime.UI.Elements
                 case UpdateType.GENERALUPDATE:
                 {
                     iconContainer.sprite = generalIcon;
+                    break;
+                }
+                case UpdateType.SECRET:
+                {
+                    iconContainer.sprite = secretsIcon;
                     break;
                 }
             }
