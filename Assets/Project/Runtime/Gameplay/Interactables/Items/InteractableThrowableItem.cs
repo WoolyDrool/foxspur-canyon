@@ -9,9 +9,15 @@ namespace Project.Runtime.Gameplay.Tools
         public int amount;
         public bool isBeingHeld;
         public bool hasBeenDeposited;
+
+        public string customDescription;
+        public Interactable interaction;
         void Start()
         {
-
+            if (interaction != null)
+            {
+                interaction.description = customDescription + "(" + amount.ToString() + ")";
+            }
         }
 
         void Update()
