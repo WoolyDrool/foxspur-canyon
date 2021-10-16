@@ -105,7 +105,7 @@ namespace Project.Runtime.Gameplay.Tools
                 if (currentBag.canAddItem())
                 {
                     //Disable the picked items visuals and destroy after delay
-                    component.model.SetActive(false);
+                    component.gameObject.SetActive(false);
                     component.hitboxCollider.enabled = false;
                     Destroy(component.gameObject, 2f);
                     
