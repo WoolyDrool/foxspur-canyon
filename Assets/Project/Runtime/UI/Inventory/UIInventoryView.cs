@@ -31,6 +31,7 @@ namespace Project.Runtime.UI.Elements
         public TextMeshProUGUI batteryCount;
         public TextMeshProUGUI bagsCount;
         public TextMeshProUGUI moneyCount;
+        public TextMeshProUGUI secretsCount;
 
         [Header("Audio")]
         public AudioSource inventorySound;
@@ -97,6 +98,7 @@ namespace Project.Runtime.UI.Elements
             batteryCount.text = playerInventory.currentBatteries.ToString();
             bagsCount.text = playerInventory.currentBags.ToString();
             moneyCount.text = playerInventory.currentMoney.ToString();
+            secretsCount.text = playerInventory.currentSecrets.ToString();
         }
 
         public override void Notify()

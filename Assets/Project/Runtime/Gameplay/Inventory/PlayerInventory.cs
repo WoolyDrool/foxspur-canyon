@@ -24,6 +24,7 @@ namespace Project.Runtime.Gameplay.Inventory
         public int currentBatteries;
         public int currentBags;
         public int currentMoney;
+        public int currentSecrets;
         public GameObject uiCantAddItem;
         public int trashInInventory;
         public int smallTrashinInventory;
