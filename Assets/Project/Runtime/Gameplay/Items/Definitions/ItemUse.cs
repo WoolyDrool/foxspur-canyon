@@ -8,7 +8,7 @@ using Project.Runtime.Gameplay.Player;
 public class ItemUse : ScriptableObject
 {
     public ItemType type;
-    public enum ItemType {HUNGER, HYDRATION, EXHAUSTION}
+    public enum ItemType {HUNGER, HYDRATION, EXHAUSTION, HEALTH}
 
     public float positiveAmount;
     public float negativeAmount;
@@ -66,6 +66,17 @@ public class ItemUse : ScriptableObject
                 {
                     Debug.Log("applying buff");
                     vitals.sleepStat.AddModifier(new StatModifier(vitals.sleepStat, buffType, operationType, buffValue, buffDuration));
+                }
+                break;
+            }
+            
+            case ItemType.HEALTH:
+            {
+                vitals.ModifyHealth(positiveAmount, negativeAmount);
+                if (isAlsoBuff)
+                {
+                    Debug.Log("applying buff");
+                    vitals.healthStat.AddModifier(new StatModifier(vitals.healthStat, buffType, operationType, buffValue, buffDuration));
                 }
                 break;
             }

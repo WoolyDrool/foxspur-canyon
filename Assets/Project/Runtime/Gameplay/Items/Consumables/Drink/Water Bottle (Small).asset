@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Water Bottle (Small)
   m_EditorClassIdentifier: 
+  itemClass: 0
+  isCurrentlyEquipped: 0
   canBeDropped: 1
+  canBeMoved: 1
   canBeUsed: 1
   itemName: Water Bottle (Small)
   description: Small bottle of spring water.
@@ -23,6 +26,6 @@ MonoBehaviour:
     x: 1
     y: 1
   use:
-  - {fileID: 11400000, guid: 1033764f72f6fc44194675e9a7c39253, type: 2}
+  - {fileID: 11400000, guid: b88043653b704f428baeedf5ffc66bf3, type: 2}
   isTrash: 0
   useSound: {fileID: 8300000, guid: 0fa97c9e6068a234ab47b37edb8755b7, type: 3}

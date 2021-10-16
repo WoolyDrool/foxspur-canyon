@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
-  m_Name: Water Bottle (Large)
+  m_Name: Trail Mix
   m_EditorClassIdentifier: 
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1
   canBeMoved: 1
   canBeUsed: 1
-  itemName: Water Bottle (Large)
-  description: Lage bottle of spring water.
-  effectsDescription: +50 Hydration
-  icon: {fileID: 21300000, guid: 127ef1d68274a054b870dc152761d472, type: 3}
-  img: {fileID: 21300000, guid: 127ef1d68274a054b870dc152761d472, type: 3}
+  itemName: Trail Mix
+  description: A bag of "Trail Myxx" brand trail mix. Not enough candy.
+  effectsDescription: +50 Hunger
+  icon: {fileID: 21300000, guid: bfd1df2b12ca8de468a5d2c42adb9597, type: 3}
+  img: {fileID: 21300000, guid: bfd1df2b12ca8de468a5d2c42adb9597, type: 3}
   size:
     x: 3
     y: 3
   use:
-  - {fileID: 11400000, guid: 9b5ad4419a86956468ceaab2f4cb0a20, type: 2}
+  - {fileID: 11400000, guid: 8707589c7cd568847bf635134ccfd3b3, type: 2}
   isTrash: 0
-  useSound: {fileID: 0}
+  useSound: {fileID: 8300000, guid: 8dc861094189b414093723acb1f9643e, type: 3}

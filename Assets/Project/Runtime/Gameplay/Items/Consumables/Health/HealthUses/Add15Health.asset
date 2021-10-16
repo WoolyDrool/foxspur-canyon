@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72893474b4fccdd489c09d64f3e3f514, type: 3}
-  m_Name: Add15Hydration
+  m_Name: Add15Health
   m_EditorClassIdentifier: 
-  type: 1
+  type: 3
   positiveAmount: 15
   negativeAmount: 0
   isAlsoBuff: 0
   buffType: 0
   operationType: 0
-  buffDuration: 1
-  buffValue: 0.1
+  buffDuration: 0
+  buffValue: 0
   vitals: {fileID: 0}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72893474b4fccdd489c09d64f3e3f514, type: 3}
-  m_Name: Add15Hydration
+  m_Name: Add25Hydration
   m_EditorClassIdentifier: 
   type: 1
-  positiveAmount: 15
+  positiveAmount: 25
   negativeAmount: 0
   isAlsoBuff: 0
   buffType: 0

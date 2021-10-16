@@ -7,7 +7,7 @@ using UnityEngine;
 public class WorldLightingManager : MonoBehaviour
 {
     [SerializeField] private Light Sun;
-    [SerializeField] private WorldLightingPreset preset;
+    [SerializeField] public WorldLightingPreset preset;
     [SerializeField] private float TimeOfDay;
     [SerializeField, Range(0, 24)] private float inspectorTimeVisualization;
     private Vector3 adjustedSunPosition;

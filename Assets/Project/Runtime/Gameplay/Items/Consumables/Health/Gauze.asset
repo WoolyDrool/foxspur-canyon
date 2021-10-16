@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
-  m_Name: Water Bottle (Large)
+  m_Name: Gauze
   m_EditorClassIdentifier: 
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1
   canBeMoved: 1
   canBeUsed: 1
-  itemName: Water Bottle (Large)
-  description: Lage bottle of spring water.
-  effectsDescription: +50 Hydration
-  icon: {fileID: 21300000, guid: 127ef1d68274a054b870dc152761d472, type: 3}
-  img: {fileID: 21300000, guid: 127ef1d68274a054b870dc152761d472, type: 3}
+  itemName: Gauze
+  description: Gauze and antiseptic. Strong chemical smell.
+  effectsDescription: +25 Health
+  icon: {fileID: 21300000, guid: 29b95b1840833934c94a1ca7f2d19d7b, type: 3}
+  img: {fileID: 21300000, guid: 29b95b1840833934c94a1ca7f2d19d7b, type: 3}
   size:
-    x: 3
-    y: 3
+    x: 2
+    y: 2
   use:
-  - {fileID: 11400000, guid: 9b5ad4419a86956468ceaab2f4cb0a20, type: 2}
+  - {fileID: 11400000, guid: ebd6082e06014cc49a7176d88b86b1b7, type: 2}
   isTrash: 0
   useSound: {fileID: 0}
