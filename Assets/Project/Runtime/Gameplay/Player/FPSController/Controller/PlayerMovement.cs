@@ -103,6 +103,11 @@ public class PlayerMovement : InterpolatedTransform
         }
     }
 
+    public void ForceNewPosition(Vector3 newPosition)
+    {
+        ResetPositionTo(newPosition);
+    }
+
     public override void LateFixedUpdate()
     {
         base.LateFixedUpdate();
