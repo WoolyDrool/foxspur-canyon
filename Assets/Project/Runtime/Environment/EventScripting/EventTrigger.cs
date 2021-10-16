@@ -21,6 +21,10 @@ public class EventTrigger : MonoBehaviour
     public GameObject soundCue;
     public float minDistance;
     public float maxDistance;
+    public bool isMusicCue;
+
+    private AmbientSoundscape _ambientSoundscape;
+    public AudioClip music;
 
     private BoxCollider bounds;
     private Vector3 playerPos;
@@ -28,6 +32,7 @@ public class EventTrigger : MonoBehaviour
     private void OnEnable()
     {
         bounds = GetComponent<BoxCollider>();
+        _ambientSoundscape = FindObjectOfType<AmbientSoundscape>();
     }
 
     void Start()
@@ -63,7 +68,19 @@ public class EventTrigger : MonoBehaviour
 
     void EventTriggerSound()
     {
-        GameManager.instance.audioManager.SpawnAudioNearPlayer(playerPos, minDistance, maxDistance, soundCue);
+        if (isMusicCue)
+        {
+            if(!_ambientSoundscape.currentlyPlayingMusic)
+                _ambientSoundscape.currentlyPlayingMusic = true;
+            
+            GameManager.instance.audioManager.PlayMusicTrack(music);
+        }
+        else
+        {
+            GameManager.instance.audioManager.SpawnAudioNearPlayer(playerPos, minDistance, maxDistance, soundCue);
+        }
+            
         gameObject.SetActive(false);
+        
     }
 }

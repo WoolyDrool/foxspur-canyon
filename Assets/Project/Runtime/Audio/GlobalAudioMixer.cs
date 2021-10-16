@@ -168,10 +168,14 @@ namespace Project.Runtime.Audio
 
         public void PlayMusicTrack(AudioClip clipToPlay)
         {
-            music.gameObject.SetActive(true);
-            music.clip = clipToPlay;
-            music.GetComponent<GlobalAudioMixerChannel>().WakeUp(false);
-            music.Play();
+            if (!music.isPlaying)
+            {
+                music.gameObject.SetActive(true);
+                music.clip = clipToPlay;
+                music.GetComponent<GlobalAudioMixerChannel>().WakeUp(false);
+                music.Play();
+            }
+
         }
 
         #endregion

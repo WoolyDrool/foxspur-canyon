@@ -13,6 +13,7 @@ namespace Project.Runtime.Audio
         public AudioClip[] daytimeMusicTracks;
         public AudioClip[] nightTimeMusicTracks;
 
+        public bool currentlyPlayingMusic = true;
         private bool _hasPlayedMusicToday = false;
         
         private void Awake()
@@ -46,7 +47,7 @@ namespace Project.Runtime.Audio
 
         private void HandleNightMusic()
         {
-            if (!_hasPlayedMusicToday)
+            if (!_hasPlayedMusicToday && !currentlyPlayingMusic)
             {
                 int chance = Random.Range(1, 10);
                 if (chance == 5)
@@ -61,7 +62,7 @@ namespace Project.Runtime.Audio
 
         private void HandleDayMusic()
         {
-            if (!_hasPlayedMusicToday)
+            if (!_hasPlayedMusicToday && !currentlyPlayingMusic)
             {
                 int chance = Random.Range(1, 10);
                 if (chance == 5)
