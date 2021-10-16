@@ -98,7 +98,7 @@ public class PlayerInput : MonoBehaviour
 
     public bool grabbing
     {
-        get { return Input.GetKeyDown(KeyCode.G); }
+        get { return Input.GetKeyDown(KeyCode.E); }
     }
 
     public float mouseScroll
