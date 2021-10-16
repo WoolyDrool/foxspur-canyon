@@ -12,9 +12,14 @@ public class InteractableCaveDoor : MonoBehaviour
     public bool locked;
     public Item key;
 
+    public GameObject fadein;
+    public GameObject fadeout;
+
     public WorldLightingPreset cavePreset;
     private WorldLightingPreset defaultPreset;
     private WorldLightingManager _lightingManager;
+    private AudioSource _source;
+    public AudioClip doorSound;
 
     public bool reverseOrder = false;
 
@@ -22,22 +27,26 @@ public class InteractableCaveDoor : MonoBehaviour
     private PlayerInventory _inventory;
     void Start()
     {
+        _playerTransform = GameManager.instance.playerManager.playerTransform;
         _lightingManager = GameManager.instance.lightingManager;
         defaultPreset = _lightingManager.preset;
         _inventory = GameManager.instance.playerInventory;
-        _playerTransform = GameManager.instance.playerManager.playerTransform;
+        _source = GetComponent<AudioSource>();
+       
     }
 
     void Update()
     {
-        
+        if (!defaultPreset)
+        {
+            defaultPreset = _lightingManager.preset;
+        }
     }
     
     public void InteractWithDoor()
     {
         if (!locked)
         {
-            
             Teleport();
         }
         else
@@ -56,18 +65,33 @@ public class InteractableCaveDoor : MonoBehaviour
 
     void Teleport()
     {
-        _playerTransform.GetComponent<PlayerMovement>().enabled = false;
-        _playerTransform.GetComponent<InterpolatedTransformUpdater>().enabled = false;
-        _playerTransform.SetPositionAndRotation(destination.localPosition, destination.rotation);
-        _lightingManager.preset = cavePreset;
+        _source.PlayOneShot(doorSound);
+        StartCoroutine(Transition());
         
-        /*if (!reverseOrder)
+        IEnumerator Transition()
         {
+            if (!fadein.activeSelf)
+            {
+                fadein.SetActive(true);
+            }
+
+            yield return new WaitForSeconds(3);
             
+            _playerTransform.GetComponent<PlayerMovement>().ForceNewPosition(destination.position);
+            _playerTransform.SetPositionAndRotation(destination.position, destination.rotation);
+            
+            fadein.SetActive(false);
+            fadeout.SetActive(true);
+
+            if (!reverseOrder)
+            {
+                _lightingManager.preset = cavePreset;
+            }
+            else
+            {
+                _lightingManager.preset = defaultPreset;
+            }
         }
-        else
-        {
-            _lightingManager.preset = defaultPreset;
-        }*/
+        
     }
 }
