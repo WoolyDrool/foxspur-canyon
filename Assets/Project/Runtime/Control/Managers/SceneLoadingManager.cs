@@ -21,6 +21,7 @@ namespace Project.Runtime.Global
 
         void Awake()
         {
+            
             loader = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -49,6 +50,7 @@ namespace Project.Runtime.Global
             while (!operation.isDone)
             {
                 progress = operation.progress;
+                Debug.Log(progress.ToString());
                 yield return null;
             }
 

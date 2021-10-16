@@ -15,6 +15,7 @@ namespace Project.Runtime.UI.Menus
         public Animator musicFadeOut;
         public SceneLoadingManager sceneLoader;
         public AudioSource playSound;
+        public GameObject sceneBlocker;
         
         public string sceneToLoad = "scn_Intro";
         public string sceneToLoad2;
@@ -60,6 +61,7 @@ namespace Project.Runtime.UI.Menus
             introMovie.gameObject.SetActive(false);
             volume.SetActive(true);
             mainUiPanel.SetActive(true);
+            sceneBlocker.SetActive(false);
         }
         
         private IEnumerator TransitionToMenu()

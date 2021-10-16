@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Project.Runtime.Gameplay.Vehicles;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Project.Runtime.UI.Elements
 {
@@ -14,6 +17,7 @@ namespace Project.Runtime.UI.Elements
         ScaleY,
         FadeIn,
         FadeOut,
+        Spin
     }
 
     public class UITweener : MonoBehaviour
@@ -46,6 +50,10 @@ namespace Project.Runtime.UI.Elements
             }
         }
 
+        private void Awake()
+        {
+            Show();
+        }
 
         public void Show()
         {
@@ -96,6 +104,11 @@ namespace Project.Runtime.UI.Elements
                     ScaleY();
                     break;
                 }
+                case UIAnimationTypes.Spin:
+                {
+                    Spin();
+                    break;
+                }
             }
 
             _tweenObject.setDelay(delay);
@@ -110,6 +123,11 @@ namespace Project.Runtime.UI.Elements
             {
                 _tweenObject.setLoopPingPong();
             }
+        }
+
+        private void Spin()
+        {
+            _tweenObject = LeanTween.rotateAroundLocal(objectToAnimate, Vector2.up, 360, duration);
         }
 
         private void FadeIn()

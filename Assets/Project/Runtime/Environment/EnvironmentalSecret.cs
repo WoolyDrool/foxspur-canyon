@@ -28,6 +28,7 @@ public class EnvironmentalSecret : MonoBehaviour
             GameManager.instance.audioManager.PlaySoundOnce(discoverSound, MixerGroup);
             UIStatusUpdate.update.AddStatusMessage(UpdateType.SECRET, "You found a secret!");
             _inventory.currentSecrets++;
+            Destroy(gameObject);
         }
     }
 }

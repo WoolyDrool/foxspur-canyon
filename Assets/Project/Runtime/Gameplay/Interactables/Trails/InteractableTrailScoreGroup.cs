@@ -34,7 +34,7 @@ namespace Project.Runtime.Gameplay.Interactables
             {
                 _currentDistanceToPlayer = Vector3.Distance(GameManager.instance.currentPlayerPosition, transform.position);
 
-                if (_currentDistanceToPlayer > 100)
+                if (_currentDistanceToPlayer > 150)
                 {
                     if (groupOfItems.gameObject.activeSelf)
                     {

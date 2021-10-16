@@ -38,33 +38,38 @@ namespace Project.Runtime.UI.Elements
 
         public void LoadScene()
         {
-            UpdateProgressUI(0);
+            UpdateProgressUI();
             canvas.gameObject.SetActive(true);
 
-            //StartCoroutine(BeginLoad());
+            StartCoroutine(BeginLoad());
         }
 
         private IEnumerator BeginLoad()
         {
             while (!_sceneLoadingManager.operation.isDone)
             {
-                UpdateProgressUI(_sceneLoadingManager.operation.progress);
+                UpdateProgressUI();
                 yield return null;
             }
 
             ClearProgressUI();
         }
 
-        void UpdateProgressUI(float progress)
+        void UpdateProgressUI()
         {
-            progressSlider.value = progress;
-            progressText.text = (int) (progress * 100) + "%";
+            //progressSlider.value = _sceneLoadingManager.operation.progress;
+            //progressText.text = (_sceneLoadingManager.operation.progress * 100) + "%";
         }
 
         void ClearProgressUI()
         {
-            UpdateProgressUI(_sceneLoadingManager.progress);
+            UpdateProgressUI();
             canvas.gameObject.SetActive(false);
+
+            if (gameObject.scene.IsValid())
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 

@@ -4,24 +4,16 @@ using System.Collections.Generic;
 using Project.Runtime.Audio;
 using UnityEngine;
 
-
-public enum EventType
-{
-    PLAYSOUND,
-    SPAWNOBJECT,
-    INCREASEAGGRESSION,
-    
-}
 [RequireComponent(typeof(BoxCollider))]
-public class EventTrigger : MonoBehaviour
+public class EventTriggerSoundCue : MonoBehaviour
 {
-    public EventType type;
     public bool triggerEnabled;
 
     public GameObject soundCue;
     public float minDistance;
     public float maxDistance;
     public bool isMusicCue;
+    public bool alsoDisable = true;
 
     private AmbientSoundscape _ambientSoundscape;
     public AudioClip music;
@@ -56,14 +48,7 @@ public class EventTrigger : MonoBehaviour
 
     private void Trigger()
     {
-        switch (type)
-        {
-            case EventType.PLAYSOUND:
-            {
-                EventTriggerSound();
-                break;
-            }
-        }
+        EventTriggerSound();
     }
 
     void EventTriggerSound()
@@ -80,7 +65,7 @@ public class EventTrigger : MonoBehaviour
             GameManager.instance.audioManager.SpawnAudioNearPlayer(playerPos, minDistance, maxDistance, soundCue);
         }
             
-        gameObject.SetActive(false);
+        gameObject.SetActive(!alsoDisable);
         
     }
 }
