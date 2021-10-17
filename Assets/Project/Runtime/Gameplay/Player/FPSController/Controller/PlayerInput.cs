@@ -75,6 +75,16 @@ public class PlayerInput : MonoBehaviour
     {
         get { return Input.GetKeyDown(KeyCode.R); }
     }
+    
+    public bool flashLightToggle
+    {
+        get { return Input.GetKeyDown(KeyCode.F); }
+    }
+
+    public bool flashLightHoldReload
+    {
+        get { return Input.GetKey(KeyCode.F); }
+    }
 
     public bool fixAction
     {

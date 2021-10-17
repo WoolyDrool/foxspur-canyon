@@ -198,5 +198,11 @@ namespace Project.Runtime.Gameplay.Inventory
             }
             //itemToDiscard = null;
         }
+
+        public void RemoveBattery()
+        {
+            currentBatteries--;
+            UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, "Battery");
+        }
     }
 }

@@ -65,7 +65,6 @@ namespace Project.Runtime.Gameplay.Interactables
                     
                 case (50):
                 {
-                    Debug.Log("Half");
                     currentChargeLevel = ChargeLevel.HALFFULL;
                     break;
                 }

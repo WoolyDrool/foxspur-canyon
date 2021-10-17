@@ -16,17 +16,26 @@ namespace Project.Runtime.Gameplay.Tools
         public AudioSource hum;
 
         public AudioClip onSound;
-
+        public AudioClip reloadSound;
         public AudioClip offSound;
+        public GameObject reloadProgressGroup;
+        public Image reloadProgressDial;
 
         public bool headlampOn;
+
+        public float reloadHoldTime;
+        public float currentHoldTime;
+        public float currentReloadTime;
 
         #region Internal Variables
 
         private InteractableBatteryDevice _batteryDevice;
+        private PlayerInput _input;
+        private bool reloading = false;
         
         private float startingIntensity;
         private float dimIntensity;
+        private bool canReload = true;
 
         #endregion
         
@@ -35,6 +44,7 @@ namespace Project.Runtime.Gameplay.Tools
         void Start()
         {
             _batteryDevice = GetComponent<InteractableBatteryDevice>();
+            _input = GetComponentInParent<PlayerInput>();
             startingIntensity = actualLight.intensity;
             dimIntensity = startingIntensity / 2;
         }
@@ -42,7 +52,7 @@ namespace Project.Runtime.Gameplay.Tools
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (_input.flashLightToggle && currentHoldTime < 0.5f)
             {
                 if (!headlampOn)
                 {
@@ -56,14 +66,38 @@ namespace Project.Runtime.Gameplay.Tools
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && headlampOn)
+            if (_input.flashLightHoldReload && !headlampOn)
             {
-                LoadBattery();
+                if (canReload)
+                {
+                    currentHoldTime += 1 * Time.deltaTime;
+                    
+                    if(!reloadProgressGroup.activeSelf)
+                        reloadProgressGroup.SetActive(true);
+                    
+                    reloadProgressDial.fillAmount = currentHoldTime / reloadHoldTime;
+                    
+                    if (currentHoldTime >= reloadHoldTime)
+                    {
+                        LoadBattery();
+                        return;
+                    }
+                }
             }
-            
-            
+            else
+            {
+                reloadProgressGroup.SetActive(false);
+                currentHoldTime = 0;
+            }
         }
 
+        IEnumerator ReloadCooldown()
+        {
+            reloading = false;
+            yield return new WaitForSeconds(2);
+            canReload = true;
+        }
+        
 
         void ToggleHeadLamp()
         {
@@ -94,10 +128,15 @@ namespace Project.Runtime.Gameplay.Tools
         {
             if (GameManager.instance.playerInventory.currentBatteries >=  1)
             {
+                currentHoldTime = 0;
+                reloading = true;
+                canReload = false;
                 Debug.Log("Loaded battery");
                 actualLight.intensity = startingIntensity;
-                GameManager.instance.playerInventory.currentBatteries--;
+                GameManager.instance.playerInventory.RemoveBattery();
                 _batteryDevice.AddBattery();
+                soundSource.PlayOneShot(reloadSound);
+                StartCoroutine(ReloadCooldown());
             }
             else
             {
