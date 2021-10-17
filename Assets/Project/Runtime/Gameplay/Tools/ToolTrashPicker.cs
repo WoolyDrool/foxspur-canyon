@@ -19,6 +19,8 @@ namespace Project.Runtime.Gameplay.Tools
         
         [Header("Interactions")]
         public Image progressBar;
+
+        public GameObject progressBarContainer;
         public AudioClip swingSound;
         public AudioClip skewerSound;
         public AudioClip reloadSound;
@@ -43,7 +45,7 @@ namespace Project.Runtime.Gameplay.Tools
         
         private void OnEnable()
         {
-            progressBar.gameObject.SetActive(true);
+            progressBarContainer.SetActive(true);
         }
 
         void Update()
@@ -78,14 +80,14 @@ namespace Project.Runtime.Gameplay.Tools
         {
             progressBar.fillAmount += 0.1f;
             
-            if (progressBar.fillAmount == 1)
+            /*if (progressBar.fillAmount == 1)
             {
                 progressBar.color = Color.green;
             }
             else
             {
                 progressBar.color = Color.white;
-            }
+            }*/
         }
         
         public void PickTrash()
@@ -144,7 +146,6 @@ namespace Project.Runtime.Gameplay.Tools
 
         public void OnDisable()
         {
-            progressBar.gameObject.SetActive(false);
-        }
+            progressBarContainer.SetActive(false);        }
     }
 }
