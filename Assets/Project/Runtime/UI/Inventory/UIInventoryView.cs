@@ -6,6 +6,7 @@ using Project.Runtime.Global;
 using Project.Runtime.UI.Buttons;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 
 namespace Project.Runtime.UI.Elements
 {
@@ -54,6 +55,8 @@ namespace Project.Runtime.UI.Elements
 
         private UpdateItemEvent u_UpdateEvent;
 
+        
+
         #endregion
 
         /// <summary>
@@ -77,7 +80,8 @@ namespace Project.Runtime.UI.Elements
             playerInventory.updateUIList.AddListener(UpdateItems);
             playerInventory.resortUIList.AddListener(ResortItems);
             //u_UpdateEvent.AddListener(UpdateItems);
-            
+            PlayerInventory.OnRemove += RemoveSingleTrashItem;
+
             //Initializes the maths and drawing classes
             maths = new InventoryMath(sizeX, sizeY, itemsInGrid, drawing.grid, this, drawing);
             drawing.WakeUp();
@@ -173,10 +177,10 @@ namespace Project.Runtime.UI.Elements
         {
             if (item.item.canBeDropped)
             {
+                playerInventory.DropItem(item.item);
                 //inventory.RemoveItem(item);
                 RemoveItem(item);
                 //_playerInventory.RemoveItem(item.item);
-                playerInventory.DropItem(item.item);
             }
             else
             {
@@ -215,8 +219,16 @@ namespace Project.Runtime.UI.Elements
             
         }
 
+        private void RemoveSingleTrashItem(Item itemToRemove)
+        {
+            UIStoredItem item2 = itemsInGrid.Find(item => itemToRemove);
+            itemsInGrid.Remove(item2);
+        }
+
         private void ResortItems()
         {
+           
+            
             itemsInGrid.Clear();
             
             foreach (Item i in playerInventory.inventoryItems)

@@ -39,6 +39,9 @@ namespace Project.Runtime.Gameplay.Inventory
 
         [HideInInspector] public UpdateItemEvent updateUIList;
         public UnityEvent resortUIList;
+        public delegate void RemoveItemEventHandler(Item i);
+
+        public static event RemoveItemEventHandler OnRemove;
 
         public void Awake()
         {
@@ -130,7 +133,6 @@ namespace Project.Runtime.Gameplay.Inventory
             }
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
             availableSlots += (item.size.x * item.size.y);
-            //updateUIList?.Invoke();
             UntrackItem(item, false);
         }
 
@@ -151,7 +153,7 @@ namespace Project.Runtime.Gameplay.Inventory
             }
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
             availableSlots += (item.size.x * item.size.y);
-            resortUIList?.Invoke();
+            OnRemove?.Invoke(item);
             UntrackItem(item, true);
         }
 
@@ -170,7 +172,7 @@ namespace Project.Runtime.Gameplay.Inventory
                     if (pickups[i].name == item.name)
                     {
                         itemToDiscard = pickups[i].gameObject;
-                        Debug.Log("Located " + itemToDiscard.ToString());
+                        //Debug.Log("Located " + itemToDiscard.ToString());
                     }
                 }
             }
@@ -178,7 +180,7 @@ namespace Project.Runtime.Gameplay.Inventory
             if (itemToDiscard != null)
             {
                 pickups.Remove(itemToDiscard);
-                Debug.Log("Untracking " + itemToDiscard.ToString());
+                //Debug.Log("Untracking " + itemToDiscard.ToString());
                 //itemToDiscard.transform.parent = null;
             
                 if (alsoDestroy)
