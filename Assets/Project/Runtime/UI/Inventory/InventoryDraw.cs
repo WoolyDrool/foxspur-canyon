@@ -22,7 +22,7 @@ namespace Project.Runtime.UI.Elements
         public UIClickNotifier notifier;
         private UIInventoryItemPrefab _itemView;
         internal UIStoredItem storedItem;
-        public Color[] colorPallete;
+        public UIColorPallete colorPallete;
 
         /// <summary>
         /// This class handles all of the drawing functions for the inventory
@@ -100,13 +100,13 @@ namespace Project.Runtime.UI.Elements
             maths.ScaleSprite(_itemView.backgroundSprite.gameObject, item.size);
 
             if (item.isTrash)
-                _itemView.backgroundSprite.color = colorPallete[0];
-            
+                _itemView.backgroundSprite.color = colorPallete.trashColor;
+
             if (item.canBeUsed)
-                _itemView.backgroundSprite.color = colorPallete[1];
+                _itemView.backgroundSprite.color = colorPallete.consumableColor;
 
             if (item.itemClass == ItemClass.KEY)
-                _itemView.backgroundSprite.color = colorPallete[2];
+                _itemView.backgroundSprite.color = colorPallete.keyColor;
             
             storedItem = uiStoredItem;
             _view.HandleItemInteraction(storedItem, _itemView.mainObject);
