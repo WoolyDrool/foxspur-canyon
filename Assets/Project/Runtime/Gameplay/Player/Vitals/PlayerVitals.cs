@@ -126,7 +126,7 @@ namespace Project.Runtime.Gameplay.Player
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                sleepStat.currentValue -= 1;
+                //sleepStat.currentValue -= 1;
             }
             
         }
