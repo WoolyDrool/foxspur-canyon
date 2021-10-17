@@ -26,10 +26,11 @@ namespace Project.Runtime.Gameplay.Tools
 
         void Update()
         {
-            if (_input.shooting)
+            if (_input.shooting && canUse)
             {
                 _source.PlayOneShot(digSound);
                 objectAnimator.SetTrigger(DIG_TRIGGER);
+                ProcessCooldown();
             }
         }
         

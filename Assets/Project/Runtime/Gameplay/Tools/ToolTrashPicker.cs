@@ -48,10 +48,11 @@ namespace Project.Runtime.Gameplay.Tools
 
         void Update()
         {
-            if (_input.shooting)
+            if (_input.shooting && canUse)
             {
                 _source.PlayOneShot(swingSound);
                 objectAnimator.SetTrigger(PICK_TRIGGER);
+                ProcessCooldown();
             }
 
             if (_input.reload)
