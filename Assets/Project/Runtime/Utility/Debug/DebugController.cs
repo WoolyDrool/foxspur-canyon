@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Project.Runtime.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,11 @@ public class DebugController : MonoBehaviour
     private string _input;
 
     public static DebugCommand RESET_SCENE;
+    public static DebugCommand FORCE_DEHYDRATION;
+    public static DebugCommand FORCE_EXHAUSTION;
+    public static DebugCommand FORCE_STARVATION;
+    public static DebugCommand FORCE_DEATH;
+    public static DebugCommand REMOVE_ALL_STATS;
 
     public List<object> commandList;
 
@@ -20,16 +26,55 @@ public class DebugController : MonoBehaviour
         {
             //ProgressSceneLoader.loader.ReloadCurrentScene();
         });
+        
+        FORCE_DEHYDRATION = new DebugCommand("force_dehydration", "Forces dehydration", "force_dehydration", () =>
+        {
+            VitalHydrationFunctionality hf = FindObjectOfType<VitalHydrationFunctionality>();
+            hf.ForceDehydration();
+        });
+        
+        FORCE_EXHAUSTION = new DebugCommand("force_exhaustion", "Forces exhaustion", "force_exhaustion", () =>
+        {
+            VitalSleepFunctionality sf = FindObjectOfType<VitalSleepFunctionality>();
+            sf.ForceExhaustion();
+        });
+        
+        FORCE_STARVATION = new DebugCommand("force_starvation", "Forces starvation", "force_starvation", () =>
+        {
+            VitalHungerFunctionality hung = FindObjectOfType<VitalHungerFunctionality>();
+            hung.ForceStarvation();
+        });
+        
+        FORCE_DEATH = new DebugCommand("kill", "Kills the player", "kill", () =>
+        {
+            VitalHealthFunctionality hf = FindObjectOfType<VitalHealthFunctionality>();
+            hf.ForceDeath();
+        });
+        
+        REMOVE_ALL_STATS = new DebugCommand("remove_all_stats", "Drains all players stats except health", "remove_all_stats", () =>
+        {
+            VitalHydrationFunctionality hf = FindObjectOfType<VitalHydrationFunctionality>();
+            hf.ForceDehydration();
+            VitalSleepFunctionality sf = FindObjectOfType<VitalSleepFunctionality>();
+            sf.ForceExhaustion();
+            VitalHungerFunctionality hung = FindObjectOfType<VitalHungerFunctionality>();
+            hung.ForceStarvation();
+        });
 
         commandList = new List<object>
         {
             RESET_SCENE,
+            FORCE_DEHYDRATION,
+            FORCE_EXHAUSTION,
+            FORCE_STARVATION,
+            FORCE_DEATH,
+            REMOVE_ALL_STATS
         };
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F10))
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             if (_showConsole)
             {
@@ -54,8 +99,16 @@ public class DebugController : MonoBehaviour
 
     private void OnGUI()
     {
-        if(!_showConsole) { return; }
+        if (!_showConsole)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            return;
+        }
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        
         float y = 0f;
         
         GUI.Box(new Rect(0, y, Screen.width, 30), "");
