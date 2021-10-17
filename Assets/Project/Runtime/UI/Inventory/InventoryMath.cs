@@ -132,6 +132,14 @@ namespace Project.Runtime.UI.Elements
             rectTransform.localPosition = new Vector3(gridPosition.y, gridPosition.x, 0.0f);
         }
 
+        public void ScaleSprite(GameObject obj, IntPair size)
+        {
+            RectTransform rectTransform = obj.transform as RectTransform;
+            //Scale Item
+            rectTransform.sizeDelta = new Vector2(_unitSlot.y * size.y, _unitSlot.x * size.x);
+        }
+        
+
         public void RepositionateMovingObject()
         {
             if (movingObject != null)

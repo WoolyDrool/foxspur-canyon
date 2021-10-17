@@ -14,12 +14,15 @@ namespace Project.Runtime.UI.Elements
         private UIInventoryView _view;
         public InventoryMath maths;
         public GameObject gridPrefab;
-        public GameObject itemPrefab;
+        public UIInventoryItemPrefab itemPrefab;
+        public Image itemPrefab_mainSprite;
+        public Image itemPrefab_backgroundSprite;
         public RectTransform grid;
         public IntPair size;
         public UIClickNotifier notifier;
-        private GameObject _itemView;
+        private UIInventoryItemPrefab _itemView;
         internal UIStoredItem storedItem;
+        public Color[] colorPallete;
 
         /// <summary>
         /// This class handles all of the drawing functions for the inventory
@@ -86,15 +89,29 @@ namespace Project.Runtime.UI.Elements
             _itemView = Instantiate(itemPrefab, grid);
             _itemView.transform.SetParent(grid, false);
             _itemView.name = uiStoredItem.item.itemName;
-            maths.PositionateInGrid(_itemView, uiStoredItem.position, item.size);
+            maths.PositionateInGrid(_itemView.mainObject, uiStoredItem.position, item.size);
 
             //Set Image
-            Image img = _itemView.GetComponent<Image>();
-            img.sprite = item.icon;
+            //Image img = _itemView.transform.Find("mainSprite").GetComponent<Image>();
+            //img.sprite = item.icon;
+            //.ScaleSprite(img.gameObject, item.size);
+            _itemView.mainSprite.sprite = item.icon;
+            maths.ScaleSprite(_itemView.mainSprite.gameObject, item.size);
+            maths.ScaleSprite(_itemView.backgroundSprite.gameObject, item.size);
+
+            if (item.isTrash)
+                _itemView.backgroundSprite.color = colorPallete[0];
+            
+            if (item.canBeUsed)
+                _itemView.backgroundSprite.color = colorPallete[1];
+
+            if (item.itemClass == ItemClass.KEY)
+                _itemView.backgroundSprite.color = colorPallete[2];
             
             storedItem = uiStoredItem;
-            _view.HandleItemInteraction(storedItem, _itemView);
+            _view.HandleItemInteraction(storedItem, _itemView.mainObject);
         }
+        
         
         public void MoveItem(GameObject gridObj, UIStoredItem item)
         {

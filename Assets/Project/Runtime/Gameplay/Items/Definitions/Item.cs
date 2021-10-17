@@ -5,7 +5,8 @@ namespace Project.Runtime.Gameplay.Inventory
     public enum ItemClass
     {
         ITEM,
-        TOOL
+        TOOL,
+        KEY
     }
     [CreateAssetMenu(menuName = "Items/Create Item")]
     public class Item : ScriptableObject
