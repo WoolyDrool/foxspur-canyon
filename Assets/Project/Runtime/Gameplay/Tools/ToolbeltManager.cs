@@ -37,7 +37,6 @@ namespace Project.Runtime.Gameplay.Tools
         private PlayerController _controller;
         private PlayerInput _input;
         private bool isCalled;
-        [SerializeField] private bool canHandleMouseInput;
 
         #endregion
         
@@ -56,32 +55,28 @@ namespace Project.Runtime.Gameplay.Tools
 
         private void Update()
         {
-            canHandleMouseInput = !GameManager.instance.controlsManager._showInventory;
+            int previousSelectedTool = _selectedTool;
             
-            if (canHandleMouseInput)
+            if (_input.mouseScroll > 0f)
             {
-                int previousSelectedTool = _selectedTool;
-                
-                if (_input.mouseScroll > 0f)
-                {
-                    if (_selectedTool >= equippableInventory.Length - 1)
-                        _selectedTool = 0;
-                    else
-                        _selectedTool++;
-                }
-                if (_input.mouseScroll < 0f)
-                {
-                    if (_selectedTool <= 0)
-                        _selectedTool = equippableInventory.Length - 1;
-                    else
-                        _selectedTool--;
-                }
-                
-                if (previousSelectedTool != _selectedTool)
-                {
-                    SwitchEquipped();
-                }
+                if (_selectedTool >= equippableInventory.Length - 1)
+                    _selectedTool = 0;
+                else
+                    _selectedTool++;
             }
+            if (_input.mouseScroll < 0f)
+            {
+                if (_selectedTool <= 0)
+                    _selectedTool = equippableInventory.Length - 1;
+                else
+                    _selectedTool--;
+            }
+            
+            if (previousSelectedTool != _selectedTool)
+            {
+                SwitchEquipped();
+            }
+
             HandleLerp();
         }
 

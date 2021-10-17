@@ -43,6 +43,13 @@ namespace Project.Runtime.Gameplay.Player
             _health = _vitals.healthStat;
         }
 
+        //DEBUG_COMMAND
+        public void ForceDeath()
+        {
+            _health.currentValue = 0;
+            ChangeState(MortalityState.DEAD);
+        }
+
         private void Update()
         {
      

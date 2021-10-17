@@ -60,6 +60,13 @@ namespace Project.Runtime.Gameplay.Player
             _startingMovementSpeed = _controller.walkSpeed;
 
         }
+        
+        //DEBUG_COMMAND
+        public void ForceExhaustion()
+        {
+            _sleep.currentValue = 0;
+            ChangeState(CurrentSleepState.EXHAUSTED);
+        }
 
         private void Update()
         {
@@ -88,6 +95,21 @@ namespace Project.Runtime.Gameplay.Player
             if (_sleep.currentValue <= sleepThreshold && currentSleepState == CurrentSleepState.EXHAUSTED)
             {
                 ChangeState(CurrentSleepState.ASLEEP);
+            }
+            
+            if (currentSleepState == CurrentSleepState.EXHAUSTED)
+            {
+                if (_sleep.currentValue >= exhuastedThreshold)
+                {
+                    if (_blinkRoutine != null)
+                    {
+                        StopBlinkRoutine();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
             }
         }
         
@@ -164,16 +186,18 @@ namespace Project.Runtime.Gameplay.Player
             {
                 _blinkRoutine = StartCoroutine(Blink(blinkIntervalExhausted));
             }
-            else
-            {
-                StopCoroutine(_blinkRoutine);
-                StartCoroutine(Blink(blinkIntervalExhausted));
-            }
         }
         
         private void PerformSleepFunctions()
         {
             StartCoroutine(Sleep());
+        }
+
+        private void StopBlinkRoutine()
+        {
+            _blinkRoutine = null;
+            StopCoroutine(Blink(0));
+            _shouldBlink = false;
         }
 
         IEnumerator Blink(float interval)

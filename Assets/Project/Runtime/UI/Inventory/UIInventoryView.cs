@@ -223,6 +223,7 @@ namespace Project.Runtime.UI.Elements
         {
             UIStoredItem item2 = itemsInGrid.Find(item => itemToRemove);
             itemsInGrid.Remove(item2);
+            Notify();
         }
 
         private void ResortItems()

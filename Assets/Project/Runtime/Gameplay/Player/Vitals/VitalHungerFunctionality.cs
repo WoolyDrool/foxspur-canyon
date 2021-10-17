@@ -44,6 +44,13 @@ namespace Project.Runtime.Gameplay.Player
             _hunger = _vitals.hungerStat;
 
         }
+        
+        //DEBUG_COMMAND
+        public void ForceStarvation()
+        {
+            _hunger.currentValue = 0;
+            ChangeState(CurrentHungerState.STARVING);
+        }
 
         private void Update()
         {

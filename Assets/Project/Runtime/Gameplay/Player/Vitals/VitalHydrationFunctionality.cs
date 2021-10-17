@@ -50,6 +50,14 @@ namespace Project.Runtime.Gameplay.Player
             _health = GetComponent<VitalHealthFunctionality>();
 
         }
+        
+        //DEBUG_COMMAND
+        public void ForceDehydration()
+        {
+            _hydration.currentValue = 0;
+            ChangeState(CurrentHydrationState.DEHYDRATED);
+        }
+        
 
         private void Update()
         {
@@ -73,7 +81,17 @@ namespace Project.Runtime.Gameplay.Player
             {
                 ChangeState(CurrentHydrationState.DEHYDRATED);
             }
-            
+
+            if (currentHydrationState == CurrentHydrationState.DEHYDRATED)
+            {
+                if (_hydration.currentValue >= dehydrationThreshold)
+                {
+                    if (_damageRoutine != null)
+                    {
+                        StopHealthDamage();
+                    }
+                }
+            }
         }
 
         public void ChangeState(CurrentHydrationState hungerState)
@@ -127,12 +145,14 @@ namespace Project.Runtime.Gameplay.Player
             {
                 _damageRoutine = StartCoroutine(TakeHealthDamage());
             }
-            else
-            {
-                StopCoroutine(_damageRoutine);
-                _damageRoutine = StartCoroutine(TakeHealthDamage());
-                
-            }
+        }
+
+        private void StopHealthDamage()
+        {
+            Debug.Log("Stopping tick damage");
+            _damageRoutine = null;
+            //StopCoroutine(TakeHealthDamage());
+            _shouldTakeTickDamage = false;
         }
 
         IEnumerator TakeHealthDamage()
