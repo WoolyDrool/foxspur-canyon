@@ -6,8 +6,11 @@ namespace Project.Runtime.Gameplay.Interactables
 {
     public class InteractableShovelObject : MonoBehaviour
     {
-        public int swingsToComplete;
+        public int minSwingsToComplete;
+        public int maxSwingsToComplete;
+        private int _actualSwingsToComplete;
         public int currentSwings;
+        private int _position;
         public Transform pileObject;
         private AudioSource _source;
         public AudioClip completionClip;
@@ -18,6 +21,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             _scoreManager = GetComponentInParent<InteractableTrailScoreManager>();
             _source = GetComponent<AudioSource>();
+            _actualSwingsToComplete = Random.Range(minSwingsToComplete, maxSwingsToComplete+1);
         }
 
         void Update()
@@ -29,26 +33,16 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             currentSwings++;
             ChangeState();
+            if (_position < positions.Length-1)
+            {
+                _position++;
+                pileObject.localPosition = positions[_position];
+            }
         }
 
         void ChangeState()
         {
-            if (currentSwings == 1)
-            {
-                pileObject.localPosition = positions[0];
-            }
-
-            if (currentSwings == 2)
-            {
-                pileObject.localPosition = positions[1];
-            }
-
-            if (currentSwings == 3)
-            {
-                pileObject.localPosition = positions[2];
-            }
-
-            if (currentSwings == 4)
+            if (currentSwings == _actualSwingsToComplete)
             {
                 _scoreManager.AddScore(1);
                 pileObject.gameObject.SetActive(false);
