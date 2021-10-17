@@ -68,6 +68,12 @@ namespace Project.Runtime.Gameplay.Player
             ChangeState(CurrentSleepState.EXHAUSTED);
         }
 
+        public void ForceBlinking()
+        {
+            _sleep.currentValue = drowsyThreshold;
+            ChangeState(CurrentSleepState.DROWSY);
+        }
+
         private void Update()
         {
 
