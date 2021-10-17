@@ -45,11 +45,8 @@ namespace Project.Runtime.UI.Elements
         private const float maxSpeedAngle = -190;
         private const float zeroSpeedAngle = 0;
         private float shiftAmount;
-        private Vector2 dialsGroupStart;
         private Vector2 timeGroupStart;
-        private Vector2 dialsGroupEnd;
         private Vector2 timeGroupEnd;
-        private UITweener dialsTweener;
         private UITweener timeTweener;
         public bool showingPlayerHud = false;
 
@@ -96,12 +93,8 @@ namespace Project.Runtime.UI.Elements
         {
             _drivingMovement = GameManager.instance.playerManager.playerTransform.GetComponent<DrivingMovement>();
             _playerVitals = GameManager.instance.playerVitals;
-            dialsTweener = dialsGroup.GetComponent<UITweener>();
             timeTweener = timeGroup.GetComponent<UITweener>();
-            dialsGroupStart = dialsTweener.@from;
             timeGroupStart = timeTweener.@from;
-
-            dialsGroupEnd = dialsTweener.to;
             timeGroupEnd = timeTweener.to;
         }
 
@@ -127,13 +120,10 @@ namespace Project.Runtime.UI.Elements
                 showingPlayerHud = true;
                 //dialsTweener.easeType = LeanTweenType.easeInSine;
                 //timeTweener.easeType = LeanTweenType.easeInSine;
-
-                dialsTweener.to = dialsGroupEnd;
-                dialsTweener.@from = dialsGroupStart;
+                
                 timeTweener.to = timeGroupEnd;
                 timeTweener.@from = timeGroupStart;
-
-                dialsTweener.Restart();
+                
                 timeTweener.Restart();
                 //UpdatePlayerHud();
 
@@ -143,12 +133,9 @@ namespace Project.Runtime.UI.Elements
                 showingPlayerHud = false;
                 //dialsTweener.easeType = LeanTweenType.easeOutSine;
                 //timeTweener.easeType = LeanTweenType.easeOutSine;
-                dialsTweener.@from = dialsGroupEnd;
-                dialsTweener.to = dialsGroupStart;
                 timeTweener.@from = timeGroupEnd;
                 timeTweener.to = timeGroupStart;
-
-                dialsTweener.Restart();
+                
                 timeTweener.Restart();
             }
 
