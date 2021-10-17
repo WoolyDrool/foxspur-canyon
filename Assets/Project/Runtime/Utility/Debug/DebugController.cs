@@ -86,10 +86,14 @@ public class DebugController : MonoBehaviour
         {
             if (_showConsole)
             {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 _showConsole = false;
             }
             else
             {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 _showConsole = true;
             }
         }
@@ -109,13 +113,11 @@ public class DebugController : MonoBehaviour
     {
         if (!_showConsole)
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+
             return;
         }
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        
         
         float y = 0f;
         
