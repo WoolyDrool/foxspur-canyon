@@ -9,32 +9,28 @@ namespace Project.Runtime.Gameplay.Tools
 {
     public class ToolsHeadlamp : MonoBehaviour
     {
-        public GameObject Light;
+        public GameObject lightContainer;
         public Light actualLight;
-
         public AudioSource soundSource;
-
         public AudioSource hum;
-
         public AudioClip onSound;
         public AudioClip reloadSound;
         public AudioClip offSound;
-        public GameObject reloadProgressGroup;
-        public Image reloadProgressDial;
-
-        public Transform camera;
-        
         public bool headlampOn;
-
+        
+        [Header("Reloading")]
         public float reloadHoldTime;
         public float currentHoldTime;
         public float currentReloadTime;
-
+        public GameObject reloadProgressGroup;
+        public Image reloadProgressDial;
+        
+        [Header("Light Attentuation")]
+        public Transform camera;
         public float tooCloseDistance;
         public float wayTooCloseDistance;
         public float tooCloseAttenuation;
         public float wayTooCloseAttentuation;
-        private RaycastHit _hit;
         public LayerMask collisionMask;
 
         #region Internal Variables
@@ -42,7 +38,7 @@ namespace Project.Runtime.Gameplay.Tools
         private InteractableBatteryDevice _batteryDevice;
         private PlayerInput _input;
         private bool reloading = false;
-        
+        private RaycastHit _hit;
         private float startingIntensity;
         private float currentIntensity;
         private float adjustedIntensity;
@@ -144,7 +140,8 @@ namespace Project.Runtime.Gameplay.Tools
 
         void ToggleHeadLamp()
         {
-            Light.SetActive(!headlampOn);
+            lightContainer.SetActive(!headlampOn);
+            reloadProgressGroup.SetActive(reloading);
             AudioClip soundClip = headlampOn ? onSound : offSound;
             soundSource.clip = soundClip;
             soundSource.Play();
