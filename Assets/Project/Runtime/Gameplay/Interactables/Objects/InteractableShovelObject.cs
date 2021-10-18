@@ -47,7 +47,7 @@ namespace Project.Runtime.Gameplay.Interactables
                 _scoreManager.AddScore(1);
                 pileObject.gameObject.SetActive(false);
                 _source.PlayOneShot(completionClip);
-                Destroy(gameObject, 5f);
+                Destroy(gameObject, 1);
             }
         }
     }
