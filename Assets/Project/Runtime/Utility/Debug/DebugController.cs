@@ -123,7 +123,10 @@ public class DebugController : MonoBehaviour
         
         GUI.Box(new Rect(0, y, Screen.width, 30), "");
         GUI.backgroundColor = new Color(0, 0, 0, 0);
+
+        GUI.color = Color.yellow;
         _input = GUI.TextField(new Rect(10f, y + 5f, Screen.width - 20f, 20f), _input);
+       
     }
 
     private void HandleInput()
