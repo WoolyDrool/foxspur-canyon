@@ -28,15 +28,13 @@ namespace Project.Runtime.UI.Buttons
         {
             loadedProfile = SerializationManager.Load();
             deleteSavePopup.SetActive(false);
-            if (loadedProfile == null)
+            if (SerializationManager.TryGetProfile())
             {
                 Debug.LogAssertion("No valid save found");
                 saveText.text = "Empty";
                 deleteSaveButton.SetActive(false);
                 return;
             }
-
-
             
             saveName = loadedProfile.playerName;
             saveText.text = saveName;
@@ -44,15 +42,18 @@ namespace Project.Runtime.UI.Buttons
 
         public void DetermineNext()
         {
-            if (loadedProfile != null)
+            if (loadedProfile == SerializationManager.Load())
             {
                 runtimeProfile.InjectProfile(loadedProfile);
                 _main.sceneToLoad = "MainGameWorld";
                 _main.OnClick();
                 return;
             }
+            else
+            {
+                _panel.OnClick();
+            }
             
-            _panel.OnClick();
         }
 
         public void CheckIfSure()
