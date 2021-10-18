@@ -36,6 +36,7 @@ namespace Project.Runtime.UI.Elements
         public GameObject uiCantAddItem;
         public GameObject uiCantAddItemToTrash;
         public GameObject uiOutOfBags;
+        public GameObject cantPick;
 
         [Header("Elements - Sound")] public AudioClip inventorySound;
 
@@ -61,6 +62,7 @@ namespace Project.Runtime.UI.Elements
             EventManager.StartListening("cantAddItem", OnCantAddItem);
             EventManager.StartListening("cantAddItemToTrash", OnCantAddItemToTrash);
             EventManager.StartListening("noBags", OnOutOfBags);
+            EventManager.StartListening("cantPick", OnCantPick);
         }
 
         private void OnDisable()
@@ -71,6 +73,7 @@ namespace Project.Runtime.UI.Elements
             InteractableBatteryDevice.OnToggle -= ShowBatteryIndicator;
             EventManager.StopListening("cantAddItem", OnCantAddItem);
             EventManager.StopListening("cantAddItemToTrash", OnCantAddItemToTrash);
+            EventManager.StopListening("cantPick", OnCantPick);
             EventManager.StopListening("noBags", OnOutOfBags);
         }
 
@@ -82,6 +85,11 @@ namespace Project.Runtime.UI.Elements
         public void OnCantAddItemToTrash(Dictionary<string, object> message)
         {
             uiCantAddItemToTrash.SetActive(true);
+        }
+        
+        public void OnCantPick(Dictionary<string, object> message)
+        {
+            cantPick.SetActive(true);
         }
         
         public void OnOutOfBags(Dictionary<string, object> message)
