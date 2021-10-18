@@ -8,7 +8,7 @@ public class WorldLightingPreset : ScriptableObject
 {
     public Gradient AmbientColor;
     public Gradient SunColor;
-    public Color moonColor;
+    public Gradient moonColor;
     public Gradient FogColor;
     public AnimationCurve FogDensity;
     public AnimationCurve AtmosphereIntensity;

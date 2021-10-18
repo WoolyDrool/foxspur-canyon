@@ -75,12 +75,11 @@ public class WorldLightingManager : MonoBehaviour
         RenderSettings.fogColor = preset.FogColor.Evaluate(timePercent);
         //RenderSettings.fogDensity = preset.FogDensity.Evaluate(timePercent);
         //RenderSettings.ambientIntensity = preset.AtmosphereIntensity.Evaluate(timePercent);
-        
+
         if (Sun != null)
         {
             Sun.color = preset.SunColor.Evaluate(timePercent);
             Sun.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, 170, 0));
-
         }
     }
 
