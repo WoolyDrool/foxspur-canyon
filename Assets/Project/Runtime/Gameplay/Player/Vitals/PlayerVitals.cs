@@ -117,7 +117,7 @@ namespace Project.Runtime.Gameplay.Player
             currentHealth = healthStat.currentValue;
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                sleepStat.currentValue -= sprintSleepTickRate * Time.deltaTime;
+                //sleepStat.currentValue -= sprintSleepTickRate * Time.deltaTime;
             }
             /*else
             {
