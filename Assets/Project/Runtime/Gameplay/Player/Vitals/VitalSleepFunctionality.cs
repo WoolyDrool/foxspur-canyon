@@ -43,7 +43,7 @@ namespace Project.Runtime.Gameplay.Player
         private BaseVital _sleep;
         private PlayerMovement _controller;
         private float _startingMovementSpeed;
-        private bool _shouldBlink;
+        [SerializeField] private bool _shouldBlink;
         private bool _isDrowsy = false;
         private Coroutine _blinkRoutine;
         private CurrentSleepState _lastSleepState;
@@ -82,6 +82,11 @@ namespace Project.Runtime.Gameplay.Player
                 ChangeState(CurrentSleepState.RESTED);
             }
             
+            if (_sleep.currentValue < restedThreshold && currentSleepState == CurrentSleepState.RESTED)
+            {
+                ChangeState(CurrentSleepState.NORMAL);
+            }
+            
             if (_sleep.currentValue <= normalThreshhold && currentSleepState == CurrentSleepState.RESTED)
             {
                 ChangeState(CurrentSleepState.NORMAL);
@@ -105,7 +110,7 @@ namespace Project.Runtime.Gameplay.Player
             
             if (currentSleepState == CurrentSleepState.EXHAUSTED)
             {
-                if (_sleep.currentValue >= exhuastedThreshold)
+                if (_sleep.currentValue > exhuastedThreshold)
                 {
                     if (_blinkRoutine != null)
                     {
@@ -165,12 +170,14 @@ namespace Project.Runtime.Gameplay.Player
 
         private void PerformNormalFunctions()
         {
+            _shouldBlink = false;
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You no longer feel well rested");
             _controller.walkSpeed = _startingMovementSpeed;
         }
 
         private void PerformRestedFunctions()
         {
+            _shouldBlink = false;
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You feel well rested");
             _controller.walkSpeed = _startingMovementSpeed + (_startingMovementSpeed * movespeedBuff);
         }
@@ -180,12 +187,14 @@ namespace Project.Runtime.Gameplay.Player
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You feel a little drowsy");
             if (_blinkRoutine == null)
             {
+                _shouldBlink = true;
                 _blinkRoutine = StartCoroutine(Blink(blinkIntervalDrowsy));
             }
         }
         
         private void PerformExhaustedFunctions()
         {
+            _shouldBlink = true;
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You feel exhausted");
             _controller.walkSpeed = _startingMovementSpeed - (_startingMovementSpeed * negativeMoveSpeedBuff);
             if (_blinkRoutine == null)
@@ -208,15 +217,20 @@ namespace Project.Runtime.Gameplay.Player
 
         IEnumerator Blink(float interval)
         {
-            if (!_shouldBlink)
+            if (_shouldBlink)
             {
-                _shouldBlink = true;
+                while (_shouldBlink)
+                {
+                    yield return new WaitForSeconds(interval);
+                    blinkOverlay.gameObject.SetActive(true);
+                }
             }
-            
-            while (_shouldBlink)
+            else
             {
-                yield return new WaitForSeconds(interval);
-                blinkOverlay.gameObject.SetActive(true);
+                Debug.Log("Not blinking");
+                StopCoroutine(Blink(0));
+                _shouldBlink = false;
+                blinkOverlay.gameObject.SetActive(false);
             }
         }
 
@@ -237,13 +251,15 @@ namespace Project.Runtime.Gameplay.Player
                 yield return new WaitForSeconds(5);
                 
                 Debug.Log("Waking Up");
-                _sleep.AddValue(50);
-                ChangeState(_lastSleepState);
+                _sleep.AddValue(drowsyThreshold);
+                
                 sleepOverlay.gameObject.SetActive(false);
                 playerAnimator.SetTrigger(SLEEP_TRIGGER);
+                UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You collapsed from exhaustion. +50 Exhaustion for power nap");
+                yield return new WaitForSeconds(3);
+                ChangeState(CurrentSleepState.DROWSY);
                 GameManager.instance.playerManager._playerController.enabled = true;
                 GameManager.instance.cameraManager.enabled = true;
-                UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You collapsed from exhaustion. +50 Exhaustion for power nap");
                 StopCoroutine(Sleep());
                 yield return null;
             }
