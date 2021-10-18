@@ -48,6 +48,17 @@ namespace Project.Runtime.Serialization
                 File.Delete(profile.ToString());
             }
         }
+
+        public static bool TryGetProfile()
+        {
+            string fullPath = Application.persistentDataPath + directory + fileName;
+            if (File.Exists(fullPath))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 
 }
