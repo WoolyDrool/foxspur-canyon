@@ -17,13 +17,22 @@ namespace Project.Runtime.Gameplay.Tools
         public GameObject fullBag;
         public TrashPickerBag currentBag;
         
-        [Header("Interactions")]
-        public Image progressBar;
-
+        [Header("UI")]
         public GameObject progressBarContainer;
+        public Image progressBar;
+        public Image inner;
+        public Image outer;
+        public Color completeColor;
+        public Gradient fillGradient;
+        public Color defaultCirclesColor;
+
+        [Header("Interactions")]
+        
         public AudioClip swingSound;
         public AudioClip skewerSound;
         public AudioClip reloadSound;
+        public AudioClip tieSound;
+        
 
         #region Internal Variables
         private const string PICK_TRIGGER = "Pick";
@@ -63,6 +72,7 @@ namespace Project.Runtime.Gameplay.Tools
                 {
                     if (currentBag.currentCapacity > 0)
                     {
+                        _source.PlayOneShot(tieSound);
                         progressBar.fillAmount = 0;
                         _inventory.currentBags-=1;
                         objectAnimator.SetTrigger(DROP_TRIGGER);
@@ -79,15 +89,18 @@ namespace Project.Runtime.Gameplay.Tools
         void UpdateProgressBar()
         {
             progressBar.fillAmount += 0.1f;
-            
-            /*if (progressBar.fillAmount == 1)
+            progressBar.color = fillGradient.Evaluate(progressBar.fillAmount);
+
+            if (progressBar.fillAmount == 1)
             {
-                progressBar.color = Color.green;
+                inner.color = completeColor;
+                outer.color = completeColor;
             }
             else
             {
-                progressBar.color = Color.white;
-            }*/
+                inner.color = defaultCirclesColor;
+                outer.color = defaultCirclesColor;
+            }
         }
         
         public void PickTrash()
@@ -125,6 +138,10 @@ namespace Project.Runtime.Gameplay.Tools
                     
                     UpdateProgressBar();
                 }
+                else
+                {
+                    EventManager.TriggerEvent("cantPick", null);
+                }
                 component = null;
             }
             else
@@ -141,6 +158,8 @@ namespace Project.Runtime.Gameplay.Tools
                 EventManager.TriggerEvent("FreeLook", null);
                 currentBag.DropBag();
                 _source.PlayOneShot(reloadSound);
+                inner.color = defaultCirclesColor;
+                outer.color = defaultCirclesColor;
             }
         }
 
