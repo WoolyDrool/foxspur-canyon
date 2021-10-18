@@ -26,7 +26,7 @@ namespace Project.Runtime.Environment
                     lightObj.SetActive(true);
                 }
 
-                if (_time.time == disableTime || _time.time != enableTime)
+                if (_time.time == disableTime)
                 {
                     lightObj.SetActive(false);
                 }
