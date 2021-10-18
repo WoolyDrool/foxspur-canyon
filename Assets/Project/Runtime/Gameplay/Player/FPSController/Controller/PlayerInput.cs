@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
+    public static PlayerInput i;
+
     public Vector2 input
     {
         get
@@ -126,6 +128,7 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
         jumpTimer = -1;
+        i = this;
     }
 
     void Update()
