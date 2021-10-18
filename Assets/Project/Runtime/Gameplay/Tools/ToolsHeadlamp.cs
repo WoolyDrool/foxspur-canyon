@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using Project.Runtime.Gameplay.Interactables;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,11 +22,20 @@ namespace Project.Runtime.Gameplay.Tools
         public GameObject reloadProgressGroup;
         public Image reloadProgressDial;
 
+        public Transform camera;
+        
         public bool headlampOn;
 
         public float reloadHoldTime;
         public float currentHoldTime;
         public float currentReloadTime;
+
+        public float tooCloseDistance;
+        public float wayTooCloseDistance;
+        public float tooCloseAttenuation;
+        public float wayTooCloseAttentuation;
+        private RaycastHit _hit;
+        public LayerMask collisionMask;
 
         #region Internal Variables
 
@@ -34,7 +44,11 @@ namespace Project.Runtime.Gameplay.Tools
         private bool reloading = false;
         
         private float startingIntensity;
+        private float currentIntensity;
+        private float adjustedIntensity;
+        private float lerpedIntensity;
         private float dimIntensity;
+        public float attentuationLerpTime = 3;
         private bool canReload = true;
 
         #endregion
@@ -52,6 +66,7 @@ namespace Project.Runtime.Gameplay.Tools
         // Update is called once per frame
         void Update()
         {
+            currentIntensity = actualLight.intensity;
             if (_input.flashLightToggle && currentHoldTime < 0.5f)
             {
                 if (!headlampOn)
@@ -88,6 +103,34 @@ namespace Project.Runtime.Gameplay.Tools
             {
                 reloadProgressGroup.SetActive(false);
                 currentHoldTime = 0;
+            }
+
+
+            if (Physics.Raycast(camera.position, camera.transform.forward, out _hit, tooCloseDistance, collisionMask))
+            {
+                float currentDistance = Vector3.Distance(transform.position, _hit.point);
+
+                if (currentDistance <= tooCloseDistance)
+                {
+                    adjustedIntensity = startingIntensity - (currentDistance * -1) + -tooCloseAttenuation;
+                    lerpedIntensity = Mathf.Lerp(currentIntensity, adjustedIntensity, attentuationLerpTime * Time.deltaTime);
+                    actualLight.intensity = lerpedIntensity;
+
+                    if (currentDistance <= wayTooCloseDistance)
+                    {
+                        adjustedIntensity = startingIntensity - (currentDistance * -1) + -wayTooCloseAttentuation;
+                        lerpedIntensity = 0;
+                        lerpedIntensity = Mathf.Lerp(currentIntensity, adjustedIntensity, attentuationLerpTime * Time.deltaTime);
+                        actualLight.intensity = lerpedIntensity;
+                    }
+                }
+            }
+            else
+            {
+                if (actualLight.intensity < startingIntensity)
+                {
+                    actualLight.intensity = Mathf.Lerp(currentIntensity, startingIntensity, attentuationLerpTime * Time.deltaTime);
+                }
             }
         }
 
