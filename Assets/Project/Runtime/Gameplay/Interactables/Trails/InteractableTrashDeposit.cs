@@ -134,7 +134,7 @@ namespace Project.Runtime.Gameplay.Interactables
                     }
                     case false:
                     {
-                        if (currentItems != itemsThatCanBeDeposited)
+                        if (currentItems + throwableItem.amount <= itemsThatCanBeDeposited)
                         {
                             currentItems += throwableItem.amount;
                             _scoreManager.AddScore(throwableItem.amount);
