@@ -1,0 +1,26 @@
+tree "Root"
+    fallback
+        tree "Follow"
+        tree "RunAway"
+        tree "Idle"
+     
+tree "Follow"
+        while not shouldRun
+            parallel
+                MoveToPlayerPosition()
+                DrawPlayerRay()
+                
+tree "RunAway"
+    sequence
+        RunAway()
+        while Succeed
+            tree "Follow"
+            
+tree "Idle"
+    while
+        sequence
+            not shouldFollow
+            not shouldRun
+        repeat Succeed
+    
+        
