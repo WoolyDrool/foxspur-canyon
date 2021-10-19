@@ -5,9 +5,9 @@ Foxspur Canyon is a game about picking up trails and surviving in a haunted fore
 This is all of the code assets for the game. None of the art, sound, scenes, or models are included within this repository - it is *only* code. 
 
 ## Links
-####### Main site: https://woolydrool.itch.io/foxspur-canyon
-####### My website: https://caprinedreams.com/
-####### Twitter: https://twitter.com/woolydrool
+###### Main site: https://woolydrool.itch.io/foxspur-canyon
+###### My website: https://caprinedreams.com/
+###### Twitter: https://twitter.com/woolydrool
 
 
 ## Status
