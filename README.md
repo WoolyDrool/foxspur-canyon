@@ -8,6 +8,7 @@ This is all of the code assets for the game. None of the art, sound, scenes, or 
 ###### Main site: https://woolydrool.itch.io/foxspur-canyon
 ###### My website: https://caprinedreams.com/
 ###### Twitter: https://twitter.com/woolydrool
+###### Trello board: https://trello.com/b/B1hmXKSk/foxspur-canyon-development
 
 
 ## Status
