@@ -18,6 +18,8 @@ public class DebugController : MonoBehaviour
     public static DebugCommand FORCE_DEATH;
     public static DebugCommand REMOVE_ALL_STATS;
     public static DebugCommand FORCE_SLEEBY;
+    public static DebugCommand TELEPORT_TO;
+    private Vector3 teleporCoordinates;
 
     public List<object> commandList;
 
@@ -52,12 +54,12 @@ public class DebugController : MonoBehaviour
             hf.ForceDeath();
         });
         
-        FORCE_SLEEBY = new DebugCommand("force_sleeby", "Kills the player", "force_sleeby", () =>
+        FORCE_SLEEBY = new DebugCommand("force_sleeby", "Makes the player sleepy", "force_sleeby", () =>
         {
             VitalSleepFunctionality sf = FindObjectOfType<VitalSleepFunctionality>();
             sf.ForceBlinking();
         });
-        
+
         REMOVE_ALL_STATS = new DebugCommand("remove_all_stats", "Drains all players stats except health", "remove_all_stats", () =>
         {
             VitalHydrationFunctionality hf = FindObjectOfType<VitalHydrationFunctionality>();

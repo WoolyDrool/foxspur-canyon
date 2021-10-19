@@ -36,7 +36,7 @@ public class DebugCommandBase
 public class DebugCommand : DebugCommandBase
 {
     private Action _command;
-    
+
     public DebugCommand(string id, string description, string format, Action command) : base (id, description, format)
     {
         this._command = command;
