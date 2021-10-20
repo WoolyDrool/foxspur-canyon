@@ -112,6 +112,11 @@ public class PlayerInput : MonoBehaviour
     {
         get { return Input.GetKeyDown(KeyCode.E); }
     }
+    
+    public bool resort
+    {
+        get { return Input.GetKeyDown(KeyCode.Y); }
+    }
 
     public float mouseScroll
     { 
