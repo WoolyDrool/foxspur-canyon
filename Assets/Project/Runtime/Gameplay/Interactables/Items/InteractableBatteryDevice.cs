@@ -104,8 +104,6 @@ namespace Project.Runtime.Gameplay.Interactables
                 currentBatteryCharge -= (Time.deltaTime * chargeDecreaseAmount);
                 GameManager.instance.playerVitals.currentToolBattery = currentBatteryCharge;
                 yield return new WaitForSeconds(chargeDecreaseTick);
-                
-                
             }
         }
     }

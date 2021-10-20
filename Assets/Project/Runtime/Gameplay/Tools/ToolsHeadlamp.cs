@@ -32,6 +32,7 @@ namespace Project.Runtime.Gameplay.Tools
         public float tooCloseAttenuation;
         public float wayTooCloseAttentuation;
         public LayerMask collisionMask;
+        public bool outOfBattery = false;
 
         #region Internal Variables
 
@@ -63,17 +64,20 @@ namespace Project.Runtime.Gameplay.Tools
         void Update()
         {
             currentIntensity = actualLight.intensity;
-            if (_input.flashLightToggle && currentHoldTime < 0.5f)
+            if (_input.flashLightToggle)
             {
-                if (!headlampOn)
+                if (!outOfBattery)
                 {
-                    ToggleHeadLamp();
-                    headlampOn = true;
-                }
-                else
-                {
-                    ToggleHeadLamp();
-                    headlampOn = false;
+                    if (!headlampOn)
+                    {
+                        ToggleHeadLamp();
+                        headlampOn = true;
+                    }
+                    else
+                    {
+                        ToggleHeadLamp();
+                        headlampOn = false;
+                    }
                 }
             }
 
@@ -174,6 +178,7 @@ namespace Project.Runtime.Gameplay.Tools
                 Debug.Log("Loaded battery");
                 actualLight.intensity = startingIntensity;
                 GameManager.instance.playerInventory.RemoveBattery();
+                outOfBattery = false;
                 _batteryDevice.AddBattery();
                 soundSource.PlayOneShot(reloadSound);
                 StartCoroutine(ReloadCooldown());
