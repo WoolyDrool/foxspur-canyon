@@ -23,6 +23,7 @@ namespace Project.Runtime.Gameplay.Inventory
         public Item itemToAdd;
         public int itemValue = 0;
         public GameObject model;
+        public int currentID;
         
         [Header("Interactions")] 
         public AudioClip pickupSound;

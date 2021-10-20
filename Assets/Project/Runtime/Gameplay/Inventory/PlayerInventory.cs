@@ -37,16 +37,18 @@ namespace Project.Runtime.Gameplay.Inventory
         [SerializeField] private GameObject itemToDiscard;
         [SerializeField] private Transform _trackedItemContainer;
 
+        #region Events
+
         [HideInInspector] public UpdateItemEvent updateUIList;
-        public UnityEvent resortUIList;
-        public UnityEvent updateOccupiedSlots;
-        public delegate void RemoveItemEventHandler(Item i);
+        [HideInInspector] public UnityEvent resortUIList;
+        [HideInInspector] public UnityEvent updateOccupiedSlots;
+        //public delegate void RemoveItemEventHandler(Item i);
+        //public static event RemoveItemEventHandler OnRemove;
+        [HideInInspector] public delegate void CheckItemEventHandler(Item i);
+        [HideInInspector] public static event CheckItemEventHandler OnCheck;
 
-        public static event RemoveItemEventHandler OnRemove;
+        #endregion
         
-        public delegate void CheckItemEventHandler(Item i);
-
-        public static event CheckItemEventHandler OnCheck;
 
         public void Awake()
         {
@@ -71,7 +73,6 @@ namespace Project.Runtime.Gameplay.Inventory
         {
             if (pickupObj.itemToAdd != null)
             {
-                updateUIList?.Invoke(item);
                 if (canAddItem)
                 {
                     float itemToAddSize = item.size.x * item.size.y;
@@ -90,6 +91,8 @@ namespace Project.Runtime.Gameplay.Inventory
                         {
                             inventoryItems.Add(item);
                         }
+                        
+                        updateUIList?.Invoke(item);
                         TrackItem(pickupObj.gameObject);
                         //availableSlots -= (item.size.x * item.size.y);
                         UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMADD, item.itemName);
@@ -103,11 +106,6 @@ namespace Project.Runtime.Gameplay.Inventory
             }
         }
 
-        public bool CheckSpace(Item itemToCheck)
-        {
-            return availableSlots > itemToCheck.size.x * itemToCheck.size.y;
-        }
-
         public void UseItem(Item item)
         {
             Debug.Log("Used " + item.itemName);
@@ -118,8 +116,6 @@ namespace Project.Runtime.Gameplay.Inventory
                     use.vitals = GameManager.instance.playerVitals;
                     use.OnUse();
                 }
-                
-                //inventorySound.PlayOneShot(item.item.use.useSound);
                 RemoveItem(item);
             }
         }
@@ -136,9 +132,11 @@ namespace Project.Runtime.Gameplay.Inventory
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, trashInInventory.ToString() + " Trash");
             trashInInventory = 0;
         }
+        
 
         public void DropItem(Item item)
         {
+            UntrackItem(item, false);
             if (item.isTrash)
             {
                 trashItems.Remove(item);
@@ -150,11 +148,10 @@ namespace Project.Runtime.Gameplay.Inventory
             }
             else
             {
-                inventoryItems.Remove(item);
+               inventoryItems.Remove(item);
             }
-            UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
-            //availableSlots += (item.size.x * item.size.y);
-            UntrackItem(item, false);
+            UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMDROP, item.itemName);
+
         }
 
         public void RemoveItem(Item item)
@@ -174,7 +171,6 @@ namespace Project.Runtime.Gameplay.Inventory
             }
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
             availableSlots += (item.size.x * item.size.y);
-            OnRemove?.Invoke(item);
             UntrackItem(item, true);
         }
 
@@ -186,21 +182,53 @@ namespace Project.Runtime.Gameplay.Inventory
 
         public void UntrackItem(Item item, bool alsoDestroy)
         {
-            if (itemToDiscard == null)
+            Debug.Log("Called");
+            if (!itemToDiscard)
             {
                 for (int i = 0; i < pickups.Count; i++)
                 {
                     if (pickups[i].name == item.name)
                     {
                         itemToDiscard = pickups[i].gameObject;
-                        DoUntrack(itemToDiscard, alsoDestroy);
-                        Debug.Log("Located " + itemToDiscard);
-                        itemToDiscard = null;
+                        i = 0;
+                        if (itemToDiscard != null)
+                        {
+                            if (alsoDestroy)
+                            {
+                                pickups.Remove(itemToDiscard);
+                                Destroy(itemToDiscard);
+                                itemToDiscard = null;
+                                return;
+                            }
+                        
+                            itemToDiscard.SetActive(true);
+                            itemToDiscard.transform.SetParent(null);
+                            itemToDiscard.transform.position = itemDropPoint.position;
+                            pickups.Remove(itemToDiscard);
+                            itemToDiscard = null;
+                        }
                     }
                 }
             }
         }
 
+        #region Old untrack code
+
+        /*if (itemToDiscard == null)
+        {
+            for (int i = 0; i < pickups.Count; i++)
+            {
+                if (pickups[i].name == item.name)
+                {
+                    itemToDiscard = pickups[i].gameObject;
+                    DoUntrack(itemToDiscard, alsoDestroy);
+                    Debug.Log("Located " + itemToDiscard);
+                    itemToDiscard = null;
+                }
+            }
+        }
+        }
+        
         void DoUntrack(GameObject discard, bool alsoDestroy)
         {
             if (discard != null)
@@ -216,8 +244,12 @@ namespace Project.Runtime.Gameplay.Inventory
                 discard.transform.parent = null;
                 discard.transform.position = itemDropPoint.transform.position;
             }
-        }
+        }*/
 
+
+        #endregion
+
+        
         public void RemoveBattery()
         {
             currentBatteries--;

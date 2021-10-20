@@ -28,4 +28,4 @@ MonoBehaviour:
   use:
   - {fileID: 11400000, guid: 9b5ad4419a86956468ceaab2f4cb0a20, type: 2}
   isTrash: 0
-  useSound: {fileID: 0}
+  useSound: {fileID: 8300000, guid: 0fa97c9e6068a234ab47b37edb8755b7, type: 3}

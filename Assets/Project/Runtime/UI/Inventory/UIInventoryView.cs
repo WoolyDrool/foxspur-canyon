@@ -25,6 +25,7 @@ namespace Project.Runtime.UI.Elements
     
     public class UIInventoryView : MonoSOObserver
     {
+        private int lastInInventoryID;
         public List<UIStoredItem> itemsInGrid = new List<UIStoredItem>();
         public PlayerInventory playerInventory;
         public InventoryData inventoryData;
@@ -34,6 +35,7 @@ namespace Project.Runtime.UI.Elements
         public TextMeshProUGUI bagsCount;
         public TextMeshProUGUI moneyCount;
         public TextMeshProUGUI secretsCount;
+        private UIStoredItem itemBeingAdded;
 
         [Header("Audio")]
         public AudioSource inventorySound;
@@ -81,7 +83,7 @@ namespace Project.Runtime.UI.Elements
             playerInventory.updateUIList.AddListener(UpdateItems);
             playerInventory.resortUIList.AddListener(ResortItems);
             playerInventory.updateOccupiedSlots.AddListener(UpdateOccupiedSlots);
-            PlayerInventory.OnRemove += RemoveSingleTrashItem;
+            //PlayerInventory.OnRemove += RemoveItemDirectly;
             PlayerInventory.OnCheck += CheckSpace;
 
             //Initializes the maths and drawing classes
@@ -94,7 +96,6 @@ namespace Project.Runtime.UI.Elements
             {
                 AddItem(i);
             }
-            
         }
 
         protected override void OnEnable()
@@ -153,21 +154,23 @@ namespace Project.Runtime.UI.Elements
         public void AddItem(Item item)
         {
             int totalSize = item.size.x * item.size.y;
-            UIStoredItem itemBeingAdded;
             if (maths.FreeSlotsCount() >= totalSize)
             {
                 IntPair position = maths.FindValidPosition(item);
                 if (position != null)
                 {
+                    itemBeingAdded = new UIStoredItem(item, position);
                     _lastKnownItemCount++;
-                    itemsInGrid.Add(new UIStoredItem(item, position));
+                    itemsInGrid.Add(itemBeingAdded);
                     playerInventory.canAddItem = true;
                     //drawing.AddNewItem(itemsToBeSorted);
+                    itemBeingAdded = null;
                 }
                 else
                 {
                     Debug.LogError("Did not add item");
-                    playerInventory.DropItem(item);
+                    playerInventory.DropItem(itemBeingAdded.item);
+                    itemBeingAdded = null;
                     return;
                 }
             }
@@ -197,11 +200,14 @@ namespace Project.Runtime.UI.Elements
             Debug.Log(item.item.ToString());
             if (_canUseItem && item.item.canBeUsed)
             {
+                RemoveItem(item);
                 playerInventory.UseItem(item.item);
                 GameManager.instance.audioManager.PlayInterfaceSound(item.item.useSound);
-                RemoveItem(item);
+                
             }
         }
+
+      
 
         public void UpdateOccupiedSlots()
         {
@@ -253,10 +259,10 @@ namespace Project.Runtime.UI.Elements
             
         }
 
-        private void RemoveSingleTrashItem(Item itemToRemove)
+        private void RemoveItemDirectly(Item itemToRemove)
         {
-            UIStoredItem item2 = itemsInGrid.Find(item => itemToRemove);
-            RemoveItem(item2);
+            Debug.LogWarning(itemToRemove);
+            RemoveItem(itemsInGrid.Find(item => itemToRemove));
             Notify();
         }
 

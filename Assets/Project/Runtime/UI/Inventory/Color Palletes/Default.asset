@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946eefe995a4faa45a2f57b427931493, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: 
-  trashColor: {r: 1, g: 0, b: 0.009515762, a: 0.44705883}
-  consumableColor: {r: 0.24213827, g: 1, b: 0.49117067, a: 0.48235294}
+  trashColor: {r: 0.38679248, g: 0.34651574, b: 0.09730625, a: 0.44705883}
+  consumableColor: {r: 0.3984217, g: 0.7183249, b: 0.745283, a: 0.48235294}
   keyColor: {r: 1, g: 0.76611674, b: 0.15723264, a: 0.49411765}

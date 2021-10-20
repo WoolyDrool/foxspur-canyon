@@ -46,9 +46,6 @@ namespace Project.Runtime.UI.Elements
         private const float maxSpeedAngle = -190;
         private const float zeroSpeedAngle = 0;
         private float shiftAmount;
-        private Vector2 timeGroupStart;
-        private Vector2 timeGroupEnd;
-        private UITweener timeTweener;
         public bool showingPlayerHud = false;
 
         #endregion
@@ -101,9 +98,6 @@ namespace Project.Runtime.UI.Elements
         {
             _drivingMovement = GameManager.instance.playerManager.playerTransform.GetComponent<DrivingMovement>();
             _playerVitals = GameManager.instance.playerVitals;
-            timeTweener = timeGroup.GetComponent<UITweener>();
-            timeGroupStart = timeTweener.@from;
-            timeGroupEnd = timeTweener.to;
         }
 
         void Update()
@@ -128,11 +122,6 @@ namespace Project.Runtime.UI.Elements
                 showingPlayerHud = true;
                 //dialsTweener.easeType = LeanTweenType.easeInSine;
                 //timeTweener.easeType = LeanTweenType.easeInSine;
-                
-                timeTweener.to = timeGroupEnd;
-                timeTweener.@from = timeGroupStart;
-                
-                timeTweener.Restart();
                 //UpdatePlayerHud();
 
             }
@@ -141,10 +130,6 @@ namespace Project.Runtime.UI.Elements
                 showingPlayerHud = false;
                 //dialsTweener.easeType = LeanTweenType.easeOutSine;
                 //timeTweener.easeType = LeanTweenType.easeOutSine;
-                timeTweener.@from = timeGroupEnd;
-                timeTweener.to = timeGroupStart;
-                
-                timeTweener.Restart();
             }
 
         }
