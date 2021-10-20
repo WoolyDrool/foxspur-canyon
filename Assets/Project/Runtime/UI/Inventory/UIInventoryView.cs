@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Project.Runtime.Audio;
 using Project.Runtime.Gameplay.Inventory;
@@ -79,7 +80,6 @@ namespace Project.Runtime.UI.Elements
 
             playerInventory.updateUIList.AddListener(UpdateItems);
             playerInventory.resortUIList.AddListener(ResortItems);
-            //u_UpdateEvent.AddListener(UpdateItems);
             PlayerInventory.OnRemove += RemoveSingleTrashItem;
 
             //Initializes the maths and drawing classes
@@ -109,7 +109,16 @@ namespace Project.Runtime.UI.Elements
         {
             drawing.DrawInventory();
         }
-        
+
+        private void Update()
+        {
+            if (PlayerInput.i.resort)
+            {
+                ResortItems();
+                
+            }
+        }
+
         public void HandleItemInteraction(UIStoredItem uiStoredItem, GameObject obj)
         {
             UpdateHoveredItem hovUpdater = obj.GetComponent<UpdateHoveredItem>();
@@ -155,10 +164,11 @@ namespace Project.Runtime.UI.Elements
                     Notify();
                     //drawing.AddNewItem(itemsToBeSorted);
                 }
-            }
-            else
-            {
-                EventManager.TriggerEvent("cantAddItem", null);
+                else
+                {
+                    EventManager.TriggerEvent("cantAddItem", null);
+                    return;
+                }
             }
         }
         
@@ -222,14 +232,12 @@ namespace Project.Runtime.UI.Elements
         private void RemoveSingleTrashItem(Item itemToRemove)
         {
             UIStoredItem item2 = itemsInGrid.Find(item => itemToRemove);
-            itemsInGrid.Remove(item2);
+            RemoveItem(item2);
             Notify();
         }
 
         private void ResortItems()
         {
-           
-            
             itemsInGrid.Clear();
             
             foreach (Item i in playerInventory.inventoryItems)
@@ -241,6 +249,8 @@ namespace Project.Runtime.UI.Elements
             {
                 AddItem(i);
             }
+            
+            Notify();
         }
 
         #endregion
