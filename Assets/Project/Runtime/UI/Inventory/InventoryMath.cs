@@ -58,17 +58,16 @@ namespace Project.Runtime.UI.Elements
         public int FreeSlotsCount()
         {
             int occupied = 0;
-            foreach (UIStoredItem stItem in gridItems)
+            foreach (UIStoredItem stItem in _view.itemsInGrid)
             {
                 occupied += stItem.item.size.x * stItem.item.size.y;
             }
-
             return _sizeX * _sizeY - occupied;
         }
 
         public bool IsColliding(IntPair itemSize, int row, int col, UIStoredItem ignoreWith = null)
         {
-            foreach (UIStoredItem stItem in gridItems)
+            foreach (UIStoredItem stItem in _view.itemsInGrid)
             {
                 if (ABBintersectsABB(
                         stItem.position.y, stItem.position.x, stItem.item.size.y, stItem.item.size.x, col, row,
@@ -152,7 +151,7 @@ namespace Project.Runtime.UI.Elements
                     _view._canUseItem = false;
                     _view.DropItem(movingItem);
                 }
-
+                
                 //movingItem.position.x = row;
                 //movingItem.position.y = col;
                 _view.Notify();
@@ -166,10 +165,12 @@ namespace Project.Runtime.UI.Elements
             if (IsPositionValid(toMove.item, newPos.x, newPos.y, toMove))
             {
                 toMove.position = newPos;
+                _view.UpdateOccupiedSlots();
                 return true;
             }
             else
             {
+                _view.UpdateOccupiedSlots();
                 return false;
             }
         }

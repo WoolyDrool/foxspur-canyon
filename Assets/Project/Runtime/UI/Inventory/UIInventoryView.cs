@@ -80,7 +80,9 @@ namespace Project.Runtime.UI.Elements
 
             playerInventory.updateUIList.AddListener(UpdateItems);
             playerInventory.resortUIList.AddListener(ResortItems);
+            playerInventory.updateOccupiedSlots.AddListener(UpdateOccupiedSlots);
             PlayerInventory.OnRemove += RemoveSingleTrashItem;
+            PlayerInventory.OnCheck += CheckSpace;
 
             //Initializes the maths and drawing classes
             maths = new InventoryMath(sizeX, sizeY, itemsInGrid, drawing.grid, this, drawing);
@@ -115,7 +117,6 @@ namespace Project.Runtime.UI.Elements
             if (PlayerInput.i.resort)
             {
                 ResortItems();
-                
             }
         }
 
@@ -152,7 +153,7 @@ namespace Project.Runtime.UI.Elements
         public void AddItem(Item item)
         {
             int totalSize = item.size.x * item.size.y;
-
+            UIStoredItem itemBeingAdded;
             if (maths.FreeSlotsCount() >= totalSize)
             {
                 IntPair position = maths.FindValidPosition(item);
@@ -160,18 +161,37 @@ namespace Project.Runtime.UI.Elements
                 {
                     _lastKnownItemCount++;
                     itemsInGrid.Add(new UIStoredItem(item, position));
-                    playerInventory.availableSlots = maths.FreeSlotsCount();
-                    Notify();
+                    playerInventory.canAddItem = true;
                     //drawing.AddNewItem(itemsToBeSorted);
                 }
                 else
                 {
-                    EventManager.TriggerEvent("cantAddItem", null);
+                    Debug.LogError("Did not add item");
+                    playerInventory.DropItem(item);
                     return;
                 }
             }
+            Notify();
+            playerInventory.availableSlots = maths.FreeSlotsCount();
         }
-        
+
+        public void CheckSpace(Item item)
+        {
+            int totalSize = item.size.x * item.size.y;
+            if (maths.FreeSlotsCount() >= totalSize)
+            {
+                IntPair position = maths.FindValidPosition(item);
+                if (position != null)
+                {
+                    playerInventory.canAddItem = true;
+                }
+                else
+                {
+                    playerInventory.canAddItem = false;
+                }   
+            }
+        }
+
         public void UseItem(UIStoredItem item)
         {
             Debug.Log(item.item.ToString());
@@ -181,6 +201,11 @@ namespace Project.Runtime.UI.Elements
                 GameManager.instance.audioManager.PlayInterfaceSound(item.item.useSound);
                 RemoveItem(item);
             }
+        }
+
+        public void UpdateOccupiedSlots()
+        {
+            playerInventory.availableSlots = maths.FreeSlotsCount();
         }
 
         public void DropItem(UIStoredItem item)
@@ -212,7 +237,6 @@ namespace Project.Runtime.UI.Elements
         private void UpdateItems(Item newItem)
         {
             //This might not be the most elegant solution but fuck it
-            
             AddItem(newItem);
             
             /*itemsInGrid.Clear();

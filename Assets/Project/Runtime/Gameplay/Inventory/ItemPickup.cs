@@ -57,39 +57,37 @@ namespace Project.Runtime.Gameplay.Inventory
         
         public void OnPickup()
         {
-            DoPickup();
-        }
-
-        void DoPickup()
-        {
-            if (itemToAdd != null)
+            if (itemToAdd)
             {
-                if (inventory.CheckSpace(itemToAdd))
+                if (inventory.TryAddItem(itemToAdd))
                 {
-                    if (itemType == PickupType.CONSUMABLE)
-                    {
-                        AddConsumable(); 
-                        return;
-                    }
-
-                    if (itemType == PickupType.TRASH)
-                    {
-                        AddTrash();
-                        return;
-                    }
+                    DoPickup();
                 }
                 else
                 {
                     EventManager.TriggerEvent("cantAddItem", null);
-                    Debug.LogError("Cannot add item, no space!");
+                    Debug.LogError("Not picking up");
+                    return;
                 }
             }
             else
             {
-                if (itemType != PickupType.CONSUMABLE || itemType != PickupType.TRASH)
-                {
-                    AddNonItem(itemType);
-                }
+                AddNonItem(itemType);
+            }
+        }
+
+        public void DoPickup()
+        {
+            if (itemType == PickupType.CONSUMABLE)
+            {
+                AddConsumable(); 
+                return;
+            }
+
+            if (itemType == PickupType.TRASH)
+            {
+                AddTrash();
+                return;
             }
         }
 

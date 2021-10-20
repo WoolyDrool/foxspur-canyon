@@ -25,9 +25,9 @@ namespace Project.Runtime.Gameplay.Inventory
         public int currentBags;
         public int currentMoney;
         public int currentSecrets;
-        public GameObject uiCantAddItem;
         public int trashInInventory;
         public int smallTrashinInventory;
+        public bool canAddItem = true;
 
         public List<GameObject> pickups = new List<GameObject>();
 
@@ -39,9 +39,14 @@ namespace Project.Runtime.Gameplay.Inventory
 
         [HideInInspector] public UpdateItemEvent updateUIList;
         public UnityEvent resortUIList;
+        public UnityEvent updateOccupiedSlots;
         public delegate void RemoveItemEventHandler(Item i);
 
         public static event RemoveItemEventHandler OnRemove;
+        
+        public delegate void CheckItemEventHandler(Item i);
+
+        public static event CheckItemEventHandler OnCheck;
 
         public void Awake()
         {
@@ -49,35 +54,51 @@ namespace Project.Runtime.Gameplay.Inventory
             availableSlots = (inventoryData.size.x * inventoryData.size.y);
         }
 
+        public bool TryAddItem(Item item)
+        {
+            OnCheck?.Invoke(item);
+            if (canAddItem)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void AddItem(Item item, ItemPickup pickupObj)
         {
             if (pickupObj.itemToAdd != null)
             {
-                float itemToAddSize = item.size.x * item.size.y;
-                if (availableSlots > itemToAddSize)
+                updateUIList?.Invoke(item);
+                if (canAddItem)
                 {
-                    if (item.isTrash)
+                    float itemToAddSize = item.size.x * item.size.y;
+                    if (availableSlots > itemToAddSize)
                     {
-                        trashItems.Add(item);
-                        trashInInventory++;
-                        if (itemToAddSize <= 4)
+                        if (item.isTrash)
                         {
-                            smallTrashinInventory++;
+                            trashItems.Add(item);
+                            trashInInventory++;
+                            if (itemToAddSize <= 4)
+                            {
+                                smallTrashinInventory++;
+                            }
                         }
+                        else
+                        {
+                            inventoryItems.Add(item);
+                        }
+                        TrackItem(pickupObj.gameObject);
+                        //availableSlots -= (item.size.x * item.size.y);
+                        UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMADD, item.itemName);
                     }
                     else
                     {
-                        inventoryItems.Add(item);
+                        Debug.LogError("No space!");
+                        return;
                     }
-                    TrackItem(pickupObj.gameObject);
-                    updateUIList?.Invoke(item);
-                    //availableSlots -= (item.size.x * item.size.y);
-                    UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMADD, item.itemName);
-                }
-                else
-                {
-                    Debug.LogError("No space!");
-                    return;
                 }
             }
         }
@@ -132,7 +153,7 @@ namespace Project.Runtime.Gameplay.Inventory
                 inventoryItems.Remove(item);
             }
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
-            availableSlots += (item.size.x * item.size.y);
+            //availableSlots += (item.size.x * item.size.y);
             UntrackItem(item, false);
         }
 
@@ -172,31 +193,29 @@ namespace Project.Runtime.Gameplay.Inventory
                     if (pickups[i].name == item.name)
                     {
                         itemToDiscard = pickups[i].gameObject;
-                        //Debug.Log("Located " + itemToDiscard.ToString());
+                        DoUntrack(itemToDiscard, alsoDestroy);
+                        Debug.Log("Located " + itemToDiscard);
+                        itemToDiscard = null;
                     }
                 }
             }
-            
-            if (itemToDiscard != null)
+        }
+
+        void DoUntrack(GameObject discard, bool alsoDestroy)
+        {
+            if (discard != null)
             {
-                pickups.Remove(itemToDiscard);
-                //Debug.Log("Untracking " + itemToDiscard.ToString());
-                //itemToDiscard.transform.parent = null;
-            
+                pickups.Remove(discard);
                 if (alsoDestroy)
                 {
                     //Debug.Log("Destroyed " + itemToDiscard.name);
-                    Destroy(itemToDiscard.gameObject);
-                    
+                    Destroy(discard.gameObject);
+                    return;
                 }
-                else
-                {
-                    itemToDiscard.transform.position = itemDropPoint.transform.position;
-                    itemToDiscard.SetActive(true);
-                }
-                itemToDiscard = null;
+                Debug.Log("Untracking " + discard.ToString());
+                discard.transform.parent = null;
+                discard.transform.position = itemDropPoint.transform.position;
             }
-            //itemToDiscard = null;
         }
 
         public void RemoveBattery()
