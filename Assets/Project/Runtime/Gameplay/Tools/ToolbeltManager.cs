@@ -57,14 +57,14 @@ namespace Project.Runtime.Gameplay.Tools
         {
             int previousSelectedTool = _selectedTool;
             
-            if (_input.mouseScroll > 0f)
+            if (_input.mouseScroll < 0f)
             {
                 if (_selectedTool >= equippableInventory.Length - 1)
                     _selectedTool = 0;
                 else
                     _selectedTool++;
             }
-            if (_input.mouseScroll < 0f)
+            if (_input.mouseScroll > 0f)
             {
                 if (_selectedTool <= 0)
                     _selectedTool = equippableInventory.Length - 1;
