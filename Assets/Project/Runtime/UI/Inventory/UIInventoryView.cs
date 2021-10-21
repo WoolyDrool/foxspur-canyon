@@ -83,7 +83,7 @@ namespace Project.Runtime.UI.Elements
             playerInventory.updateUIList.AddListener(UpdateItems);
             playerInventory.resortUIList.AddListener(ResortItems);
             playerInventory.updateOccupiedSlots.AddListener(UpdateOccupiedSlots);
-            //PlayerInventory.OnRemove += RemoveItemDirectly;
+            PlayerInventory.OnRemove += RemoveItemDirectly;
             PlayerInventory.OnCheck += CheckSpace;
 
             //Initializes the maths and drawing classes
@@ -261,9 +261,10 @@ namespace Project.Runtime.UI.Elements
 
         private void RemoveItemDirectly(Item itemToRemove)
         {
-            Debug.LogWarning(itemToRemove);
-            RemoveItem(itemsInGrid.Find(item => itemToRemove));
-            Notify();
+            UIStoredItem i = new UIStoredItem(itemToRemove, null);
+            UIStoredItem ir = itemsInGrid.Find(item => i.item);
+            Debug.LogWarning(ir);
+            RemoveItem(ir);
         }
 
         private void ResortItems()

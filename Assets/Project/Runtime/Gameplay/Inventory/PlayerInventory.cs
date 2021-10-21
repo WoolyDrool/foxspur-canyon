@@ -47,6 +47,9 @@ namespace Project.Runtime.Gameplay.Inventory
         [HideInInspector] public delegate void CheckItemEventHandler(Item i);
         [HideInInspector] public static event CheckItemEventHandler OnCheck;
 
+        public delegate void RemoveItemEventHandler(Item i);
+        public static event RemoveItemEventHandler OnRemove;
+
         #endregion
         
 
@@ -169,6 +172,7 @@ namespace Project.Runtime.Gameplay.Inventory
             {
                 inventoryItems.Remove(item);
             }
+            OnRemove?.Invoke(item);
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
             availableSlots += (item.size.x * item.size.y);
             UntrackItem(item, true);
@@ -185,7 +189,26 @@ namespace Project.Runtime.Gameplay.Inventory
             Debug.Log("Called");
             if (!itemToDiscard)
             {
-                for (int i = 0; i < pickups.Count; i++)
+                itemToDiscard = pickups.Find(fGO => fGO.GetComponent<ItemPickup>().itemToAdd);
+
+                if (itemToDiscard)
+                {
+                    if (alsoDestroy)
+                    {
+                        pickups.Remove(itemToDiscard);
+                        Destroy(itemToDiscard);
+                        itemToDiscard = null;
+                        return;
+                    }
+                        
+                    itemToDiscard.SetActive(true);
+                    itemToDiscard.transform.SetParent(null);
+                    itemToDiscard.transform.position = itemDropPoint.position;
+                    pickups.Remove(itemToDiscard);
+                    itemToDiscard = null;
+                }
+                
+                /*for (int i = 0; i < pickups.Count; i++)
                 {
                     if (pickups[i].name == item.name)
                     {
@@ -208,7 +231,7 @@ namespace Project.Runtime.Gameplay.Inventory
                             itemToDiscard = null;
                         }
                     }
-                }
+                }*/
             }
         }
 
