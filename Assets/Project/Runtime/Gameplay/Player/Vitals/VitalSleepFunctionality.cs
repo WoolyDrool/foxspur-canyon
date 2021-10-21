@@ -77,35 +77,45 @@ namespace Project.Runtime.Gameplay.Player
         private void Update()
         {
 
-            if (_sleep.currentValue > restedThreshold)
+            if (_sleep.CheckCurrentValue(true) > restedThreshold)
             {
                 ChangeState(CurrentSleepState.RESTED);
             }
             
-            if (_sleep.currentValue < restedThreshold && currentSleepState == CurrentSleepState.RESTED)
+            if (_sleep.CheckCurrentValue(true) < restedThreshold && currentSleepState == CurrentSleepState.RESTED)
             {
                 ChangeState(CurrentSleepState.NORMAL);
             }
             
-            if (_sleep.currentValue <= normalThreshhold && currentSleepState == CurrentSleepState.RESTED)
+            if (_sleep.CheckCurrentValue(true)  <= normalThreshhold && currentSleepState == CurrentSleepState.RESTED)
             {
                 ChangeState(CurrentSleepState.NORMAL);
             }
             
-            if (_sleep.currentValue <= drowsyThreshold && currentSleepState == CurrentSleepState.NORMAL)
+            if (_sleep.CheckCurrentValue(true)  <= drowsyThreshold && currentSleepState == CurrentSleepState.NORMAL)
             {
                 if(!_isDrowsy)
                     ChangeState(CurrentSleepState.DROWSY);
             }
 
-            if (_sleep.currentValue <= exhuastedThreshold && currentSleepState == CurrentSleepState.DROWSY)
+            if (_sleep.CheckCurrentValue(true)  <= exhuastedThreshold && currentSleepState == CurrentSleepState.DROWSY)
             {
                 ChangeState(CurrentSleepState.EXHAUSTED);
             }
             
-            if (_sleep.currentValue <= sleepThreshold && currentSleepState == CurrentSleepState.EXHAUSTED)
+            if (_sleep.CheckCurrentValue(true)  <= sleepThreshold && currentSleepState == CurrentSleepState.EXHAUSTED)
             {
                 ChangeState(CurrentSleepState.ASLEEP);
+            }
+
+            if (_sleep.CheckCurrentValue(true) > exhuastedThreshold && currentSleepState == CurrentSleepState.EXHAUSTED)
+            {
+                ChangeState(CurrentSleepState.DROWSY);
+            }
+            
+            if (_sleep.CheckCurrentValue(true) > drowsyThreshold && currentSleepState == CurrentSleepState.DROWSY)
+            {
+                ChangeState(CurrentSleepState.NORMAL);
             }
             
             if (currentSleepState == CurrentSleepState.EXHAUSTED)
@@ -173,6 +183,10 @@ namespace Project.Runtime.Gameplay.Player
             _shouldBlink = false;
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You no longer feel well rested");
             _controller.walkSpeed = _startingMovementSpeed;
+            if (_blinkRoutine != null)
+            {
+                StopBlinkRoutine();
+            }
         }
 
         private void PerformRestedFunctions()
@@ -180,6 +194,10 @@ namespace Project.Runtime.Gameplay.Player
             _shouldBlink = false;
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You feel well rested");
             _controller.walkSpeed = _startingMovementSpeed + (_startingMovementSpeed * movespeedBuff);
+            if (_blinkRoutine != null)
+            {
+                StopBlinkRoutine();
+            }
         }
         
         private void PerformDrowsyFunctions()
@@ -236,33 +254,26 @@ namespace Project.Runtime.Gameplay.Player
 
         IEnumerator Sleep()
         {
-            int randomValue = UnityEngine.Random.Range(1, 1);
-            Debug.Log(randomValue.ToString());
-            yield return new WaitForSeconds(1);
-            
-            if (randomValue == 1)
-            {
-                Debug.Log("Falling asleep");
-                GameManager.instance.playerManager._playerController.enabled = false;
-                GameManager.instance.cameraManager.enabled = false;
-                sleepOverlay.gameObject.SetActive(true);
-                playerAnimator.SetTrigger(SLEEP_TRIGGER);
+            Debug.Log("Falling asleep");
+            GameManager.instance.playerManager._playerController.enabled = false;
+            GameManager.instance.cameraManager.enabled = false;
+            sleepOverlay.gameObject.SetActive(true);
+            playerAnimator.SetTrigger(SLEEP_TRIGGER);
                 
-                yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(5);
                 
-                Debug.Log("Waking Up");
-                _sleep.AddValue(drowsyThreshold);
+            Debug.Log("Waking Up");
+            _sleep.AddValue(drowsyThreshold);
                 
-                sleepOverlay.gameObject.SetActive(false);
-                playerAnimator.SetTrigger(SLEEP_TRIGGER);
-                UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You collapsed from exhaustion. +50 Exhaustion for power nap");
-                yield return new WaitForSeconds(3);
-                ChangeState(CurrentSleepState.DROWSY);
-                GameManager.instance.playerManager._playerController.enabled = true;
-                GameManager.instance.cameraManager.enabled = true;
-                StopCoroutine(Sleep());
-                yield return null;
-            }
+            sleepOverlay.gameObject.SetActive(false);
+            playerAnimator.SetTrigger(SLEEP_TRIGGER);
+            UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE,"You collapsed from exhaustion. +50 Exhaustion for power nap");
+            yield return new WaitForSeconds(3);
+            ChangeState(CurrentSleepState.DROWSY);
+            GameManager.instance.playerManager._playerController.enabled = true;
+            GameManager.instance.cameraManager.enabled = true;
+            StopCoroutine(Sleep());
+            yield return null;
         }
     }
 
