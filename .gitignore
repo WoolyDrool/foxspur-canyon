@@ -21,6 +21,8 @@
 /[Aa]ssets/Resources/
 /[Aa]ssets/Aura 2/
 /[Aa]ssets/Project/External/
+/[Aa]ssets/Project/Runtime/AI/AstarPathfindingProject/
+/[Aa]ssets/Project/Runtime/AI/PandaBehaviour/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
