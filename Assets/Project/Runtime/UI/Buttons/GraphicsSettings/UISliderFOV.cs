@@ -16,9 +16,10 @@ public class UISliderFOV : MonoBehaviour
         _slider = GetComponent<Slider>();
 
         currentFOV = _camera.fieldOfView;
+        _camera.fieldOfView = currentFOV;
         _slider.minValue = minFOV;
         _slider.maxValue = maxFOV;
-        _slider.value = _camera.fieldOfView / maxFOV;
+        _slider.value = currentFOV / maxFOV;
     }
 
     void Update()
