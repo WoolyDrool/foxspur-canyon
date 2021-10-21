@@ -29,6 +29,21 @@ namespace Project.Runtime.Gameplay.Player
             currentValue = value;
         }
 
+        public float CheckCurrentValue(bool roundToInt)
+        {
+            float output;
+            if (!roundToInt)
+            {
+                output = currentValue;
+            }
+            else
+            {
+                output = Mathf.RoundToInt(currentValue);
+            }
+
+            return output;
+        }
+
         public void RemoveValue(float value)
         {
             if(value == 0)
