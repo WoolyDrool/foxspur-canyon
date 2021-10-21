@@ -17,9 +17,9 @@ namespace Project.Runtime.Gameplay.Player
     {
         public CurrentHydrationState currentHydrationState;
         [Header("Control Stats")] 
-        public float fullThreshold;
-        public float normalThreshold;
-        public float dehydrationThreshold;
+        public int fullThreshold;
+        public int normalThreshold;
+        public int dehydrationThreshold;
 
         [Header("Buffs")]
         public float debuffSleepTick;
@@ -61,28 +61,29 @@ namespace Project.Runtime.Gameplay.Player
 
         private void Update()
         {
-            if (currentHydrationState != CurrentHydrationState.DEHYDRATED && _damageRoutine != null)
-            {
-                StopCoroutine(_damageRoutine);
-            }
-            
-            if (_hydration.currentValue > fullThreshold)
+            if (_hydration.CheckCurrentValue(true) > fullThreshold)
             {
                 ChangeState(CurrentHydrationState.HYDRATED);
             }
 
-            if (_hydration.currentValue <= normalThreshold && currentHydrationState == CurrentHydrationState.HYDRATED)
+            if (_hydration.CheckCurrentValue(true) <= normalThreshold && currentHydrationState == CurrentHydrationState.HYDRATED)
             {
                 if(!_isThirsty)
                     ChangeState(CurrentHydrationState.MILDDEHYDRATION);
             }
             
-            if (_hydration.currentValue <= dehydrationThreshold && currentHydrationState == CurrentHydrationState.MILDDEHYDRATION)
+            if (_hydration.CheckCurrentValue(true) <= dehydrationThreshold && currentHydrationState == CurrentHydrationState.MILDDEHYDRATION)
             {
                 ChangeState(CurrentHydrationState.DEHYDRATED);
             }
 
-            if (currentHydrationState == CurrentHydrationState.DEHYDRATED)
+            if (_hydration.CheckCurrentValue(true) > dehydrationThreshold &&
+                currentHydrationState == CurrentHydrationState.DEHYDRATED)
+            {
+                ChangeState(CurrentHydrationState.MILDDEHYDRATION);
+            }
+
+            /*if (currentHydrationState == CurrentHydrationState.DEHYDRATED)
             {
                 if (_hydration.currentValue >= dehydrationThreshold)
                 {
@@ -91,14 +92,14 @@ namespace Project.Runtime.Gameplay.Player
                         StopHealthDamage();
                     }
                 }
-            }
+            }*/
         }
 
         public void ChangeState(CurrentHydrationState hungerState)
         {
             if (currentHydrationState == hungerState)
                 return;
-
+            
             _lastHungerState = currentHydrationState;
             currentHydrationState = hungerState;
 
@@ -130,16 +131,19 @@ namespace Project.Runtime.Gameplay.Player
         private void PerformHydratedFunctions()
         {
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE, "You feel hydrated");
+            if(_damageRoutine != null)
+                StopHealthDamage();
         }
 
         private void PerformMildDehydratedFunctions()
         {
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE, "You feel thirsty");
+            if(_damageRoutine != null)
+                StopHealthDamage();
         }
         
         private void PerformDehydratedFunctions()
         {
-            
             UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE, "You are suffering from dehydration");
             if (_damageRoutine == null)
             {
@@ -151,7 +155,7 @@ namespace Project.Runtime.Gameplay.Player
         {
             Debug.Log("Stopping tick damage");
             _damageRoutine = null;
-            //StopCoroutine(TakeHealthDamage());
+            StopCoroutine(TakeHealthDamage());
             _shouldTakeTickDamage = false;
         }
 
