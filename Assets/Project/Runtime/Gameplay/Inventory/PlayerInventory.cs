@@ -119,7 +119,9 @@ namespace Project.Runtime.Gameplay.Inventory
                     use.vitals = GameManager.instance.playerVitals;
                     use.OnUse();
                 }
-                RemoveItem(item);
+                UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
+                availableSlots += (item.size.x * item.size.y);
+                UntrackItem(item, true);
             }
         }
 
