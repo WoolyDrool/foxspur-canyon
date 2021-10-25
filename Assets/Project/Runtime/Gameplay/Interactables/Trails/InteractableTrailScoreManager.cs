@@ -6,6 +6,13 @@ using UnityEngine;
 
 namespace Project.Runtime.Gameplay.Interactables
 {
+    public enum TrailStatus
+    {
+        NOT_DONE,
+        HALF,
+        MINIMUM,
+        COMPLETED
+    }
     public class InteractableTrailScoreManager : MonoBehaviour
     {
         public float currentTrailScore = 0;
@@ -14,6 +21,7 @@ namespace Project.Runtime.Gameplay.Interactables
         private string normalisedCompletionPercentage;
         public GameObject trashContainer;
         public int itemsCollected;
+        public TrailStatus status;
 
         public TextMeshProUGUI percentageText;
         void Start()
