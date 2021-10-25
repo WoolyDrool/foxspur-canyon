@@ -12,12 +12,16 @@ namespace Project.Runtime.Gameplay.Tools
     {
         public GameObject lightContainer;
         public Light lightSource;
-        public AudioSource soundSource;
-        public AudioSource hum;
+        
+        public bool headlampOn;
+        public bool outOfBattery = false;
+        
+        [Header("Sound")]
+        public AudioSource mainSource;
+        public AudioSource humSource;
         public AudioClip onSound;
         public AudioClip reloadSound;
         public AudioClip offSound;
-        public bool headlampOn;
         
         [Header("Reloading")]
         public float reloadHoldTime;
@@ -28,28 +32,25 @@ namespace Project.Runtime.Gameplay.Tools
         
         [Header("Light Attentuation")]
         public Transform camera;
-        public float tooCloseDistance;
-        public float wayTooCloseDistance;
-        public float tooCloseAttenuation;
-        public float wayTooCloseAttentuation;
-        public LayerMask collisionMask;
-        public bool outOfBattery = false;
-        public float attentuationLerpTime = 3;
+        public float attenuationLerpTime = 3;
+        public float tooCloseDistance = 5;
+        public float wayTooCloseDistance = 3;
+        public float tooCloseAttenuation = 0.3f;
+        public float wayTooCloseAttenuation = 0.4f;
+        public LayerMask atnRayColMask;
         
         #region Internal Variables
 
         private InteractableBatteryDevice _batteryDevice;
         private PlayerInput _input;
-        private bool reloading = false;
+        private bool _reloading = false;
         private RaycastHit _hit;
-        private float startingIntensity;
-        private float currentIntensity;
-        private float adjustedIntensity;
-        private float lerpedIntensity;
-        private float dimIntensity;
-        [SerializeField] private float _initHoldTime = 0;
-        
-        private bool canReload = true;
+        private float _startingIntensity;
+        private float _currentIntensity;
+        private float _adjustedIntensity;
+        private float _lerpedIntensity;
+        private float _initHoldTime = 0;
+        private bool _canReload = true;
 
         #endregion
         
@@ -59,18 +60,17 @@ namespace Project.Runtime.Gameplay.Tools
         {
             _batteryDevice = GetComponent<InteractableBatteryDevice>();
             _input = GetComponentInParent<PlayerInput>();
-            startingIntensity = lightSource.intensity;
-            dimIntensity = startingIntensity / 2;
+            _startingIntensity = lightSource.intensity;
         }
 
         // Update is called once per frame
         void Update()
         {
-            currentIntensity = lightSource.intensity;
+            _currentIntensity = lightSource.intensity;
             LightAttenuation();
             DetermineBattery();
 
-            if (!outOfBattery && !reloading)
+            if (!outOfBattery && !_reloading)
             {
                 if (_input.flashLightToggle)
                 {
@@ -92,12 +92,12 @@ namespace Project.Runtime.Gameplay.Tools
                     headlampOn = false;
                     TurnOff();
                 }
-                canReload = true;
+                _canReload = true;
             }
 
             if (_input.flashLightHoldReload && !headlampOn)
             {
-                if (canReload)
+                if (_canReload)
                 {
                     _initHoldTime += 1 * Time.deltaTime;
                     
@@ -125,7 +125,7 @@ namespace Project.Runtime.Gameplay.Tools
 
         void Reload()
         {
-            reloading = true;
+            _reloading = true;
             reloadProgressGroup.SetActive(true);
 
             currentHoldTime += 1 * Time.deltaTime;
@@ -136,7 +136,7 @@ namespace Project.Runtime.Gameplay.Tools
 
             if (currentHoldTime >= reloadHoldTime)
             {
-                canReload = false;
+                _canReload = false;
                 RenitDevice();
             }
         }
@@ -146,9 +146,9 @@ namespace Project.Runtime.Gameplay.Tools
             
             reloadProgressGroup.SetActive(false);
             currentHoldTime = 0;
-            reloading = false;
+            _reloading = false;
             GameManager.instance.playerInventory.RemoveBattery();
-            soundSource.PlayOneShot(reloadSound);
+            mainSource.PlayOneShot(reloadSound);
             _batteryDevice.AddBattery();
             StartCoroutine(ReloadCooldown());
             TurnOn();
@@ -156,30 +156,30 @@ namespace Project.Runtime.Gameplay.Tools
 
         void LightAttenuation()
         {
-            if (Physics.Raycast(camera.position, camera.transform.forward, out _hit, tooCloseDistance, collisionMask))
+            if (Physics.Raycast(camera.position, camera.transform.forward, out _hit, tooCloseDistance, atnRayColMask))
             {
                 float currentDistance = Vector3.Distance(transform.position, _hit.point);
 
                 if (currentDistance <= tooCloseDistance)
                 {
-                    adjustedIntensity = startingIntensity - (currentDistance * -1) + -tooCloseAttenuation;
-                    lerpedIntensity = Mathf.Lerp(currentIntensity, adjustedIntensity, attentuationLerpTime * Time.deltaTime);
-                    lightSource.intensity = lerpedIntensity;
+                    _adjustedIntensity = _startingIntensity - (currentDistance * -1) + -tooCloseAttenuation;
+                    _lerpedIntensity = Mathf.Lerp(_currentIntensity, _adjustedIntensity, attenuationLerpTime * Time.deltaTime);
+                    lightSource.intensity = _lerpedIntensity;
 
                     if (currentDistance <= wayTooCloseDistance)
                     {
-                        adjustedIntensity = startingIntensity - (currentDistance * -1) + -wayTooCloseAttentuation;
-                        lerpedIntensity = 0;
-                        lerpedIntensity = Mathf.Lerp(currentIntensity, adjustedIntensity, attentuationLerpTime * Time.deltaTime);
-                        lightSource.intensity = lerpedIntensity;
+                        _adjustedIntensity = _startingIntensity - (currentDistance * -1) + -wayTooCloseAttenuation;
+                        _lerpedIntensity = 0;
+                        _lerpedIntensity = Mathf.Lerp(_currentIntensity, _adjustedIntensity, attenuationLerpTime * Time.deltaTime);
+                        lightSource.intensity = _lerpedIntensity;
                     }
                 }
             }
             else
             {
-                if (lightSource.intensity < startingIntensity)
+                if (lightSource.intensity < _startingIntensity)
                 {
-                    lightSource.intensity = Mathf.Lerp(currentIntensity, startingIntensity, attentuationLerpTime * Time.deltaTime);
+                    lightSource.intensity = Mathf.Lerp(_currentIntensity, _startingIntensity, attenuationLerpTime * Time.deltaTime);
                 }
             }
         }
@@ -199,8 +199,8 @@ namespace Project.Runtime.Gameplay.Tools
         void TurnOn()
         {
             Debug.Log("On");
-            soundSource.PlayOneShot(onSound);
-            hum.Play();
+            mainSource.PlayOneShot(onSound);
+            humSource.Play();
             lightContainer.SetActive(true);
             _batteryDevice.PowerOnDevice();
             headlampOn = true;
@@ -209,8 +209,8 @@ namespace Project.Runtime.Gameplay.Tools
         void TurnOff()
         {
             Debug.Log("Off");
-            soundSource.PlayOneShot(offSound);
-            hum.Stop();
+            mainSource.PlayOneShot(offSound);
+            humSource.Stop();
             lightContainer.SetActive(false);
             _batteryDevice.PowerDownDevice();
             headlampOn = false;
@@ -218,9 +218,9 @@ namespace Project.Runtime.Gameplay.Tools
         
         IEnumerator ReloadCooldown()
         {
-            reloading = false;
+            _reloading = false;
             yield return new WaitForSeconds(2);
-            canReload = true;
+            _canReload = true;
         }
         
     }
