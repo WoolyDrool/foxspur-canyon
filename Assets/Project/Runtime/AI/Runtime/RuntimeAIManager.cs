@@ -110,15 +110,6 @@ namespace Project.Runtime.AI
             _audioManager = GetComponent<RuntimeAIAudioManager>();
             _playerTracker = GetComponent<RuntimeAIPlayerTracker>();
         }
-        
-
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                _audioManager.SpawnAudioNearPlayer(40, 60);
-            }
-        }
 
         public void UpdateAggressionLevel()
         {
