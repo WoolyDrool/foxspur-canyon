@@ -20,6 +20,8 @@ namespace Project.Runtime.UI.Elements
         public Image iconContainer;
         public Sprite generalIcon;
         public Sprite noSpaceIcon;
+        public Sprite noBagsIcon;
+        public Sprite trashFullIcon;
         public TextMeshProUGUI alertText;
 
         void Start()
@@ -44,6 +46,16 @@ namespace Project.Runtime.UI.Elements
                 case AlertType.NOSPACE:
                 {
                     iconContainer.sprite = noSpaceIcon;
+                    break;
+                }
+                case AlertType.NOBAGS:
+                {
+                    iconContainer.sprite = noBagsIcon;
+                    break;
+                }
+                case AlertType.TRASHFULL:
+                {
+                    iconContainer.sprite = trashFullIcon;
                     break;
                 }
             }
