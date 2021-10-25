@@ -263,7 +263,7 @@ namespace Project.Runtime.UI.Elements
         {
             UIStoredItem i = new UIStoredItem(itemToRemove, null);
             UIStoredItem ir = itemsInGrid.Find(item => i.item);
-            Debug.LogWarning(ir);
+            Debug.LogError(ir.item.name);
             RemoveItem(ir);
         }
 

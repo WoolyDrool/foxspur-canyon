@@ -23,8 +23,7 @@ namespace Project.Runtime.Gameplay.Inventory
         public Item itemToAdd;
         public int itemValue = 0;
         public GameObject model;
-        public int currentID;
-        
+
         [Header("Interactions")] 
         public AudioClip pickupSound;
         public AudioMixerGroup mixerGroup;
@@ -66,7 +65,7 @@ namespace Project.Runtime.Gameplay.Inventory
                 }
                 else
                 {
-                    EventManager.TriggerEvent("cantAddItem", null);
+                    UIAlertUpdate.alert.AddAlertMessage(AlertType.NOSPACE,"Inventory full!");
                     Debug.LogError("Not picking up");
                     return;
                 }

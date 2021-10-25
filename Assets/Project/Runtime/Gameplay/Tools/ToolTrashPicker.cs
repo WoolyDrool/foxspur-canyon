@@ -1,6 +1,7 @@
 using Project.Runtime.Gameplay.Inventory;
 using Project.Runtime.Gameplay.Player;
 using Project.Runtime.Global;
+using Project.Runtime.UI.Elements;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,7 +82,7 @@ namespace Project.Runtime.Gameplay.Tools
                 }
                 else
                 {
-                    EventManager.TriggerEvent("noBags", null);
+                    UIAlertUpdate.alert.AddAlertMessage(AlertType.NOBAGS, "No bags!");
                 }
             }
         }
@@ -140,7 +141,7 @@ namespace Project.Runtime.Gameplay.Tools
                 }
                 else
                 {
-                    EventManager.TriggerEvent("cantPick", null);
+                    UIAlertUpdate.alert.AddAlertMessage(AlertType.GENERAL, "Bag full!");
                 }
                 component = null;
             }

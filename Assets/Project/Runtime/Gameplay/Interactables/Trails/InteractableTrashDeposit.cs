@@ -1,6 +1,7 @@
 using Project.Runtime.Gameplay.Inventory;
 using Project.Runtime.Gameplay.Tools;
 using Project.Runtime.Global;
+using Project.Runtime.UI.Elements;
 using UnityEngine;
 
 namespace Project.Runtime.Gameplay.Interactables
@@ -91,10 +92,16 @@ namespace Project.Runtime.Gameplay.Interactables
                         _scoreManager.AddScore(1);
                         return;
                     }
-                    
-                    EventManager.TriggerEvent("cantAddItemToTrash", null);
+                    else
+                    {
+                        UIAlertUpdate.alert.AddAlertMessage(AlertType.TRASHFULL, "Trash can full!");
+                    }
                 }
-                Debug.Log("Cant deposit item, item is too big!");
+                else
+                {
+                    UIAlertUpdate.alert.AddAlertMessage(AlertType.GENERAL, "Item too big!");
+                    Debug.Log("Cant deposit item, item is too big!");
+                }
             }
 
             _source.clip = null;
@@ -143,7 +150,7 @@ namespace Project.Runtime.Gameplay.Interactables
                         }
                         else
                         {
-                            EventManager.TriggerEvent("cantAddItemToTrash", null);
+                            UIAlertUpdate.alert.AddAlertMessage(AlertType.GENERAL, "Trash can full!");
                         }
                         break;
                     }
