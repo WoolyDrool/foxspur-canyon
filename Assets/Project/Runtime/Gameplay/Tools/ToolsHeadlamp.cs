@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using Project.Runtime.Gameplay.Interactables;
+using Project.Runtime.UI.Elements;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ namespace Project.Runtime.Gameplay.Tools
     public class ToolsHeadlamp : MonoBehaviour
     {
         public GameObject lightContainer;
-        public Light actualLight;
+        public Light lightSource;
         public AudioSource soundSource;
         public AudioSource hum;
         public AudioClip onSound;
@@ -33,7 +34,8 @@ namespace Project.Runtime.Gameplay.Tools
         public float wayTooCloseAttentuation;
         public LayerMask collisionMask;
         public bool outOfBattery = false;
-
+        public float attentuationLerpTime = 3;
+        
         #region Internal Variables
 
         private InteractableBatteryDevice _batteryDevice;
@@ -45,7 +47,8 @@ namespace Project.Runtime.Gameplay.Tools
         private float adjustedIntensity;
         private float lerpedIntensity;
         private float dimIntensity;
-        public float attentuationLerpTime = 3;
+        [SerializeField] private float _initHoldTime = 0;
+        
         private bool canReload = true;
 
         #endregion
@@ -56,56 +59,103 @@ namespace Project.Runtime.Gameplay.Tools
         {
             _batteryDevice = GetComponent<InteractableBatteryDevice>();
             _input = GetComponentInParent<PlayerInput>();
-            startingIntensity = actualLight.intensity;
+            startingIntensity = lightSource.intensity;
             dimIntensity = startingIntensity / 2;
         }
 
         // Update is called once per frame
         void Update()
         {
-            currentIntensity = actualLight.intensity;
-            if (_input.flashLightToggle)
+            currentIntensity = lightSource.intensity;
+            LightAttenuation();
+            DetermineBattery();
+
+            if (!outOfBattery && !reloading)
             {
-                if (!outOfBattery)
+                if (_input.flashLightToggle)
                 {
                     if (!headlampOn)
                     {
-                        ToggleHeadLamp();
-                        headlampOn = true;
+                        TurnOn();
                     }
-                    else
+                    else if(headlampOn)
                     {
-                        ToggleHeadLamp();
-                        headlampOn = false;
+                        TurnOff();
                     }
                 }
+            }
+
+            if (outOfBattery)
+            {
+                if (headlampOn)
+                {
+                    headlampOn = false;
+                    TurnOff();
+                }
+                canReload = true;
             }
 
             if (_input.flashLightHoldReload && !headlampOn)
             {
                 if (canReload)
                 {
-                    currentHoldTime += 1 * Time.deltaTime;
+                    _initHoldTime += 1 * Time.deltaTime;
                     
-                    if(!reloadProgressGroup.activeSelf)
-                        reloadProgressGroup.SetActive(true);
-                    
-                    reloadProgressDial.fillAmount = currentHoldTime / reloadHoldTime;
-                    
-                    if (currentHoldTime >= reloadHoldTime)
+                    if (_initHoldTime > 0.5f)
                     {
-                        LoadBattery();
-                        return;
+                        if (GameManager.instance.playerInventory.currentBatteries >= 1)
+                        {
+                            Reload();
+                        }
+                        else
+                        {
+                            UIAlertUpdate.alert.AddAlertMessage(AlertType.GENERAL, "No batteries!");
+                            return;
+                        }
                     }
                 }
             }
             else
             {
-                reloadProgressGroup.SetActive(false);
+                _initHoldTime = 0;
                 currentHoldTime = 0;
+                reloadProgressGroup.SetActive(false);
             }
+        }
 
+        void Reload()
+        {
+            reloading = true;
+            reloadProgressGroup.SetActive(true);
 
+            currentHoldTime += 1 * Time.deltaTime;
+            
+            float reloadTime = currentHoldTime / reloadHoldTime;
+
+            reloadProgressDial.fillAmount = reloadTime;
+
+            if (currentHoldTime >= reloadHoldTime)
+            {
+                canReload = false;
+                RenitDevice();
+            }
+        }
+
+        void RenitDevice()
+        {
+            
+            reloadProgressGroup.SetActive(false);
+            currentHoldTime = 0;
+            reloading = false;
+            GameManager.instance.playerInventory.RemoveBattery();
+            soundSource.PlayOneShot(reloadSound);
+            _batteryDevice.AddBattery();
+            StartCoroutine(ReloadCooldown());
+            TurnOn();
+        }
+
+        void LightAttenuation()
+        {
             if (Physics.Raycast(camera.position, camera.transform.forward, out _hit, tooCloseDistance, collisionMask))
             {
                 float currentDistance = Vector3.Distance(transform.position, _hit.point);
@@ -114,26 +164,58 @@ namespace Project.Runtime.Gameplay.Tools
                 {
                     adjustedIntensity = startingIntensity - (currentDistance * -1) + -tooCloseAttenuation;
                     lerpedIntensity = Mathf.Lerp(currentIntensity, adjustedIntensity, attentuationLerpTime * Time.deltaTime);
-                    actualLight.intensity = lerpedIntensity;
+                    lightSource.intensity = lerpedIntensity;
 
                     if (currentDistance <= wayTooCloseDistance)
                     {
                         adjustedIntensity = startingIntensity - (currentDistance * -1) + -wayTooCloseAttentuation;
                         lerpedIntensity = 0;
                         lerpedIntensity = Mathf.Lerp(currentIntensity, adjustedIntensity, attentuationLerpTime * Time.deltaTime);
-                        actualLight.intensity = lerpedIntensity;
+                        lightSource.intensity = lerpedIntensity;
                     }
                 }
             }
             else
             {
-                if (actualLight.intensity < startingIntensity)
+                if (lightSource.intensity < startingIntensity)
                 {
-                    actualLight.intensity = Mathf.Lerp(currentIntensity, startingIntensity, attentuationLerpTime * Time.deltaTime);
+                    lightSource.intensity = Mathf.Lerp(currentIntensity, startingIntensity, attentuationLerpTime * Time.deltaTime);
                 }
             }
         }
 
+        void DetermineBattery()
+        {
+            if (_batteryDevice.currentBatteryCharge > 1)
+            {
+                outOfBattery = false;
+            }
+            else if (_batteryDevice.currentBatteryCharge <= 0)
+            {
+                outOfBattery = true;
+            }
+        }
+
+        void TurnOn()
+        {
+            Debug.Log("On");
+            soundSource.PlayOneShot(onSound);
+            hum.Play();
+            lightContainer.SetActive(true);
+            _batteryDevice.PowerOnDevice();
+            headlampOn = true;
+        }
+
+        void TurnOff()
+        {
+            Debug.Log("Off");
+            soundSource.PlayOneShot(offSound);
+            hum.Stop();
+            lightContainer.SetActive(false);
+            _batteryDevice.PowerDownDevice();
+            headlampOn = false;
+        }
+        
         IEnumerator ReloadCooldown()
         {
             reloading = false;
@@ -141,53 +223,6 @@ namespace Project.Runtime.Gameplay.Tools
             canReload = true;
         }
         
-
-        void ToggleHeadLamp()
-        {
-            lightContainer.SetActive(!headlampOn);
-            reloadProgressGroup.SetActive(reloading);
-            AudioClip soundClip = headlampOn ? onSound : offSound;
-            soundSource.clip = soundClip;
-            soundSource.Play();
-            
-            if (_batteryDevice.currentChargeLevel == InteractableBatteryDevice.ChargeLevel.HALFFULL)
-            {
-                actualLight.intensity = dimIntensity;
-            }
-            
-            if (headlampOn)
-            {
-                _batteryDevice.PowerDownDevice();
-                hum.Stop();
-            }
-            else
-            {
-                _batteryDevice.PowerOnDevice();
-                hum.Play();
-                
-            }
-        }
-
-        void LoadBattery()
-        {
-            if (GameManager.instance.playerInventory.currentBatteries >=  1)
-            {
-                currentHoldTime = 0;
-                reloading = true;
-                canReload = false;
-                Debug.Log("Loaded battery");
-                actualLight.intensity = startingIntensity;
-                GameManager.instance.playerInventory.RemoveBattery();
-                outOfBattery = false;
-                _batteryDevice.AddBattery();
-                soundSource.PlayOneShot(reloadSound);
-                StartCoroutine(ReloadCooldown());
-            }
-            else
-            {
-                Debug.LogError("Could not load battery, player has no batteries");
-            }
-        }
     }
 
 }
