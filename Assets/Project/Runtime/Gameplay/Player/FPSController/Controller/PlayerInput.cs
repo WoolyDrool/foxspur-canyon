@@ -1,10 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
     public static PlayerInput i;
+
+    #region Input Actions
+
+    public InputActionAsset actionMap;
+
+    #endregion
+    
 
     public Vector2 input
     {

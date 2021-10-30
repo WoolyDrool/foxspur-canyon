@@ -174,12 +174,12 @@ namespace Project.Runtime.Gameplay.Tools
                         lightSource.intensity = _lerpedIntensity;
                     }
                 }
-            }
-            else
-            {
-                if (lightSource.intensity < _startingIntensity)
+                else
                 {
-                    lightSource.intensity = Mathf.Lerp(_currentIntensity, _startingIntensity, attenuationLerpTime * Time.deltaTime);
+                    if (lightSource.intensity < _startingIntensity)
+                    {
+                        lightSource.intensity = Mathf.Lerp(_currentIntensity, _startingIntensity, attenuationLerpTime * Time.deltaTime);
+                    }
                 }
             }
         }
