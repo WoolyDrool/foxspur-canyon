@@ -7,13 +7,11 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     public static PlayerInput i;
-
-    #region Input Actions
-
-    public InputActionAsset actionMap;
-
-    #endregion
     
+    private void Awake()
+    {
+        
+    }
 
     public Vector2 input
     {
@@ -75,6 +73,7 @@ public class PlayerInput : MonoBehaviour
     public bool interact
     {
         get { return Input.GetKeyDown(interactKey); }
+        //get { return Keyboard.current.eKey.isPressed; }
     }
     
     public bool hold_interact
