@@ -15,21 +15,38 @@ namespace Project.Runtime.Gameplay.Interactables
     }
     public class InteractableTrailScoreManager : MonoBehaviour
     {
-        public float currentTrailScore = 0;
-        public int totalItemsInTrail;
-        public float trailCompletionPercentage;
-        private string normalisedCompletionPercentage;
-        public GameObject trashContainer;
-        public int itemsCollected;
+        [Header("Control")]
+        public TrailData trailData;
         public TrailStatus status;
-
+        public GameObject trailContainer;
+        public int totalItemsInTrail;
+        
+        [Space(25)]
         public TextMeshProUGUI percentageText;
+        
+        [Header("Score")]
+        public int itemsCollected;
+        public float currentTrailScore = 0;
+        public float completionPercentage;
+
+        #region Internal Variables
+
+        private string completionPercentageN;
+        
+        #endregion
         void Start()
         {
-            //totalItemsInTrail = trashContainer.transform.childCount;
-            if (trashContainer.transform.childCount != 0)
+            DetermineItemCount();
+        }
+
+        public void DetermineItemCount()
+        {
+            if (trailData.Items == totalItemsInTrail)
+                return;
+
+            if (trailContainer.transform.childCount != 0)
             {
-                foreach (Transform i in trashContainer.transform)
+                foreach (Transform i in trailContainer.transform)
                 {
                     if (i.TryGetComponent(out InteractableTrailScoreGroup scoreobj))
                     {
@@ -37,6 +54,8 @@ namespace Project.Runtime.Gameplay.Interactables
                         totalItemsInTrail += score;
                     }
                 }
+
+                trailData.Items = totalItemsInTrail;
                 percentageText.text = "0/100.0"; 
             }
             else
@@ -46,23 +65,18 @@ namespace Project.Runtime.Gameplay.Interactables
             }
         }
 
-        void Update()
-        {
-
-        }
-
         public void AddScore(int scoreToAdd)
         {
             currentTrailScore = (float) scoreToAdd / totalItemsInTrail;
             itemsCollected += scoreToAdd;
-            trailCompletionPercentage += currentTrailScore;
+            completionPercentage += currentTrailScore;
 
-            normalisedCompletionPercentage = (trailCompletionPercentage * 100).ToString("F1");
-            percentageText.text = normalisedCompletionPercentage + "/100.0"; 
+            completionPercentageN = (completionPercentage * 100).ToString("F1");
+            percentageText.text = completionPercentageN + "/100.0"; 
             
             if (itemsCollected == totalItemsInTrail)
             {
-                trailCompletionPercentage = 1;
+                completionPercentage = 1;
                 percentageText.text = "100/100.0"; 
                 percentageText.color = Color.green;
             }
