@@ -2,6 +2,7 @@
 
 namespace Project.Runtime.Gameplay.Interactables
 {
+    [CreateAssetMenu(menuName = "Trails/Create TrailData")]
     public class TrailData : ScriptableObject
     {
         public string TrailName;
