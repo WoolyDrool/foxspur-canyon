@@ -28,6 +28,7 @@ public class InteractableTrailExit : MonoBehaviour
         if (trailManager.status >= TrailStatus.MINIMUM)
         {
             //Do exfill code
+            DetermineTotalPayout();
         }
         else
         {
@@ -35,7 +36,7 @@ public class InteractableTrailExit : MonoBehaviour
         }
     }
 
-    public void DetermineTotalPayout()
+    void DetermineTotalPayout()
     {
         DetermineThoroughnessPayout();
         DetermineSecretsPayout();
@@ -61,8 +62,11 @@ public class InteractableTrailExit : MonoBehaviour
 
     void DetermineSurvivalPayout()
     {
-        
+        //Will add code later...
     }
-    
-    void DetermineOptionalPayout(){}
+
+    void DetermineOptionalPayout()
+    {
+        //Will add code later
+    }
 }
