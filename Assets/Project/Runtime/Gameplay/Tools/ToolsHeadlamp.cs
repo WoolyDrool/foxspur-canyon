@@ -31,7 +31,7 @@ namespace Project.Runtime.Gameplay.Tools
         public Image reloadProgressDial;
         
         [Header("Light Attentuation")]
-        public Transform camera;
+        public Transform sceneCamera;
         public float attenuationLerpTime = 3;
         public float tooCloseDistance = 5;
         public float wayTooCloseDistance = 3;
@@ -156,7 +156,7 @@ namespace Project.Runtime.Gameplay.Tools
 
         void LightAttenuation()
         {
-            if (Physics.Raycast(camera.position, camera.transform.forward, out _hit, tooCloseDistance, atnRayColMask))
+            if (Physics.Raycast(sceneCamera.position, sceneCamera.transform.forward, out _hit, tooCloseDistance, atnRayColMask))
             {
                 float currentDistance = Vector3.Distance(transform.position, _hit.point);
 
