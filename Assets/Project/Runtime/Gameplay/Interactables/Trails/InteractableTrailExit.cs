@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using Project.Runtime.Gameplay.Interactables;
+using Project.Runtime.Global;
 using Project.Runtime.UI.Elements;
 using UnityEngine;
 
 public class InteractableTrailExit : MonoBehaviour
 {
-    public InteractableTrailScoreManager trailManager;
+    public RuntimeTrailManager trailManager;
 
     [Header("Payouts")] 
     public int thoroughnessPayout;
     public int secretsPayout;
     public int survivalPayout;
     public int optionalPayout;
+    public string sceneToReturnTo;
     void Start()
     {
         
@@ -29,6 +31,7 @@ public class InteractableTrailExit : MonoBehaviour
         {
             //Do exfill code
             DetermineTotalPayout();
+            SceneLoadingManager.loader.LoadScene(sceneToReturnTo);
         }
         else
         {

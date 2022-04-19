@@ -22,7 +22,7 @@ namespace Project.Runtime.Gameplay.Interactables
         #region Internal Variables
         private PlayerInventory playerInventory;
         private Interactable _interactable;
-        private InteractableTrailScoreManager _scoreManager;
+        private RuntimeTrailManager _manager;
         private AudioSource _source;
         private Coroutine depositRoutine;
         #endregion
@@ -32,7 +32,7 @@ namespace Project.Runtime.Gameplay.Interactables
             //Get components
             playerInventory = GameManager.instance.playerInventory;
             _interactable = GetComponent<Interactable>();
-            _scoreManager = FindObjectOfType<InteractableTrailScoreManager>();
+            _manager = FindObjectOfType<RuntimeTrailManager>();
             _source = GetComponent<AudioSource>();
             
             //Reset current items
@@ -89,7 +89,7 @@ namespace Project.Runtime.Gameplay.Interactables
                         PlaySound(1);
                         currentItems++;
                         playerInventory.RemoveItem(itemToRemove);
-                        _scoreManager.AddScore(1);
+                        _manager.AddScore(1);
                         return;
                     }
                     else
@@ -111,7 +111,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             PlaySound(playerInventory.trashInInventory);
             
-            _scoreManager.AddScore(playerInventory.trashInInventory);
+            _manager.AddScore(playerInventory.trashInInventory);
             playerInventory.ClearAllTrash();
             
             _source.clip = null;
@@ -134,7 +134,7 @@ namespace Project.Runtime.Gameplay.Interactables
                     case true:
                     {
                         throwableItem.hasBeenDeposited = true;
-                        _scoreManager.AddScore(throwableItem.amount);
+                        _manager.AddScore(throwableItem.amount);
                         Destroy(throwableItem.gameObject, 15f);
                         PlaySound(throwableItem.amount);
                         break;
@@ -144,7 +144,7 @@ namespace Project.Runtime.Gameplay.Interactables
                         if (currentItems + throwableItem.amount <= itemsThatCanBeDeposited)
                         {
                             currentItems += throwableItem.amount;
-                            _scoreManager.AddScore(throwableItem.amount);
+                            _manager.AddScore(throwableItem.amount);
                             Destroy(throwableItem.gameObject);
                             PlaySound(throwableItem.amount);
                         }

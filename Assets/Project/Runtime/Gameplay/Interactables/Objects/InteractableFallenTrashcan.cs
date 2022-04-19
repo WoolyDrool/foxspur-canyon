@@ -22,7 +22,7 @@ namespace Project.Runtime.Gameplay.Interactables
         #region Internal Variables
 
         private PlayerInput _input;
-        private InteractableTrailScoreManager _scoreManager;
+        private RuntimeTrailManager _manager;
         private HudInteractableController _hudInteractable;
         private Interactable _interactable;
         private bool _canFix = true;
@@ -33,7 +33,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             //Get components
             _input = FindObjectOfType<PlayerInput>();
-            _scoreManager = GetComponentInParent<InteractableTrailScoreManager>();
+            _manager = GetComponentInParent<RuntimeTrailManager>();
             _hudInteractable = FindObjectOfType<HudInteractableController>();
             _interactable = GetComponent<Interactable>();
             
@@ -72,7 +72,7 @@ namespace Project.Runtime.Gameplay.Interactables
         private void CompleteAction()
         {
             _canFix = false;
-            _scoreManager.AddScore(1);
+            _manager.AddScore(1);
             hitbox.enabled = false;
             _interactable.enabled = false;
             fallenPrefab.gameObject.SetActive(false);
