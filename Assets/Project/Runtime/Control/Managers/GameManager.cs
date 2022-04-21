@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public SceneLoadingManager sceneLoader;
+    public GameObject sceneLoaderPrefab;
     public static GameManager instance;
     public GameObject fade;
 
@@ -42,11 +43,20 @@ public class GameManager : MonoBehaviour
 
         if (sceneLoader == null)
         {
-            sceneLoader = GameObject.FindObjectOfType<SceneLoadingManager>();
+            
         }
         else
         {
             return;
+        }
+    }
+
+    IEnumerator SanityCheck()
+    {
+        if (sceneLoader == null)
+        {
+            sceneLoader = GameObject.FindObjectOfType<SceneLoadingManager>();
+            yield return sceneLoader;
         }
     }
 
