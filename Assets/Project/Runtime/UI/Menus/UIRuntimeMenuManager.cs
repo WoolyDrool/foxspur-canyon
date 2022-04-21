@@ -13,7 +13,8 @@ namespace Project.Runtime.UI.Menus
         NONE,
         PAUSE,
         INVENTORY,
-        DEATH
+        DEATH,
+        PAYOUT
     }
     
     public class UIRuntimeMenuManager : MonoBehaviour
@@ -26,6 +27,7 @@ namespace Project.Runtime.UI.Menus
         public UIInventoryView inventory;
         public UIPauseMenu pauseMenu;
         public GameObject deathMenu;
+        public GameObject trailPayoutMenu;
 
         void Start()
         {
@@ -88,9 +90,15 @@ namespace Project.Runtime.UI.Menus
                 }
             }
 
+            if (currentMenuState == MenuState.PAYOUT)
+            {
+                
+            }
+
             pauseMenu.gameObject.SetActive(currentMenuState == MenuState.PAUSE);
             inventory.gameObject.SetActive(currentMenuState == MenuState.INVENTORY);
             deathMenu.SetActive(currentMenuState == MenuState.DEATH);
+            trailPayoutMenu.SetActive(currentMenuState == MenuState.PAYOUT);
         }
 
         public void Resume()
@@ -98,6 +106,8 @@ namespace Project.Runtime.UI.Menus
             UpdateMenuIndex(MenuState.NONE);
         }
 
+        
+        // Define gamestate functions when in X menu
         void HandleMenuSwitching()
         {
             switch (currentMenuState)
@@ -126,6 +136,13 @@ namespace Project.Runtime.UI.Menus
                     EventManager.TriggerEvent("ToggleMouse", null);
                     break;
                 }
+                case MenuState.PAYOUT:
+                {
+                    EventManager.TriggerEvent("ToggleMouse", null);
+                    EventManager.TriggerEvent("PayoutMenu", null);
+                    break;
+                }
+
             }
         }
     }

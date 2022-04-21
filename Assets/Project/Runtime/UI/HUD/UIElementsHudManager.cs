@@ -21,6 +21,7 @@ namespace Project.Runtime.UI.Elements
         public GameObject drivingHud;
         public GameObject batteryHud;
         public GameObject inventoryHud;
+        public GameObject payoutHud;
 
         [Header("Elements - Specific")] 
         public Image healthDial;
