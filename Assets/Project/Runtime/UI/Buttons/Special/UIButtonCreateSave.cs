@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Runtime.Gameplay.Inventory;
 using UnityEngine;
 using Project.Runtime.Serialization;
 
@@ -90,6 +91,9 @@ namespace Project.Runtime.UI.Buttons
             profile.skinColor = _newSaveSkinColor;
             profile.pronounSelection = _newSavePronouns;
             profile.voiceSelection = _newSaveVoice;
+            //profile.lastVisitedScene = "WuliKupTrail";
+            //profile.inventory = ScriptableObject.CreateInstance<InventoryData>();
+            //profile.inventory.size = new IntPair(10, 10);
 
             if (_newSaveVoice == Voice.MALE)
                 profile.choice = maleVoice;
