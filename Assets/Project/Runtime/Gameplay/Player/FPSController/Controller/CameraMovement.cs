@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class CameraMovement : MonoBehaviour
     
     public GameObject characterBody;
     public float waitToEnableMouse = 1f;
-    
+
     public Vector2 clampInDegrees = new Vector2(360, 180);
     [SerializeField]
     private Vector2 sensitivity = new Vector2(2, 2);
@@ -19,9 +20,10 @@ public class CameraMovement : MonoBehaviour
     private Vector2 targetDirection;
     [SerializeField]
     private Vector2 targetCharacterDirection;
-
+    
     public bool canLook;
-
+    public PlayerInputManager inputManager;
+    
     void Start()
     {
         StartCoroutine(WaitToEnableMouse());
@@ -42,7 +44,7 @@ public class CameraMovement : MonoBehaviour
         var targetCharacterOrientation = Quaternion.Euler(targetCharacterDirection);
 
         // Get raw mouse input for a cleaner reading on more sensitive mice.
-        var mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+        var mouseDelta = inputManager.look; 
         // Scale input against the sensitivity setting and multiply that against the smoothing value.
         mouseDelta = Vector2.Scale(mouseDelta, new Vector2(sensitivity.x * smoothing.x, sensitivity.y * smoothing.y));
 
