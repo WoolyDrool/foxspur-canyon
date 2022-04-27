@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 {
     public SceneLoadingManager sceneLoader;
     public GameObject sceneLoaderPrefab;
-    public static GameManager instance;
+    private static GameManager _gameManager;
     public GameObject fade;
 
     [Header("World Managers")]
@@ -34,30 +34,48 @@ public class GameManager : MonoBehaviour
 
     [Header("Control Booleans")]
     public bool isPaused;
-    private void Awake()
-    {
-        instance = this;
-        
-        if(!fade.activeSelf)
-            fade.SetActive(true);
 
-        if (sceneLoader == null)
+    public static GameManager instance
+    {
+        get
         {
-            
-        }
-        else
-        {
-            return;
+            if (!_gameManager)
+            {
+                _gameManager = FindObjectOfType(typeof(GameManager)) as GameManager;
+
+                if (!_gameManager)
+                {
+                    Debug.LogError("No GameManager!");
+                }
+                else
+                {
+                    _gameManager.Init();
+                        
+                    //DontDestroyOnLoad(_eventManager);
+                }
+            }
+
+            return _gameManager;
         }
     }
 
-    IEnumerator SanityCheck()
+    void Init()
     {
-        if (sceneLoader == null)
+        if(!fade.activeSelf)
+            fade.SetActive(true);
+
+        if (!sceneLoader)
         {
-            sceneLoader = GameObject.FindObjectOfType<SceneLoadingManager>();
-            yield return sceneLoader;
+            sceneLoader = FindObjectOfType(typeof(SceneLoadingManager)) as SceneLoadingManager;
+            if(!sceneLoader)
+                Debug.LogError("No SceneLoadingManager!");
         }
+    }
+
+    private void Awake()
+    {
+
+        
     }
 
     private void Update()
