@@ -42,7 +42,7 @@ namespace Project.Runtime.Gameplay.Tools
         #region Internal Variables
 
         private InteractableBatteryDevice _batteryDevice;
-        private PlayerInput _input;
+        private PlayerInputManager _inputManager;
         private bool _reloading = false;
         private RaycastHit _hit;
         private float _startingIntensity;
@@ -59,7 +59,7 @@ namespace Project.Runtime.Gameplay.Tools
         void Start()
         {
             _batteryDevice = GetComponent<InteractableBatteryDevice>();
-            _input = GetComponentInParent<PlayerInput>();
+            _inputManager = GetComponentInParent<PlayerInputManager>();
             _startingIntensity = lightSource.intensity;
         }
 
@@ -72,7 +72,7 @@ namespace Project.Runtime.Gameplay.Tools
 
             if (!outOfBattery && !_reloading)
             {
-                if (_input.flashLightToggle)
+                if (_inputManager.flashLightToggle)
                 {
                     if (!headlampOn)
                     {
@@ -95,7 +95,7 @@ namespace Project.Runtime.Gameplay.Tools
                 _canReload = true;
             }
 
-            if (_input.flashLightHoldReload && !headlampOn)
+            if (_inputManager.flashLightHoldReload && !headlampOn)
             {
                 if (_canReload)
                 {

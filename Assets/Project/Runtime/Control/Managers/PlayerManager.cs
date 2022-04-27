@@ -8,14 +8,14 @@ public class PlayerManager : MonoBehaviour
     
     public Transform playerTransform;
     internal PlayerController _playerController;
-    internal PlayerInput _playerInput;
+    internal PlayerInputManager PlayerInputManager;
     internal PlayerMovement _playerMovement;
     internal CharacterController _playerCharacterController;
     
     private void Awake()
     {
         _playerController = playerTransform.GetComponent<PlayerController>();
-        _playerInput = playerTransform.GetComponent<PlayerInput>();
+        PlayerInputManager = playerTransform.GetComponent<PlayerInputManager>();
         _playerMovement = playerTransform.GetComponent<PlayerMovement>();
         _playerCharacterController = playerTransform.GetComponent<CharacterController>();
     }

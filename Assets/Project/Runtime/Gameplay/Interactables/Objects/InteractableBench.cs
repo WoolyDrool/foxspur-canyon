@@ -45,7 +45,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             if (isSitting)
             {
-                if (PlayerInput.i.interact)
+                if (PlayerInputManager.i.interact)
                 {
                     GetUp();
                 }

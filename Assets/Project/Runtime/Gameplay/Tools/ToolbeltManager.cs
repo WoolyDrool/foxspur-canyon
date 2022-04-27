@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Project.Runtime.Gameplay.Tools
@@ -35,8 +36,10 @@ namespace Project.Runtime.Gameplay.Tools
         private int _equipIndex;
         private int _selectedTool = 0;
         private PlayerController _controller;
-        private PlayerInput _input;
-        private bool isCalled;
+        private PlayerInputManager _inputManager;
+        private InputAction _prev;
+        private InputAction _next;
+        
 
         #endregion
         
@@ -44,8 +47,12 @@ namespace Project.Runtime.Gameplay.Tools
         private void Awake()
         {
             _controller = GetComponentInParent<PlayerController>();
-            _input = GetComponentInParent<PlayerInput>();
+            _inputManager = GetComponentInParent<PlayerInputManager>();
             _containerStartPos = container.localPosition;
+
+
+            _prev = _inputManager.prevToolAction;
+            _next = _inputManager.nextToolAction;
         }
 
         private void Start()
@@ -57,14 +64,14 @@ namespace Project.Runtime.Gameplay.Tools
         {
             int previousSelectedTool = _selectedTool;
             
-            if (_input.mouseScroll < 0f)
+            if (_prev.triggered)
             {
                 if (_selectedTool >= equippableInventory.Length - 1)
                     _selectedTool = 0;
                 else
                     _selectedTool++;
             }
-            if (_input.mouseScroll > 0f)
+            if (_next.triggered)
             {
                 if (_selectedTool <= 0)
                     _selectedTool = equippableInventory.Length - 1;
@@ -96,13 +103,30 @@ namespace Project.Runtime.Gameplay.Tools
             if (_controller.status == Status.crouching)
             {
                 container.localPosition = _containerPosCrouch;
-                isCalled = true;
+                //isCalled = true;
             }
             else
             {
-                isCalled = false;
+                //isCalled = false;
                 container.localPosition = _containerStartPos;
             }
+        }
+
+        public void IncreaseEquipIndex(InputAction.CallbackContext value)
+        {
+            if (_selectedTool >= equippableInventory.Length - 1)
+                _selectedTool = 0;
+                else
+                _selectedTool++;
+
+        }
+
+        public void DecreaseEquipIndex(InputAction.CallbackContext value)
+        {
+            if (_selectedTool <= 0)
+                _selectedTool = equippableInventory.Length - 1;
+            else
+                _selectedTool--;
         }
 
         void SwitchEquipped()

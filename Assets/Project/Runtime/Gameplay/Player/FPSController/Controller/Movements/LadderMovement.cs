@@ -12,17 +12,17 @@ public class LadderMovement : MovementType
 
     public override void Movement()
     {
-        Vector3 input = playerInput.input;
+        Vector3 input = PlayerInputManager.input;
         Vector3 move = Vector3.Cross(Vector3.up, ladderNormal).normalized;
         move *= input.x;
         move.y = input.y * movement.walkSpeed;
 
         bool goToGround = (move.y < -0.02f && movement.grounded);
 
-        if (playerInput.Jump())
+        if (PlayerInputManager.Jump())
         {
             movement.Jump((-ladderNormal + Vector3.up * 2f).normalized, 1f);
-            playerInput.ResetJump();
+            PlayerInputManager.ResetJump();
             player.ChangeStatus(Status.walking);
         }
 
@@ -49,7 +49,7 @@ public class LadderMovement : MovementType
             if (hit.normal != hit.transform.forward) return;
 
             ladderNormal = -hit.normal;
-            if (player.hasObjectInfront(0.05f, ladderLayer) && playerInput.input.y > 0.02f)
+            if (player.hasObjectInfront(0.05f, ladderLayer) && PlayerInputManager.input.y > 0.02f)
                 player.ChangeStatus(changeTo, IK);
         }
     }

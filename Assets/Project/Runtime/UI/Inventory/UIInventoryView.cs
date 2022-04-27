@@ -35,6 +35,7 @@ namespace Project.Runtime.UI.Elements
         public TextMeshProUGUI bagsCount;
         public TextMeshProUGUI moneyCount;
         public TextMeshProUGUI secretsCount;
+        public Sprite previewImage;
         private UIStoredItem itemBeingAdded;
 
         [Header("Audio")]
@@ -115,7 +116,7 @@ namespace Project.Runtime.UI.Elements
 
         private void Update()
         {
-            if (PlayerInput.i.resort)
+            if (PlayerInputManager.i.resort)
             {
                 ResortItems();
             }

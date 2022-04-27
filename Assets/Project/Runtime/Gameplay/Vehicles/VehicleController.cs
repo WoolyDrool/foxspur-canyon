@@ -54,9 +54,9 @@ namespace Project.Runtime.Gameplay.Vehicles
         private void GetInput()
         {
             //Get input from GameManager
-            _verticalInput = GameManager.instance.playerManager._playerInput.input.y;
-            _horizontalInput = GameManager.instance.playerManager._playerInput.input.x;
-            _motor.ShouldAutoBrake = GameManager.instance.playerManager._playerInput.input.y == 0;
+            _verticalInput = GameManager.instance.playerManager.PlayerInputManager.input.y;
+            _horizontalInput = GameManager.instance.playerManager.PlayerInputManager.input.x;
+            _motor.ShouldAutoBrake = GameManager.instance.playerManager.PlayerInputManager.input.y == 0;
 
             #region Interactions
 

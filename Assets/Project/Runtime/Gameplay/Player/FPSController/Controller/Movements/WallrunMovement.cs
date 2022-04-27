@@ -21,19 +21,19 @@ public class WallrunMovement : MovementType
 
     public override void Movement()
     {
-        Vector3 input = playerInput.input;
+        Vector3 input = PlayerInputManager.input;
         float s = (input.y > 0) ? input.y : 0;
 
         Vector3 move = wallNormal * s;
 
-        if (playerInput.Jump() && wallrunTime > wallrunMinimum)
+        if (PlayerInputManager.Jump() && wallrunTime > wallrunMinimum)
         {
             wallrunTime = 0;
             Vector3 forward = wallNormal.normalized;
             Vector3 right = Vector3.Cross(forward, Vector3.up) * wallDir;
             Vector3 wallJump = (Vector3.up * (s + 0.5f) + forward * s * 1.5f + right * (s + 0.5f)).normalized;
             movement.Jump(wallJump, (s + 1f));
-            playerInput.ResetJump();
+            PlayerInputManager.ResetJump();
             player.ChangeStatus(Status.walking);
         }
 

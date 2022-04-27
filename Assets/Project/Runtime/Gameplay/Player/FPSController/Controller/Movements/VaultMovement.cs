@@ -25,9 +25,9 @@ public class VaultMovement : MovementType
         vaultHelper.transform.rotation = Quaternion.LookRotation(vaultDir);
     }
 
-    public override void SetPlayerComponents(PlayerMovement move, PlayerInput input)
+    public override void SetPlayerComponents(PlayerMovement move, PlayerInputManager inputManager)
     {
-        base.SetPlayerComponents(move, input);
+        base.SetPlayerComponents(move, inputManager);
         CreateVaultHelper();
     }
 
@@ -56,7 +56,7 @@ public class VaultMovement : MovementType
         float movementAdjust = (Vector3.ClampMagnitude(movement.controller.velocity, 16f).magnitude / 16f);
         float checkDis = player.info.radius + movementAdjust;
 
-        if (player.hasObjectInfront(checkDis, vaultLayer) && playerInput.Jump())
+        if (player.hasObjectInfront(checkDis, vaultLayer) && PlayerInputManager.Jump())
         {
             if (Physics.SphereCast(transform.position + (transform.forward * (player.info.radius - 0.25f)), 0.25f, transform.forward, out var sphereHit, checkDis, vaultLayer))
             {

@@ -9,7 +9,7 @@ public class MovementType : MonoBehaviour
 
     protected PlayerController player;
     protected PlayerMovement movement;
-    protected PlayerInput playerInput;
+    protected PlayerInputManager PlayerInputManager;
     protected Status playerStatus;
 
     public virtual void Start()
@@ -20,9 +20,9 @@ public class MovementType : MonoBehaviour
         player.AddToStatusChange(PlayerStatusChange);
     }
 
-    public virtual void SetPlayerComponents(PlayerMovement move, PlayerInput input)
+    public virtual void SetPlayerComponents(PlayerMovement move, PlayerInputManager inputManager)
     {
-        movement = move; playerInput = input;
+        movement = move; PlayerInputManager = inputManager;
     }
 
     public virtual void PlayerStatusChange(Status status, Func<IKData> call)

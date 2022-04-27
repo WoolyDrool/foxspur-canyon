@@ -14,10 +14,10 @@ public class GrabLedgeMovement : MovementType
 
     public override void Movement()
     {
-        if (playerInput.Jump() && playerInput.raw.y <= 0)
+        if (PlayerInputManager.Jump() && PlayerInputManager.raw.y <= 0)
         {
             movement.Jump((Vector3.up - transform.forward).normalized, 1f);
-            playerInput.ResetJump();
+            PlayerInputManager.ResetJump();
             player.ChangeStatus(Status.walking);
         }
 
@@ -29,7 +29,7 @@ public class GrabLedgeMovement : MovementType
         if (playerStatus == changeTo)
         {
             canGrabLedge = false;
-            if (playerInput.down.y == -1)
+            if (PlayerInputManager.down.y == -1)
                 player.ChangeStatus(Status.walking);
         }
 

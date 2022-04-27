@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Project.Runtime.Gameplay.Interactables
@@ -21,7 +22,7 @@ namespace Project.Runtime.Gameplay.Interactables
 
         #region Internal Variables
 
-        private PlayerInput _input;
+        private PlayerInputManager _inputManager;
         private RuntimeTrailManager _manager;
         private HudInteractableController _hudInteractable;
         private Interactable _interactable;
@@ -32,7 +33,7 @@ namespace Project.Runtime.Gameplay.Interactables
         void Start()
         {
             //Get components
-            _input = FindObjectOfType<PlayerInput>();
+            _inputManager = FindObjectOfType<PlayerInputManager>();
             _manager = GetComponentInParent<RuntimeTrailManager>();
             _hudInteractable = FindObjectOfType<HudInteractableController>();
             _interactable = GetComponent<Interactable>();
@@ -46,7 +47,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             if (_hudInteractable.currentInteractable == this._interactable)
             {
-                if (_input.hold_interact && _canFix)
+                if (_inputManager.hold_interact && _canFix)
                 {
                     currentCompletion += 1 * Time.deltaTime;
                     progressBar.fillAmount = (currentCompletion / timeToComplete);

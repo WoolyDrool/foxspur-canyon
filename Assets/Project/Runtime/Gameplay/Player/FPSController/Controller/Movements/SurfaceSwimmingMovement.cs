@@ -95,7 +95,7 @@ public class SurfaceSwimmingMovement : MovementType
         float wantedYPos = getWaterLevel();
         float dif = transform.position.y - wantedYPos;
         float swimAdjust = Mathf.Sin(dif);
-        Vector3 move = new Vector3(playerInput.input.x, 0, playerInput.input.y);
+        Vector3 move = new Vector3(PlayerInputManager.input.x, 0, PlayerInputManager.input.y);
         move = transform.TransformDirection(move) * 2f;
 
         bool isTreading = (move.sqrMagnitude < 0.02f);
@@ -105,7 +105,7 @@ public class SurfaceSwimmingMovement : MovementType
         if (dif < halfCrouch)
             canJumpOutOfWater = true;
 
-        if (playerInput.elevate >= 0.02f && canJumpOutOfWater)
+        if (PlayerInputManager.elevate >= 0.02f && canJumpOutOfWater)
         {
             if (dif >= halfCrouch)
             {
@@ -115,12 +115,12 @@ public class SurfaceSwimmingMovement : MovementType
             else
                 move.y = 1f;
         }
-        else if (playerInput.elevate <= -0.02f)
+        else if (PlayerInputManager.elevate <= -0.02f)
             move.y = -1;
         else
         {
             float downWithOffset = cameraMovement.forward.y + 0.333f;
-            float swimDown = Mathf.Clamp(downWithOffset * playerInput.input.y, -Mathf.Infinity, 0f);
+            float swimDown = Mathf.Clamp(downWithOffset * PlayerInputManager.input.y, -Mathf.Infinity, 0f);
             move.y = (swimDown <= -0.02f && CanSwimUnderwater()) ? swimDown : treadTime;
         }
 

@@ -9,14 +9,14 @@ namespace Project.Runtime.Gameplay.Tools
         public string toolName;
         public Animator objectAnimator;
         public bool isCurrentlyEquipped = false;
-        public PlayerInput _input;
+        public PlayerInputManager inputManager;
         public bool hasCooldown = false;
         public float cooldownTime = 1;
         public bool canUse = true;
         public virtual void Awake()
         {
             objectAnimator = GetComponent<Animator>();
-            _input = GetComponentInParent<PlayerInput>();
+            inputManager = GetComponentInParent<PlayerInputManager>();
             if (toolName == null)
                 toolName = "Debug";
         }

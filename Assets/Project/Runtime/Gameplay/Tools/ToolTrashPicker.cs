@@ -60,14 +60,14 @@ namespace Project.Runtime.Gameplay.Tools
 
         void Update()
         {
-            if (_input.shooting && canUse)
+            if (inputManager.shooting && canUse)
             {
                 _source.PlayOneShot(swingSound);
                 objectAnimator.SetTrigger(PICK_TRIGGER);
                 ProcessCooldown();
             }
 
-            if (_input.reload)
+            if (inputManager.reload)
             {
                 if (_inventory.currentBags > 0)
                 {

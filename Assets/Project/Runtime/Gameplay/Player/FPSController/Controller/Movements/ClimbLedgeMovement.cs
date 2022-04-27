@@ -8,9 +8,9 @@ public class ClimbLedgeMovement : MovementType
 {
     GrabLedgeMovement grabLedge;
 
-    public override void SetPlayerComponents(PlayerMovement move, PlayerInput input)
+    public override void SetPlayerComponents(PlayerMovement move, PlayerInputManager inputManager)
     {
-        base.SetPlayerComponents(move, input);
+        base.SetPlayerComponents(move, inputManager);
         grabLedge = GetComponent<GrabLedgeMovement>();
     }
 
@@ -21,7 +21,7 @@ public class ClimbLedgeMovement : MovementType
         Vector3 right = Vector3.Cross(Vector3.up, dir).normalized;
         Vector3 move = Vector3.Cross(dir, right).normalized;
 
-        playerInput.ResetJump();
+        PlayerInputManager.ResetJump();
         movement.Move(move, movement.runSpeed, 0f);
         if (new Vector2(dir.x, dir.z).magnitude < 0.125f)
             player.ChangeStatus(Status.idle);
@@ -32,7 +32,7 @@ public class ClimbLedgeMovement : MovementType
         if (grabLedge == null) return;
         if (playerStatus == grabLedge.changeTo)
         {
-            if (playerInput.down.y == 1 || (playerInput.Jump() && playerInput.raw.y > 0))
+            if (PlayerInputManager.down.y == 1 || (PlayerInputManager.Jump() && PlayerInputManager.raw.y > 0))
                 player.ChangeStatus(changeTo, IK);
         }
     }

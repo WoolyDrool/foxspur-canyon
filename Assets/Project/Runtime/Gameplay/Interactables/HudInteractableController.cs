@@ -12,7 +12,7 @@ namespace Project.Runtime.Gameplay.Interactables
 
         public Interactable currentInteractable;
         
-        PlayerInput input;
+        PlayerInputManager _inputManager;
         HudInteraction ui;
         Transform mainCamera;
 
@@ -20,12 +20,12 @@ namespace Project.Runtime.Gameplay.Interactables
 
         private void Start()
         {
-            input = GetComponentInParent<PlayerInput>();
+            _inputManager = GetComponentInParent<PlayerInputManager>();
             mainCamera = Camera.main.transform;
 
             ui = FindObjectOfType<HudInteraction>();
             if (ui == null) Debug.LogError("InteractionControllerUI not found, please add PlayerUI prefab");
-            if (ui) ui.SetCode(input.interactKey.ToString());
+            if (ui) ui.SetCode(_inputManager.interactKey.ToString());
         }
 
         void Update()
@@ -53,7 +53,7 @@ namespace Project.Runtime.Gameplay.Interactables
                     {
                         if (ui) ui.UpdateInteract(interactWith.description);
                         if (ui) ui.currentInteractType = inFront.interact;
-                        if (input.interact)
+                        if (_inputManager.interact)
                             interactWith.Interact();
                     }
                 }

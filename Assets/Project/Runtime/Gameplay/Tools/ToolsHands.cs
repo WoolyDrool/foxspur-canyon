@@ -37,7 +37,7 @@ namespace Project.Runtime.Gameplay.Tools
             if (Physics.Raycast(playerCamera.transform.position,
                 playerCamera.transform.TransformDirection(Vector3.forward), out _rayHit, grabRange, grabLayers))
             {
-                if (_input.grabbing && objectToHold == null)
+                if (inputManager.grabbing && objectToHold == null)
                 {
                     if (_rayHit.collider.TryGetComponent(out InteractableThrowableItem throwableItem))
                     {
@@ -48,7 +48,7 @@ namespace Project.Runtime.Gameplay.Tools
                 }
             }
 
-            if (_input.grabbing && !grabbingObject)
+            if (inputManager.grabbing && !grabbingObject)
             {
                 if (objectToHold)
                 {
