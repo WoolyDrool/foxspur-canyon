@@ -82,7 +82,7 @@ namespace Project.Runtime.UI.Menus
 
             if (skipIntro)
             {
-                sceneLoader.LoadScene("MainGameWorld");
+                sceneLoader.LoadMainWorld();
             }
             else
             {
