@@ -46,6 +46,7 @@ namespace Project.Runtime.UI.Elements
 
         private IEnumerator BeginLoad()
         {
+            yield return _sceneLoadingManager.operation != null;
             while (!_sceneLoadingManager.operation.isDone)
             {
                 UpdateProgressUI();
