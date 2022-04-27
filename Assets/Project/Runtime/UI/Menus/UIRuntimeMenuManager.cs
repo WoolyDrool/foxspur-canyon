@@ -16,23 +16,46 @@ namespace Project.Runtime.UI.Menus
         DEATH,
         PAYOUT
     }
+
+    public enum TabState
+    {
+        QUESTS,
+        INVENTORY,
+        MAP,
+        NOTES
+    }
     
     public class UIRuntimeMenuManager : MonoBehaviour
     {
         public MenuState currentMenuState;
         public MenuState defaultMenuState;
         public MenuState previousMenuState;
-        
-        [Header("Menus")] 
+
+        public TabState currentTab;
+        public TabState defaultTab;
+        public TabState previousTab;
+
+        [Header("Menus")] public GameObject journalPanel;
         public UIInventoryView inventory;
         public UIPauseMenu pauseMenu;
         public GameObject deathMenu;
+        public GameObject questMenu;
+        public GameObject inventoryMenu;
+        public GameObject mapMenu;
+        public GameObject notesMenu;
         public GameObject trailPayoutMenu;
+        public List<GameObject> menus = new List<GameObject>();
 
         void Start()
         {
             DefineMenuIndex();
             EventManager.StartListening("ShowDeathMenu", DeathMenu);
+            EventManager.StartListening("ShowJournal", ShowJournal);
+        }
+
+        private void ShowJournal(Dictionary<string, object> obj)
+        {
+            journalPanel.SetActive(!journalPanel.activeSelf);
         }
 
         private void DefineMenuIndex()
@@ -53,9 +76,41 @@ namespace Project.Runtime.UI.Menus
             currentMenuState = MenuState.DEATH;
         }
 
+        public void ChangeTab (int index)
+        {
+            switch (index)
+            {
+                case 0:
+                {
+                    currentTab = TabState.QUESTS;
+                    break;
+                }
+                case 1:
+                {
+                    currentTab = TabState.INVENTORY;
+                    break;
+                }
+                case 2:
+                {
+                    currentTab = TabState.MAP;
+                    break;
+                }
+                case 3:
+                {
+                    currentTab = TabState.NOTES;
+                    break;
+                }
+            }
+        }
+
         void Update()
         {
-            if (currentMenuState == MenuState.NONE || currentMenuState != MenuState.DEATH)
+            questMenu.SetActive(currentTab == TabState.QUESTS);
+            inventoryMenu.SetActive(currentTab == TabState.INVENTORY);
+            mapMenu.SetActive(currentTab == TabState.MAP);
+            notesMenu.SetActive(currentTab == TabState.NOTES);
+            
+            /*if (currentMenuState == MenuState.NONE || currentMenuState != MenuState.DEATH)
             {
                 if (Input.GetKeyDown(KeyCode.I) && currentMenuState != MenuState.PAUSE)
                 {
@@ -98,7 +153,7 @@ namespace Project.Runtime.UI.Menus
             pauseMenu.gameObject.SetActive(currentMenuState == MenuState.PAUSE);
             inventory.gameObject.SetActive(currentMenuState == MenuState.INVENTORY);
             deathMenu.SetActive(currentMenuState == MenuState.DEATH);
-            trailPayoutMenu.SetActive(currentMenuState == MenuState.PAYOUT);
+           // trailPayoutMenu.SetActive(currentMenuState == MenuState.PAYOUT);*/
         }
 
         public void Resume()
