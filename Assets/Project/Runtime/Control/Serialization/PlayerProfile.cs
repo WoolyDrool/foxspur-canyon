@@ -21,6 +21,7 @@ namespace Project.Runtime.Serialization
 {
     public class PlayerProfile
     {
+        public int saveSlot = 0;
         public string playerName;
         public Pronouns pronounSelection;
         public Voice voiceSelection;
