@@ -60,7 +60,7 @@ public class WorldLightingManager : MonoBehaviour
     {
         RenderSettings.ambientLight = preset.AmbientColor.Evaluate(timePercent);
         RenderSettings.fogColor = preset.FogColor.Evaluate(timePercent);
-        //RenderSettings.fogDensity = preset.FogDensity.Evaluate(timePercent);
+        RenderSettings.fogDensity = preset.FogDensity.Evaluate(timePercent);
         //RenderSettings.ambientIntensity = preset.AtmosphereIntensity.Evaluate(timePercent);
         
         if (Sun != null)
