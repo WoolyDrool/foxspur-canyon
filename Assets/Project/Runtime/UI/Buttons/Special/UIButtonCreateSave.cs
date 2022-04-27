@@ -7,6 +7,7 @@ namespace Project.Runtime.UI.Buttons
 {
     public class UIButtonCreateSave : MonoBehaviour
     {
+        public int saveSlot = 0;
         private string _newSaveName;
         private Pronouns _newSavePronouns;
         private Voice _newSaveVoice;
@@ -84,6 +85,7 @@ namespace Project.Runtime.UI.Buttons
         {
             Debug.Log(_newSaveName + _newSavePronouns.ToString() + _newSaveVoice.ToString() + _newSaveSkinColor.ToString());
             PlayerProfile profile = new PlayerProfile();
+            profile.saveSlot = saveSlot;
             profile.playerName = _newSaveName;
             profile.skinColor = _newSaveSkinColor;
             profile.pronounSelection = _newSavePronouns;
