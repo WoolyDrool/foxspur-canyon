@@ -14,7 +14,7 @@ public class ProgressSceneLoader : MonoBehaviour
     private void Awake()
     {
         _loadingManager = GetComponent<SceneLoadingManager>();
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
 
         
         if (autoLoadScene)
