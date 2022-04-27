@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public enum Pronouns
@@ -27,6 +28,7 @@ namespace Project.Runtime.Serialization
         public Voice voiceSelection;
         public Color skinColor;
         public GenderChoice choice;
+        public string lastVisitedScene;
     }
 
 }
