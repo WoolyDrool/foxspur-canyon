@@ -26,18 +26,24 @@ namespace Project.Runtime.UI.Buttons
 
         void OnEnable()
         {
-            loadedProfile = SerializationManager.Load();
-            deleteSavePopup.SetActive(false);
+            
+            
             if (SerializationManager.TryGetProfile())
             {
+                loadedProfile = SerializationManager.Load();
+                runtimeProfile.InjectProfile(loadedProfile);
+                saveName = loadedProfile.playerName;
+                saveText.text = saveName;
+                deleteSavePopup.SetActive(true);
+            }
+            else
+            {
+                loadedProfile = null;
                 Debug.LogAssertion("No valid save found");
                 saveText.text = "Empty";
                 deleteSaveButton.SetActive(false);
                 return;
             }
-            
-            saveName = loadedProfile.playerName;
-            saveText.text = saveName;
         }
 
         public void DetermineNext()
