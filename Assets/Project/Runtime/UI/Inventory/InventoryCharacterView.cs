@@ -9,18 +9,18 @@ public class InventoryCharacterView : MonoBehaviour
 {
     public TextMeshProUGUI playerNameText;
     private string _loadedPlayerName;
-    private RuntimeProfileInterpreter _interpreter;
+    public RuntimeProfileInterpreter interpreter;
     public Image characterPortrait;
     public Sprite maleCharacter;
     public Sprite femaleCharacter;
     void Start()
     {
-        _interpreter = FindObjectOfType<RuntimeProfileInterpreter>();
+        //interpreter = FindObjectOfType<RuntimeProfileInterpreter>();
 
-        if (_interpreter != null)
+        if (interpreter != null)
         {
-            _loadedPlayerName = _interpreter.runtimeProfile.playerName;
-            switch (_interpreter.runtimeProfile.pronounSelection)
+            _loadedPlayerName = interpreter.runtimeProfile.playerName;
+            switch (interpreter.runtimeProfile.pronounSelection)
             {
                 case Pronouns.MALE:
                 {
@@ -34,7 +34,7 @@ public class InventoryCharacterView : MonoBehaviour
                 }
             }
 
-            characterPortrait.color = _interpreter.runtimeProfile.skinColor;
+            characterPortrait.color = interpreter.runtimeProfile.skinColor;
         }
         else
         {
