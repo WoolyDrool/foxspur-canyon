@@ -23,7 +23,7 @@ namespace Project.Runtime.Global
         {
             
             loader = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         
         public void LoadScene(string sceneName)

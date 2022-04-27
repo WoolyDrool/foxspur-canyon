@@ -26,7 +26,7 @@ namespace Project.Runtime.Global
                     {
                         _eventManager.Init();
                         
-                        DontDestroyOnLoad(_eventManager);
+                        //DontDestroyOnLoad(_eventManager);
                     }
                 }
 
