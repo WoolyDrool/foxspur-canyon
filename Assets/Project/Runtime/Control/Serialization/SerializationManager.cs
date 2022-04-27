@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Project.Runtime.Serialization
     public static class SerializationManager
     {
         private static string directory = "/SaveData/";
-        private static string fileName = "save.txt";
+        private static string fileName = "_save.txt";
 
         public static void Save(PlayerProfile profile)
         {
@@ -18,17 +19,18 @@ namespace Project.Runtime.Serialization
             }
 
             string json = JsonUtility.ToJson(profile);
-            File.WriteAllText(dir + fileName, json);
+            File.WriteAllText(dir + profile.playerName+fileName, json);
         }
 
         public static PlayerProfile Load()
         {
-            string fullPath = Application.persistentDataPath + directory + fileName;
+            string fullPath = Application.persistentDataPath + directory;
             PlayerProfile profile = new PlayerProfile();
+            string compFullPath = fullPath + (profile.playerName + fileName);
             
-            if (File.Exists(fullPath))
+            if (File.Exists(compFullPath))
             {
-                string json = File.ReadAllText(fullPath);
+                string json = File.ReadAllText(compFullPath);
                 profile = JsonUtility.FromJson<PlayerProfile>(json);
             }
             else
@@ -41,7 +43,7 @@ namespace Project.Runtime.Serialization
 
         public static void Delete(PlayerProfile profile)
         {
-            string fullPath = Application.persistentDataPath + directory + fileName;
+            string fullPath = Application.persistentDataPath + directory + profile.playerName+fileName;
             if (File.Exists(fullPath))
             {
                 File.Delete(fileName);
@@ -51,7 +53,8 @@ namespace Project.Runtime.Serialization
 
         public static bool TryGetProfile()
         {
-            string fullPath = Application.persistentDataPath + directory + fileName;
+            PlayerProfile attemptProfile = Load();
+            string fullPath = Application.persistentDataPath + directory + attemptProfile.playerName+fileName;
             if (File.Exists(fullPath))
             {
                 return true;
