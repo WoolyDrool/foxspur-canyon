@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Project.Runtime.Control.Managers.Streaming;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -19,6 +20,7 @@ public class WorldLightingManager : MonoBehaviour
     public bool useStopTime = false;
     private void Start()
     {
+        Sun = SceneInstanceManager.instance.sun;
         if(useStartTime)
         {
         }
