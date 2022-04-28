@@ -22,7 +22,22 @@ namespace Project.Runtime.UI.Elements
         public GameObject batteryHud;
         public GameObject inventoryHud;
         public GameObject payoutHud;
+        public GameObject currentHud;
 
+        public PlayerHudState curHudState;
+        public enum PlayerHudState
+        {
+            PAUSE,
+            INV,
+            MAP,
+            QUESTS,
+            NOTES,
+            TRAIL_COMPLETE
+        };
+
+        public GameObject[] hudObj;
+        public GameObject prevHud;
+        
         [Header("Elements - Specific")] 
         public Image healthDial;
         public Image hungerDial;
@@ -82,6 +97,37 @@ namespace Project.Runtime.UI.Elements
             }
             
             UpdatePlayerHud();
+        }
+
+        public void ChangePlayerHudState(PlayerHudState state)
+        {
+            switch (state)
+            {
+                case PlayerHudState.PAUSE:
+                    hudObj[0].SetActive(true);
+                    currentHud = hudObj[0];
+                    break;
+                case PlayerHudState.INV:
+                    hudObj[1].SetActive(true);
+                    currentHud = hudObj[1];
+                    break;
+                case PlayerHudState.MAP:
+                    hudObj[2].SetActive(true);
+                    currentHud = hudObj[2];
+                    break;
+                case PlayerHudState.QUESTS:
+                    hudObj[3].SetActive(true);
+                    currentHud = hudObj[3];
+                    break;
+                case PlayerHudState.NOTES:
+                    hudObj[4].SetActive(true);
+                    currentHud = hudObj[4];
+                    break;
+                case PlayerHudState.TRAIL_COMPLETE:
+                    hudObj[5].SetActive(true);
+                    currentHud = hudObj[5];
+                    break;
+            }
         }
 
         private void ShowPlayerHud()
