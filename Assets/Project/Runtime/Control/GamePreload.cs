@@ -12,7 +12,7 @@ public class GamePreload : MonoBehaviour
         IEnumerator Preload()
         {
             yield return new WaitForSeconds(3);
-            SceneManager.LoadSceneAsync(1);
+            SceneManager.LoadSceneAsync("MainGameWorld");
         }
     }
 
