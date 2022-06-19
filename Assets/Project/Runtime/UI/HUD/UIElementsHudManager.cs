@@ -1,16 +1,25 @@
 using System.Collections.Generic;
 using Project.Runtime.Gameplay.Interactables;
+using Project.Runtime.Gameplay.Player;
+using Project.Runtime.Gameplay.Tools;
+using Project.Runtime.Gameplay.Vehicles;
+using Project.Runtime.Global;
+using Project.Runtime.UI.Elements;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using Project.Runtime.Global;
-using Project.Runtime.Gameplay.Vehicles;
-using Project.Runtime.Gameplay.Tools;
-using Project.Runtime.Gameplay.Player;
 
-
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.UI.HUD
 {
+    public enum PlayerHudState
+    {
+        PAUSE,
+        INV,
+        MAP,
+        QUESTS,
+        NOTES,
+        TRAIL_COMPLETE,
+        NONE
+    }
     public class UIElementsHudManager : MonoBehaviour
     {
         private PlayerVitals _playerVitals;
@@ -21,20 +30,14 @@ namespace Project.Runtime.UI.Elements
         public GameObject drivingHud;
         public GameObject batteryHud;
         public GameObject inventoryHud;
+        public GameObject journalHud;
         public GameObject payoutHud;
         public GameObject currentHud;
+        public UIElementTrailProgress trailProgressHud;
+
+        public GameObject overallPlayerHud;
 
         public PlayerHudState curHudState;
-        public enum PlayerHudState
-        {
-            PAUSE,
-            INV,
-            MAP,
-            QUESTS,
-            NOTES,
-            TRAIL_COMPLETE
-        };
-
         public GameObject[] hudObj;
         public GameObject prevHud;
         
@@ -59,6 +62,7 @@ namespace Project.Runtime.UI.Elements
         private const float zeroSpeedAngle = 0;
         private float shiftAmount;
         public bool showingPlayerHud = false;
+        private int currentHudIndex = 0;
 
         #endregion
 
@@ -69,7 +73,7 @@ namespace Project.Runtime.UI.Elements
             ToolsWatch.OnRaise += ShowPlayerHud;
             InteractableBatteryDevice.OnToggle += ShowBatteryIndicator;
         }
-
+        
         private void OnDisable()
         {
             ToolsBinoculars.OnRaise -= ShowBinocularHud;
@@ -82,10 +86,15 @@ namespace Project.Runtime.UI.Elements
         {
             _drivingMovement = GameManager.instance.playerManager.playerTransform.GetComponent<DrivingMovement>();
             _playerVitals = GameManager.instance.playerVitals;
+            ChangePlayerHudState(PlayerHudState.NONE);
         }
 
         void Update()
         {
+            #region UI Updates
+            
+            UpdatePlayerHud();
+            
             if (drivingHud.activeSelf)
             {
                 UpdateDrivingHud();
@@ -95,39 +104,78 @@ namespace Project.Runtime.UI.Elements
             {
                 UpdateBatteryIndicator();
             }
-            
-            UpdatePlayerHud();
+
+            if (curHudState == PlayerHudState.NONE)
+            {
+                overallPlayerHud.SetActive(true);
+            }
+            else
+            {
+                overallPlayerHud.SetActive(false);
+            }
+            #endregion
         }
 
         public void ChangePlayerHudState(PlayerHudState state)
         {
+            if (state == PlayerHudState.NONE)
+            {
+                EventManager.TriggerEvent("ReturnToNormal", null);
+            }
+            else
+            {
+                EventManager.TriggerEvent("FreeMouse", null);
+                EventManager.TriggerEvent("FreeLook", null);
+            }
+            
+            if (curHudState == state)
+            {
+                ChangePlayerHudState(PlayerHudState.NONE);
+                return;
+            }
+
             switch (state)
             {
                 case PlayerHudState.PAUSE:
                     hudObj[0].SetActive(true);
                     currentHud = hudObj[0];
+                    currentHudIndex = 0;
                     break;
                 case PlayerHudState.INV:
                     hudObj[1].SetActive(true);
                     currentHud = hudObj[1];
+                    currentHudIndex = 1;
                     break;
                 case PlayerHudState.MAP:
                     hudObj[2].SetActive(true);
                     currentHud = hudObj[2];
+                    currentHudIndex = 2;
                     break;
                 case PlayerHudState.QUESTS:
                     hudObj[3].SetActive(true);
                     currentHud = hudObj[3];
+                    currentHudIndex = 3;
                     break;
                 case PlayerHudState.NOTES:
                     hudObj[4].SetActive(true);
                     currentHud = hudObj[4];
+                    currentHudIndex = 4;
                     break;
                 case PlayerHudState.TRAIL_COMPLETE:
                     hudObj[5].SetActive(true);
                     currentHud = hudObj[5];
+                    currentHudIndex = 5;
+                    break;
+                case PlayerHudState.NONE:
+                    foreach (GameObject g in hudObj)
+                    {
+                        g.SetActive(false);
+                    }
+                    currentHud = null;
                     break;
             }
+
+            curHudState = state;
         }
 
         private void ShowPlayerHud()
@@ -176,17 +224,7 @@ namespace Project.Runtime.UI.Elements
             }
         }
 
-        void ShowPauseHud()
-        {
-            if (!pauseMenu.activeSelf)
-            {
-                pauseMenu.SetActive(true);
-            }
-            else
-            {
-                pauseMenu.SetActive(false);
-            }
-        }
+        
 
         void ShowDrivingHud()
         {
@@ -237,20 +275,6 @@ namespace Project.Runtime.UI.Elements
             speedometerDial.transform.eulerAngles = new Vector3(0, 0, GetSpeedRotation());
             gearShift.transform.localPosition = new Vector3(0, shiftAmount, 0);
             parkingBrake.gameObject.SetActive(_drivingMovement.currentVehicle.ParkingBrake);
-        }
-
-        void ShowInventory()
-        {
-            _uiSound.clip = inventorySound;
-            _uiSound.Play();
-            if (!inventoryHud.activeSelf)
-            {
-                inventoryHud.SetActive(true);
-            }
-            else
-            {
-                inventoryHud.SetActive(false);
-            }
         }
 
         void ShowBatteryIndicator()
