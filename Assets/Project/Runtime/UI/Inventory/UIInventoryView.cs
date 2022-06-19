@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Project.Runtime.Audio;
 using Project.Runtime.Gameplay.Inventory;
-using Project.Runtime.Global;
 using Project.Runtime.UI.Buttons;
-using UnityEngine;
 using TMPro;
-using UnityEditor;
+using UnityEngine;
 
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.UI.Inventory
 {
     public class UIStoredItem
     {
@@ -58,13 +54,10 @@ namespace Project.Runtime.UI.Elements
         private GlobalAudioMixer _audioMixer;
 
         private UpdateItemEvent u_UpdateEvent;
-
         
-
         #endregion
 
         /// <summary>
-        /// The code from your tutorial is mostly the same, but I have separated the functions into disparate classes.
         /// InventoryMath.cs handles all of the collision, intersections, grid math etc
         /// InventoryDraw.cs handles most of the drawing functions like putting the grid/item prefabs on the screen etc
         /// UIInventoryView.cs handles the global functions like adding/removing items, item interactions etc
@@ -84,7 +77,7 @@ namespace Project.Runtime.UI.Elements
             playerInventory.updateUIList.AddListener(UpdateItems);
             playerInventory.resortUIList.AddListener(ResortItems);
             playerInventory.updateOccupiedSlots.AddListener(UpdateOccupiedSlots);
-            PlayerInventory.OnRemove += RemoveItemDirectly;
+            //PlayerInventory.OnRemove += RemoveItemDirectly;
             PlayerInventory.OnCheck += CheckSpace;
 
             //Initializes the maths and drawing classes
@@ -97,16 +90,19 @@ namespace Project.Runtime.UI.Elements
             {
                 AddItem(i);
             }
+            
+            gameObject.SetActive(false);
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            drawing.DrawInventory();
             batteryCount.text = playerInventory.currentBatteries.ToString();
             bagsCount.text = playerInventory.currentBags.ToString();
             moneyCount.text = playerInventory.currentMoney.ToString();
             secretsCount.text = playerInventory.currentSecrets.ToString();
+            Notify();
+            
         }
 
         public override void Notify()
@@ -240,13 +236,13 @@ namespace Project.Runtime.UI.Elements
             maths.RepositionateMovingObject();
             Notify();
         }
-        
+
         private void UpdateItems(Item newItem)
         {
             //This might not be the most elegant solution but fuck it
             AddItem(newItem);
             
-            /*itemsInGrid.Clear();
+            itemsInGrid.Clear();
             
             foreach (Item i in playerInventory.inventoryItems)
             {
@@ -256,18 +252,9 @@ namespace Project.Runtime.UI.Elements
             foreach (Item i in playerInventory.trashItems)
             {
                 AddItem(i);
-            }*/
+            }
             
         }
-
-        private void RemoveItemDirectly(Item itemToRemove)
-        {
-            UIStoredItem i = new UIStoredItem(itemToRemove, null);
-            UIStoredItem ir = itemsInGrid.Find(item => i.item);
-            Debug.LogError(ir.item.name);
-            RemoveItem(ir);
-        }
-
         private void ResortItems()
         {
             itemsInGrid.Clear();
