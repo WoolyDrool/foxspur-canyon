@@ -58,7 +58,7 @@ namespace Project.Runtime.Gameplay.Player
 
             _controller = GameManager.instance.playerManager._playerMovement;
             _startingMovementSpeed = _controller.walkSpeed;
-
+            InvokeRepeating(nameof(CheckCurrentSleep), 0, 1);
         }
         
         //DEBUG_COMMAND
@@ -75,6 +75,7 @@ namespace Project.Runtime.Gameplay.Player
         }
 
         private void Update()
+        private void CheckCurrentSleep()
         {
 
             if (_sleep.CheckCurrentValue(true) > restedThreshold)
