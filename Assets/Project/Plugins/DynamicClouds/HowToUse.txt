@@ -1,0 +1,64 @@
+-----How to use the Dynamic Clouds-----
+
+1. Place the Clouds prefab in your scene
+2. Scale it (uniformly) so it's scale matches the camera's far plane.
+3. Assign the Sun's directional light in the Cloud Controller script atteched to the Clouds object 
+4. (optional) Adjust the parameters to your liking (see below)
+
+You can look at the SingleCameraScene for a simple demonstration of this setup.
+
+The clouds are physically present in the scene, rendered on a dome. 
+Depending on the setup of your scene, you could have issues with objects clipping through the clouds, or semi-tranparent objects being rendered behind the clouds.
+If that is the case, you can use a different camera to render the skybox and clouds, which will fix these issues, but can have a slight cost on performance.
+
+To do this, follow these steps:
+
+1. Set the Clouds object to a different unused Layer (for example "TransparentFX"), which I'll call the clouds layer from now on
+2. Duplicate the camera, which we will use to render the clouds (rename it if you like)
+3. Remove the Audio Listener component from the clouds camera (and any other you might have added)
+4. Parent the clouds camera to the main camera, and make sure it's transform properties are neutral 
+5. Select "nothing" in the clouds camera's Culling Mask, then select the clouds layer (which makes the camera render only this layer)
+6. Set the clouds camera's depth to 1 lower than the main camera
+7. Set the main camera's clear flags to "Depth only"
+8. Deselect the clouds layer in the Culling Mask (which makes the camera not render this layer)
+
+You can look at the MultiCameraScene for a simple demonstration of this setup.
+
+
+-----Parameters-----
+
+All parameters can be set in the shader, but some are overwritten in the CloudController script
+
+in the CloudController script you can set the following:
+
+- Shadow Factor: How much the clouds dim the sun light: at 0 it will completely block the sun, at 1 the sunlight is unafected
+- Wind Speed: Makes the clouds move in the direction of the vector, a value of 1 is incredibly fast, so usually you want something smaller than 0.01
+- Update From Shader: When enabled it will update it's own variable based on the shader's each frame. If you're in doubt of wheter you need this, just keep it enabled
+
+In the clouds material you can set the following:
+(The other material-parameters should not be altered directly)
+
+- Top Clouds: Amount of cloud-coverage at the zenith (top), 0 is none, 1 is fully clouded (but not necessarily fully-opaque), at 2 it is fully opque (as long as the Thickness is atleast 1)
+- Horizon Clouds: Amount of cloud-coverage at the horizon
+- Cloud Thickness: The denseness/opqueness of the clouds, the higher the number the more sharply defined the clouds are. 0 is no clouds, 1 is fully soft clouds, >1 is sharper clouds
+- Turbulence: the speed at which the clouds move around (without actually altering their shape), generally you'll want this between 0 and 1
+- Shape Change Speed: the speed at which the clouds change their shape (without changing the general amount of coverage), realistically this would between 0 and 0.1
+- Scale: changes the size of the clouds by scaling (and tiling) the entire effect. (If you keep it above 0.2 it should not produce any visible repeating patterns)
+- Cloud Light: the color of the clouds at their lightest
+- Cloud Dark: the color of the clouds at their darkest
+- Fog Color: the fogcolor on the clouds (best to keep similar to the scene-fogcolor)
+- Fog: amount of fog, 0 is (practically) no fog, 1 means full fog at the horizon, no fog at the zenith, and a soft transition inbetween
+- Fade amount: makes the clouds fade out near the horizon, works the same as the fog
+
+Appart from the Turbulence, Shape Change Speed and Scale, all of these parameters can be altered at runtime for a fully dynamic sky.
+
+
+-----Animating the clouds-----
+
+The CloudsAnimator script is a simple script that shows how you can make the clouds change over time, by making it alternate between 2 states.
+You're free to use this and alter it, or make your own scripts to make the clouds behave as you want.
+
+-----
+
+If you have any problems or questions, don't hesitate to contact me at stevencraeynest@gmail.com
+

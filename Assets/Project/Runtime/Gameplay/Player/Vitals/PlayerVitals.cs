@@ -115,14 +115,14 @@ namespace Project.Runtime.Gameplay.Player
         void Update()
         {
             currentHealth = healthStat.currentValue;
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (GameManager.instance.inputManager.inputSprint)
             {
-                //sleepStat.currentValue -= sprintSleepTickRate * Time.deltaTime;
+                sleepStat.currentValue -= sprintSleepTickRate * Time.deltaTime;
             }
-            /*else
+            else
             {
-                sleepStat.currentValue = sleepStat.currentValue;
-            }*/
+                //sleepStat.currentValue = sleepStat.currentValue;
+            }
 
             if (Input.GetKeyDown(KeyCode.Space))
             {

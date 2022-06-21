@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Matchbox
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 3801508932909318606, guid: aa6062e8fad9ab840a6044ba7983f165, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

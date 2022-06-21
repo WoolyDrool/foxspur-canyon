@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,13 +30,13 @@ namespace Project.Runtime.Gameplay.Interactables
         private bool _canFix = true;
 
         #endregion
-        
+
         void Start()
         {
             //Get components
-            _inputManager = FindObjectOfType<PlayerInputManager>();
-            _manager = GetComponentInParent<RuntimeTrailManager>();
-            _hudInteractable = FindObjectOfType<HudInteractableController>();
+            _inputManager = GameManager.instance.inputManager;
+            _manager = FindObjectOfType<RuntimeTrailManager>();
+            _hudInteractable = GameManager.instance.hudInteractionController;
             _interactable = GetComponent<Interactable>();
             
             //Set model status
@@ -47,7 +48,7 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             if (_hudInteractable.currentInteractable == this._interactable)
             {
-                if (_inputManager.hold_interact && _canFix)
+                if (_inputManager.holdInteract && _canFix)
                 {
                     currentCompletion += 1 * Time.deltaTime;
                     progressBar.fillAmount = (currentCompletion / timeToComplete);

@@ -11,6 +11,7 @@ namespace Project.Runtime.Gameplay.Inventory
     [CreateAssetMenu(menuName = "Items/Create Item")]
     public class Item : ScriptableObject
     {
+        public GameObject completedItem;
         public ItemClass itemClass;
         public bool isCurrentlyEquipped;
         public bool canBeDropped = true;

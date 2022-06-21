@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Takeout Box
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 8930937338709821083, guid: 3d3747a9fee7c6543a7180140b1b2bd8, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

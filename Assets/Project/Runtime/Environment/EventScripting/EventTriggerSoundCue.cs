@@ -14,6 +14,8 @@ public class EventTriggerSoundCue : MonoBehaviour
     public float maxDistance;
     public bool isMusicCue;
     public bool alsoDisable = true;
+    public bool todRequirement = false;
+    public TimeManager.TimeOfDay tod;
 
     private AmbientSoundscape _ambientSoundscape;
     public AudioClip music;
@@ -41,8 +43,24 @@ public class EventTriggerSoundCue : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerPos = other.transform.position;
-            Trigger();
+            if (!todRequirement)
+            {
+                playerPos = other.transform.position;
+                Trigger();
+            }
+            else
+            {
+                if (GameManager.instance.timeManager.time == tod)
+                {
+                    playerPos = other.transform.position;
+                    Trigger();
+                }
+                else
+                {
+                    Debug.Log("Did not trigger event - TOD requirement not met");
+                    return;
+                }
+            }
         }
     }
 

@@ -18,10 +18,10 @@ public class FootstepSound : MonoBehaviour
     private int _index;
     private bool _isPlaying;
 
-    private CharacterController _controller;
-    private PlayerController _player;
-    private PlayerMovement _movement;
-    private PlayerProfileInterpreter _interpreter;
+    [SerializeField] private CharacterController _controller;
+    [SerializeField] private PlayerController _player;
+    [SerializeField] private PlayerMovement _movement;
+    [SerializeField]private PlayerProfileInterpreter _interpreter;
 
     [SerializeField] private bool _isWalking;
     [SerializeField] private bool _isRunning;
@@ -38,43 +38,35 @@ public class FootstepSound : MonoBehaviour
     public AudioClip[] jumpSounds;
     void Awake()
     {
-        _controller = GetComponentInParent<CharacterController>();
-        _interpreter = FindObjectOfType<PlayerProfileInterpreter>();
-        _player = GetComponentInParent<PlayerController>();
-        _movement = GetComponentInParent<PlayerMovement>();
     }
 
     private void Start()
     {
-        jumpSounds = _interpreter.gender.jumpSounds;
+        if (!_interpreter)
+            _interpreter = GameManager.instance.ppi;
+            
+//        jumpSounds = _interpreter.gender.jumpSounds;
         speed = _movement.walkSpeed;
         sprintSpeed = _movement.runSpeed;
         _stepCycle = 0;
         _nextStep = _stepCycle / 2f;
     }
 
-    private void FixedUpdate()
+    void Update()
     {
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+            //PlayJumpSound();
+        //}
+        
         _isWalking = _player.status == Status.walking;
         _isRunning = _player.status == Status.sprinting;
-
         
-
         _dynamicSpeed = _isRunning ? sprintSpeed : speed;
 
         if (_controller.isGrounded)
         {
             ProgressStepCycle(_dynamicSpeed);
-        }
-
-        
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PlayJumpSound();
         }
         
         if (_isRunning)

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5036bdb2d94ac98bbcf078597b59d6, type: 3}
   m_Name: WuliKupTrailData
   m_EditorClassIdentifier: 
-  TrailName: 
+  TrailName: Wuli-Kup Trail
   Items: 0
   Secrets: 0
+  minimumCompletionPercentage: 0.8
   Completed: 0

@@ -1,0 +1,17 @@
+##EVENT NAMES##
+
+##GLOBAL##
+PauseGame - toggles game pause
+FreeMouse - toggles mouse visibility and lock state
+FreeLook - toggles player control of the camera
+ReturnToNormal - resets all controls to default (unpaused, hidden mouse, free look)
+
+##UI##
+OpenJournal - opens Journal UI
+OpenMap - opens Map UI
+OpenQuests - opens Quest UI
+OpenNotes - opens Notes UI
+
+ShowTrailProgress - toggles Progress UI
+ClearUI - toggles all hud elements from the screen
+FinishTrail - displays something somewhere

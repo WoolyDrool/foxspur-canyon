@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Empty Motor Oil Bottle
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 896213619485528133, guid: 84b3f34abefc64346a686dfc9a6b7833, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

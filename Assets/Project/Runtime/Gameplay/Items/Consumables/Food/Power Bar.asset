@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Power Bar
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 8728644460447933627, guid: 22f64666dcd2a0649a72f2640c43d37a, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

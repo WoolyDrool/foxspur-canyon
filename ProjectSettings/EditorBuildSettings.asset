@@ -6,15 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/game preload.unity
+    path: Assets/Scenes/Special/game preload.unity
     guid: cad0a6afeafb9494186a468102869698
   - enabled: 1
-    path: Assets/Scenes/Main Menu/scn_MainMenu.unity
-    guid: 5aaa4372f3d8bdf48841de71cd1027a6
-  - enabled: 1
-    path: Assets/Scenes/Cutscenes/scn_Intro.unity
-    guid: f32d2ffc6709fd74982e8eb4abcc8812
-  - enabled: 1
-    path: Assets/Scenes/Levels/MainGameWorld.unity
+    path: Assets/Scenes/MainGameWorld.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/Scenes/Trails/WuliKupTrail.unity
+    guid: 39a38307a6ca4614a988619bf949e857
+  - enabled: 1
+    path: Assets/Scenes/Locations/HubTown.unity
+    guid: 9b57654a3d5286d4f957b39b2b55c4ad
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 4ff4c4211c579124e95e9664632f3a40, type: 2}

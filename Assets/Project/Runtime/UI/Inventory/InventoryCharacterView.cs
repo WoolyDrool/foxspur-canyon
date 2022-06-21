@@ -1,54 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using Project.Runtime.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryCharacterView : MonoBehaviour
+namespace Project.Runtime.UI.Inventory
 {
-    public TextMeshProUGUI playerNameText;
-    private string _loadedPlayerName;
-    public RuntimeProfileInterpreter interpreter;
-    public Image characterPortrait;
-    public Sprite maleCharacter;
-    public Sprite femaleCharacter;
-    void Start()
+    public class InventoryCharacterView : MonoBehaviour
     {
-        //interpreter = FindObjectOfType<RuntimeProfileInterpreter>();
-
-        if (interpreter != null)
+        public TextMeshProUGUI playerNameText;
+        private string _loadedPlayerName;
+        public RuntimeProfileInterpreter interpreter;
+        public Image characterPortrait;
+        public Sprite maleCharacter;
+        public Sprite femaleCharacter;
+        void Start()
         {
-            _loadedPlayerName = interpreter.runtimeProfile.playerName;
-            switch (interpreter.runtimeProfile.pronounSelection)
+            //interpreter = FindObjectOfType<RuntimeProfileInterpreter>();
+
+            if (interpreter != null)
             {
-                case Pronouns.MALE:
+                _loadedPlayerName = interpreter.runtimeProfile.playerName;
+                switch (interpreter.runtimeProfile.pronounSelection)
                 {
-                    characterPortrait.sprite = maleCharacter;
-                    break;
+                    case Pronouns.MALE:
+                    {
+                        characterPortrait.sprite = maleCharacter;
+                        break;
+                    }
+                    case Pronouns.FEMALE:
+                    {
+                        characterPortrait.sprite = femaleCharacter;
+                        break;
+                    }
                 }
-                case Pronouns.FEMALE:
-                {
-                    characterPortrait.sprite = femaleCharacter;
-                    break;
-                }
+
+                characterPortrait.color = interpreter.runtimeProfile.skinColor;
+            }
+            else
+            {
+                _loadedPlayerName = "DebugPlayer";
+                characterPortrait.sprite = femaleCharacter;
+                characterPortrait.color = Color.white;
             }
 
-            characterPortrait.color = interpreter.runtimeProfile.skinColor;
+
+            playerNameText.text = _loadedPlayerName;
         }
-        else
+
+        void Update()
         {
-            _loadedPlayerName = "DebugPlayer";
-            characterPortrait.sprite = femaleCharacter;
-            characterPortrait.color = Color.white;
-        }
-
-
-        playerNameText.text = _loadedPlayerName;
-    }
-
-    void Update()
-    {
         
+        }
     }
 }

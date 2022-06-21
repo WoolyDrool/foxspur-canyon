@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Cigarette Box
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 1092912079023696328, guid: 9aafc0f6834ddf246bcb0f3a5d26b02b, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

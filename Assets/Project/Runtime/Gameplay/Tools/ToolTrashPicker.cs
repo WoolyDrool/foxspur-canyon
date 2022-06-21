@@ -58,8 +58,9 @@ namespace Project.Runtime.Gameplay.Tools
             progressBarContainer.SetActive(true);
         }
 
-        void Update()
+        public override void Update()
         {
+            base.Update();
             if (inputManager.fire1 && canUse)
             {
                 _source.PlayOneShot(swingSound);
@@ -67,7 +68,7 @@ namespace Project.Runtime.Gameplay.Tools
                 ProcessCooldown();
             }
 
-            if (inputManager.reload)
+            if (inputManager.fire2)
             {
                 if (_inventory.currentBags > 0)
                 {

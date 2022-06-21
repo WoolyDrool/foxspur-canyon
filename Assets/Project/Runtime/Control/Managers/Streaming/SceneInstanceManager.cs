@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Project.Runtime.Serialization;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,10 +12,12 @@ namespace Project.Runtime.Control.Managers.Streaming
         private static SceneInstanceManager _sceneInstanceManager;
         public Transform loadInPos;
         public Vector3 loadInCoordinates;
-        public PlayerMovement playerController;
-        public PersistentPlayerCharacter ppc;
-        public Light sun;
-
+        public PlayerMovement playerMovement;
+        public Light sceneSun;
+        public WorldLightingPreset scenePreset;
+        public GameObject playerObject;
+        public String sceneName;
+        
         public static SceneInstanceManager instance
         {
             get
@@ -32,41 +35,89 @@ namespace Project.Runtime.Control.Managers.Streaming
                         _sceneInstanceManager.Init();
                     }
                 }
-
+                
                 return _sceneInstanceManager;
             }
         }
 
-        void Init()
+        private void OnEnable()
         {
-            if (!ppc)
-            {
-                ppc = FindObjectOfType<PersistentPlayerCharacter>();
-            }
             loadInCoordinates = loadInPos.localPosition;
-            //What an amazingly awful way to do this :-D
-            playerController = GameManager.instance.playerManager._playerMovement;
-
-            StartCoroutine(WaitToTeleportPlayer());
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
+        private void Awake()
+        {
+            _sceneInstanceManager = this;
+        }
+
+        void Init()
+        {
+            
+        }
+        
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            playerObject = null;
         }
-
+        
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            ppc.Profile.lastVisitedScene = scene.name;
-            SerializationManager.Save(ppc.Profile);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+
+            try
+            {
+                playerObject = GameManager.instance.playerManager.playerTransform.gameObject;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("No PlayerController found. Console: " + e);
+                PlayerInitialization(Resources.Load("PPC") as GameObject);
+                throw;
+            }
+            
+            if (!playerObject)
+            {
+                
+            }
+            
+            
+            else
+            {
+                Debug.LogAssertion("Initializing");
+                
+                playerMovement = GameManager.instance.playerManager._playerMovement;
+                Debug.LogWarning("Waiting to teleport...");
+            }
         }
 
+        void PlayerInitialization(GameObject po)
+        {
+            playerObject = po;
+            Instantiate(playerObject, loadInPos);
+            Debug.LogWarning("Spawned PPC");
+
+            try
+            {
+                playerMovement = GameManager.instance.playerManager._playerMovement;
+            }
+            catch (Exception e)
+            {
+                playerMovement = playerObject.GetComponentInChildren<PlayerMovement>();
+                Console.WriteLine(e);
+                throw;
+            }
+            
+            StartCoroutine(WaitToTeleportPlayer());
+        }
+        
         IEnumerator WaitToTeleportPlayer()
         {
             yield return PersistentPlayerCharacter.MetaState.AWAKE;
-            Debug.Log("Teleported player");
-            playerController.ForceNewPosition(loadInCoordinates);
+            playerObject.transform.SetParent(null);
+            playerMovement.ForceNewPosition(loadInCoordinates);
+            Debug.Log("Teleported");
         }
     }
 }

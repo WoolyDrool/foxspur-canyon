@@ -5,21 +5,17 @@ using UnityEngine.UI;
 
 public class UISliderFOV : MonoBehaviour
 {
-    private Camera _camera;
-    public float minFOV = 60;
-    public float maxFOV = 124.4f;
+    public float minFOV;
+    public float maxFOV;
     public float currentFOV;
     private Slider _slider;
-    void Awake()
+    void Start()
     {
-        _camera = Camera.main;
         _slider = GetComponent<Slider>();
-
-        currentFOV = _camera.fieldOfView;
-        _camera.fieldOfView = currentFOV;
+        currentFOV = GameManager.instance.settingsManager.playerPrefFOV;
         _slider.minValue = minFOV;
         _slider.maxValue = maxFOV;
-        _slider.value = currentFOV / maxFOV;
+        _slider.value = (currentFOV);
     }
 
     void Update()
@@ -30,7 +26,8 @@ public class UISliderFOV : MonoBehaviour
     public void AdjustFOV(float newValue)
     {
         currentFOV = newValue;
-        _camera.fieldOfView = currentFOV;
+        GameManager.instance.cameraManager.cameraComponent.fieldOfView = currentFOV;
+        GameManager.instance.settingsManager.playerPrefFOV = currentFOV;
     }
     
 }

@@ -20,7 +20,8 @@ public class WorldLightingManager : MonoBehaviour
     public bool useStopTime = false;
     private void Start()
     {
-        Sun = SceneInstanceManager.instance.sun;
+        Sun = SceneInstanceManager.instance.sceneSun;
+        preset = SceneInstanceManager.instance.scenePreset;
         if(useStartTime)
         {
         }

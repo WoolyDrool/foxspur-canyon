@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Beer Can
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 8283585829157227632, guid: cb26c94c2e3f2b24cb24c3f8643e2356, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

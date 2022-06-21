@@ -1,20 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Items/Item Color Pallete")]
-public class UIColorPallete : ScriptableObject
+namespace Project.Runtime.UI.Inventory
 {
-    public Color trashColor;
-    public Color consumableColor;
-    public Color keyColor;
-    void Start()
+    [CreateAssetMenu(menuName = "Items/Item Color Pallete")]
+    public class UIColorPallete : ScriptableObject
     {
+        public Color trashColor;
+        public Color consumableColor;
+        public Color keyColor;
+        void Start()
+        {
         
-    }
+        }
 
-    void Update()
-    {
+        void Update()
+        {
         
+        }
     }
 }

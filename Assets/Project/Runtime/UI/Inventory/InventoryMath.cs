@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using Project.Runtime.Gameplay.Inventory;
+using UnityEngine;
 
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.UI.Inventory
 {
     public class InventoryMath
     {

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Water Bottle (Large)
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 7917806449532844765, guid: 0909914823996d64396cfccf86f525c8, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

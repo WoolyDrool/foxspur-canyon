@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Fallen Branch
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 1889811510471546243, guid: 9f26a8def4a71f84bb4f4eb82d5f9cc8, type: 3}
+  itemClass: 0
+  isCurrentlyEquipped: 0
   canBeDropped: 1
+  canBeMoved: 1
   canBeUsed: 0
   itemName: Fallen Branch
   description: 'A small branch fallen from a tree. '

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Project.Runtime.Gameplay.Player;
 using Project.Runtime.UI.Elements;
+using Project.Runtime.UI.Inventory;
 
 namespace Project.Runtime.Gameplay.Inventory
 {
@@ -17,6 +18,7 @@ namespace Project.Runtime.Gameplay.Inventory
 
     public class PlayerInventory : MonoBehaviour
     {
+        public UIInventoryView inventoryUI;
         public int availableSlots;
         public List<Item> inventoryItems = new List<Item>();
         public List<Item> trashItems = new List<Item>();
@@ -51,10 +53,11 @@ namespace Project.Runtime.Gameplay.Inventory
         public static event RemoveItemEventHandler OnRemove;
 
         #endregion
-        
+
 
         public void Awake()
         {
+            //inventoryData = PersistentPlayerCharacter.ppc.Profile.inventory;
             //size = inventoryData.size;
             availableSlots = (inventoryData.size.x * inventoryData.size.y);
         }
@@ -74,6 +77,7 @@ namespace Project.Runtime.Gameplay.Inventory
 
         public void AddItem(Item item, ItemPickup pickupObj)
         {
+            #region Old
             if (pickupObj.itemToAdd != null)
             {
                 if (canAddItem)
@@ -94,9 +98,10 @@ namespace Project.Runtime.Gameplay.Inventory
                         {
                             inventoryItems.Add(item);
                         }
-                        
+                        //inventoryUI.AddItem(item);
                         updateUIList?.Invoke(item);
-                        TrackItem(pickupObj.gameObject);
+                        Destroy(pickupObj.gameObject);
+                        //TrackItem(pickupObj.gameObject);
                         //availableSlots -= (item.size.x * item.size.y);
                         UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMADD, item.itemName);
                     }
@@ -107,6 +112,7 @@ namespace Project.Runtime.Gameplay.Inventory
                     }
                 }
             }
+            #endregion
         }
 
         public void UseItem(Item item)
@@ -121,7 +127,7 @@ namespace Project.Runtime.Gameplay.Inventory
                 }
                 UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
                 availableSlots += (item.size.x * item.size.y);
-                UntrackItem(item, true);
+                //UntrackItem(item, true);
             }
         }
 
@@ -138,10 +144,9 @@ namespace Project.Runtime.Gameplay.Inventory
             trashInInventory = 0;
         }
         
-
         public void DropItem(Item item)
         {
-            UntrackItem(item, false);
+            //UntrackItem(item, false);
             if (item.isTrash)
             {
                 trashItems.Remove(item);
@@ -155,6 +160,8 @@ namespace Project.Runtime.Gameplay.Inventory
             {
                inventoryItems.Remove(item);
             }
+
+            Instantiate(item.completedItem, itemDropPoint.position, itemDropPoint.rotation);
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMDROP, item.itemName);
 
         }
@@ -174,10 +181,10 @@ namespace Project.Runtime.Gameplay.Inventory
             {
                 inventoryItems.Remove(item);
             }
-            OnRemove?.Invoke(item);
+            updateUIList?.Invoke(item);
             UIStatusUpdate.update.AddStatusMessage(UpdateType.ITEMREMOVE, item.itemName);
             availableSlots += (item.size.x * item.size.y);
-            UntrackItem(item, true);
+            //UntrackItem(item, true);
         }
 
         public void TrackItem(GameObject itemToTrack)
@@ -188,11 +195,11 @@ namespace Project.Runtime.Gameplay.Inventory
 
         public void UntrackItem(Item item, bool alsoDestroy)
         {
-            Debug.Log("Called");
             if (!itemToDiscard)
             {
+                //THIS NEEDS TO BE FIXED - IT KEEPS GRABBING THE WRONG ITEM
                 itemToDiscard = pickups.Find(fGO => fGO.GetComponent<ItemPickup>().itemToAdd);
-
+                Debug.LogWarning(itemToDiscard);
                 if (itemToDiscard)
                 {
                     if (alsoDestroy)
@@ -202,12 +209,14 @@ namespace Project.Runtime.Gameplay.Inventory
                         itemToDiscard = null;
                         return;
                     }
-                        
-                    itemToDiscard.SetActive(true);
-                    itemToDiscard.transform.SetParent(null);
-                    itemToDiscard.transform.position = itemDropPoint.position;
-                    pickups.Remove(itemToDiscard);
-                    itemToDiscard = null;
+
+                    Instantiate(item.completedItem, itemDropPoint.position, itemDropPoint.rotation);
+
+                    //itemToDiscard.SetActive(true);
+                    //itemToDiscard.transform.SetParent(null);
+                    //itemToDiscard.transform.position = itemDropPoint.position;
+                    //pickups.Remove(itemToDiscard);
+                    //itemToDiscard = null;
                 }
                 
                 /*for (int i = 0; i < pickups.Count; i++)

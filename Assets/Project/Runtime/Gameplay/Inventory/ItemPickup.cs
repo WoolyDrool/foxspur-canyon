@@ -95,14 +95,12 @@ namespace Project.Runtime.Gameplay.Inventory
         {
             GameManager.instance.playerInventory.AddItem(itemToAdd, this);
             GameManager.instance.audioManager.PlaySoundOnce(pickupSound, mixerGroup);
-            gameObject.SetActive(false);
         }
 
         void AddTrash()
         {
             GameManager.instance.playerInventory.AddItem(itemToAdd, this);
             GameManager.instance.audioManager.PlaySoundOnce(pickupSound, mixerGroup);
-            gameObject.SetActive(false);
         }
 
         void AddNonItem(PickupType type)

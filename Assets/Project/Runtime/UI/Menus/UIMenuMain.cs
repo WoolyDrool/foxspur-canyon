@@ -10,6 +10,7 @@ namespace Project.Runtime.UI.Menus
 {
     public class UIMenuMain : MonoBehaviour
     {
+        public PersistentPlayerCharacter persplaychar;
         public GameObject mainUiPanel;
         public Animator fadeAnimator;
         public Animator musicFadeOut;
@@ -30,7 +31,7 @@ namespace Project.Runtime.UI.Menus
             //Sanity check after quitting from pause menu
             Time.timeScale = 1;
             volume.SetActive(false);
-
+            persplaychar.metaState = PersistentPlayerCharacter.MetaState.VOID;
             StartCoroutine(PlayIntroMovie());
         }
 

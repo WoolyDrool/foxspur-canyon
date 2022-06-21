@@ -1,20 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIInventoryItemPrefab : MonoBehaviour
+namespace Project.Runtime.UI.Inventory
 {
-    public GameObject mainObject;
-    public Image mainSprite;
-    public Image backgroundSprite;
-    void Start()
+    public class UIInventoryItemPrefab : MonoBehaviour
     {
+        public GameObject mainObject;
+        public Image mainSprite;
+        public Image backgroundSprite;
+        void Start()
+        {
         
-    }
+        }
 
-    void Update()
-    {
+        void Update()
+        {
         
+        }
     }
 }

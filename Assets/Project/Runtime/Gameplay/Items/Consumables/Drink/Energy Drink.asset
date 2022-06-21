@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Energy Drink
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 6091528563343766535, guid: 565529e9b0a5717499499cb7a4226a81, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

@@ -10,25 +10,41 @@ namespace Project.Runtime.Gameplay.Interactables
 {
     public class InteractableBench : MonoBehaviour
     {
+        #region Public Variables
+        
+        public Transform tweenContainer;
+        public Vector3 finalSitPosition;
+        public Vector3 finalSitRotation;
+        
+        public Vector2 cameraBoundsWhenSitting;
+        
+        public LTBezierPath bezierPath;
+        public float sitTime;
+        public float sleepBenefit;
+        public bool isSitting;
+        
+        #endregion
+        
+        #region Internal Variables
+
         private BaseVital _sleep;
         private PlayerMovement _movement;
         private PlayerController _controller;
         private CharacterController _characterController;
         private CameraMovement _cameraMovement;
-        public Vector2 cameraBoundsWhenSitting;
-        private Vector2 _defaultCameraBounds;
-        public Transform playerContainer;
-        private Transform _playerTransform;
-        public Vector3 sitPosition;
-        public Vector3 sitRotation;
-        [SerializeField] private Vector3 previousPosition;
-        [SerializeField] private Quaternion previousRotation;
-        private LTDescr _tweener;
-        public LTBezierPath bezierPath;
-        public float sitTime;
-        public float sleepBenefit;
-        public bool isSitting;
+        
         private StatModifier modifier;
+        private LTDescr _tweener;
+        
+        [SerializeField] private Vector3 previousPlayerPosition;
+        [SerializeField] private Quaternion previousPlayerRotation;
+        
+        private Vector2 _defaultCameraBounds;
+
+        private Transform _playerTransform;
+        
+        #endregion
+        
         void Start()
         {
             _sleep = GameManager.instance.playerVitals.sleepStat;
@@ -39,13 +55,17 @@ namespace Project.Runtime.Gameplay.Interactables
             _cameraMovement = _controller.camera;
             _defaultCameraBounds = _cameraMovement.clampInDegrees;
             modifier = new StatModifier(_sleep, ModifierType.BUFF, OperationType.ADD, sleepBenefit, 0);
+
+            finalSitPosition = tweenContainer.localPosition;
+            Vector3 finalRotAsVec = new Vector3(tweenContainer.localRotation.x, tweenContainer.localRotation.y, tweenContainer.localRotation.z);
+            finalSitRotation = finalRotAsVec;
         }
 
         void Update()
         {
             if (isSitting)
             {
-                if (PlayerInputManager.i.interact)
+                if (PlayerInputManager.i.interactAction.triggered)
                 {
                     GetUp();
                 }
@@ -54,65 +74,67 @@ namespace Project.Runtime.Gameplay.Interactables
 
         public void RestAtBench()
         {
+           
             #region Sanity Checks
 
-            if (_sleep.currentValue > 90)
+            //if (_sleep.currentValue > 90)
+            //{
+                //UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE, "You don't feel tired");
+                //return;
+            //}
+
+            if (GameManager.instance)
             {
-                UIStatusUpdate.update.AddStatusMessage(UpdateType.GENERALUPDATE, "You don't feel tired");
+                previousPlayerPosition = GameManager.instance.currentPlayerPosition;
+                previousPlayerRotation = GameManager.instance.currentPlayerRotation;
+                if(!_cameraMovement)
+                    _cameraMovement = _controller.camera;
+
+                if (_defaultCameraBounds.x < 0)
+                {
+                    _defaultCameraBounds = _cameraMovement.clampInDegrees;
+                }
+            
+                if(!_playerTransform)
+                    _playerTransform = GameManager.instance.playerManager.playerTransform;
+
+                
+            }
+            else
+            {
                 return;
             }
             
-            if(!_cameraMovement)
-                _cameraMovement = _controller.camera;
-
-            if (_defaultCameraBounds.x < 0)
-            {
-                _defaultCameraBounds = _cameraMovement.clampInDegrees;
-            }
             
-            if(!_playerTransform)
-                _playerTransform = GameManager.instance.playerManager.playerTransform;
-
             #endregion
-            
-            //Get Players Initial Rotation
-            previousPosition = _playerTransform.localPosition;
-            previousRotation = _playerTransform.localRotation;
-            
-            
-            //Set the containers position and rotation to that of the player
-            playerContainer.parent = null;
-            playerContainer.position = _playerTransform.position;
-            playerContainer.rotation = _playerTransform.rotation;
-            
-            //Parent the player to the container
-            _playerTransform.SetParent(playerContainer);
-            playerContainer.SetParent(this.transform);
-            
-            //Apply Rotation
-            _playerTransform.SetPositionAndRotation(playerContainer.position, playerContainer.rotation);
-            
-            //Disable the player
+
+            isSitting = true;
             _controller.ChangeStatus(Status.sitting);
             ToggleController(false);
-            _cameraMovement.clampInDegrees = cameraBoundsWhenSitting;
-            
-            //Lerp the playerContainer to the sitting position
-            _tweener = LeanTween.moveLocal(playerContainer.gameObject, sitPosition, sitTime);
-            _tweener = LeanTween.rotateLocal(playerContainer.gameObject, sitRotation, sitTime);
+            _sleep.AddModifier(modifier);
             
             //_sleep.AddValue(sleepBenefit);
-            isSitting = true;
-            _sleep.AddModifier(modifier);
+            tweenContainer.SetParent(null);
+            tweenContainer.SetPositionAndRotation(previousPlayerPosition, previousPlayerRotation);
+
+            _playerTransform.SetParent(tweenContainer);
+
+            tweenContainer.SetParent(transform);
+            
+            _tweener = LeanTween.moveLocal(tweenContainer.gameObject, finalSitPosition, sitTime);
+            //_tweener = LeanTween.rotateLocal(tweenContainer.gameObject, finalSitRotation, sitTime);
+            
+            
         }
 
         public void GetUp()
         {
+            Debug.Log("got up");
             _sleep.RemoveModifier(modifier);
-            playerContainer.SetParent(null);
-            _tweener = LeanTween.move(playerContainer.gameObject, previousPosition, sitTime);
-            Vector3 prevRotAsVec = new Vector3(previousRotation.x, previousRotation.y, previousRotation.z);
-            _tweener = LeanTween.rotate(playerContainer.gameObject, prevRotAsVec, sitTime);
+            tweenContainer.SetParent(null);
+            _tweener = LeanTween.move(tweenContainer.gameObject, previousPlayerPosition, sitTime);
+            Vector3 prevRotAsVec = new Vector3(previousPlayerRotation.x, previousPlayerRotation.y, previousPlayerRotation.z);
+            _tweener = LeanTween.rotate(tweenContainer.gameObject, prevRotAsVec, sitTime);
 
             StartCoroutine(GetUpWait());
             
@@ -124,7 +146,7 @@ namespace Project.Runtime.Gameplay.Interactables
                 ToggleController(true);
                 _cameraMovement.clampInDegrees = _defaultCameraBounds;
                 isSitting = false;
-                playerContainer.SetParent(this.transform);
+                tweenContainer.SetParent(this.transform);
             }
         }
         
@@ -134,6 +156,7 @@ namespace Project.Runtime.Gameplay.Interactables
             _controller.enabled = on;
             _characterController.enabled = on;
             _movement.enabled = on;
+            _cameraMovement.clampInDegrees = on ? cameraBoundsWhenSitting : _defaultCameraBounds;
         }
     }
 

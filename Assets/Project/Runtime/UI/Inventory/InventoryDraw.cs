@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
 using Project.Runtime.Gameplay.Inventory;
 using Project.Runtime.UI.Buttons;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.UI.Inventory
 {
     public class InventoryDraw : MonoBehaviour
     {

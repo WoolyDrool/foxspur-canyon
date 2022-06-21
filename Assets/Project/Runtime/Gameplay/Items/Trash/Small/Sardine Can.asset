@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Sardine Can
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 4342281315093857391, guid: 310f4eef8cfd4a1488352a41823df0fb, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

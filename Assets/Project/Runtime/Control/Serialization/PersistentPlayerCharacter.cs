@@ -21,17 +21,17 @@ public class PersistentPlayerCharacter : MonoBehaviour
     private void Awake()
     {
         ppc = this;
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
         //SceneLoadingManager.loader.LoadSceneAdditive(Profile.lastVisitedScene);
     }
 
     void Start()
     {
-        
+        //transform.SetParent(null);
     }
 
     void Update()
     {
-        playerController.SetActive(metaState == MetaState.AWAKE);
+        
     }
 }

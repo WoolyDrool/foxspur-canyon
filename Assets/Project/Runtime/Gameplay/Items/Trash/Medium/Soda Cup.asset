@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Soda Cup
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 6275991616790792201, guid: 191de73c4cb6c5146b1b40c8c24ecdd8, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

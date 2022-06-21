@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Tabloid Magazine
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 9132944075367620499, guid: ad704a731537b5445949bd66157f0a93, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

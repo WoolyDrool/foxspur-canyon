@@ -29,7 +29,7 @@ public class DebugController : MonoBehaviour
         {
             //ProgressSceneLoader.loader.ReloadCurrentScene();
         });
-        
+
         FORCE_DEHYDRATION = new DebugCommand("force_dehydration", "Forces dehydration", "force_dehydration", () =>
         {
             VitalHydrationFunctionality hf = FindObjectOfType<VitalHydrationFunctionality>();
@@ -84,7 +84,7 @@ public class DebugController : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
+        /*if (Input.GetKeyDown(KeyCode.F1))
         {
             if (_showConsole)
             {
@@ -108,7 +108,7 @@ public class DebugController : MonoBehaviour
                 HandleInput();
                 _input = "";
             }
-        }
+        }*/
     }
 
     private void OnGUI()

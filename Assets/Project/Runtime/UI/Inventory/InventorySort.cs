@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Project.Runtime.Gameplay.Inventory;
 
-
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.UI.Inventory
 {
     public class InventorySort
     {

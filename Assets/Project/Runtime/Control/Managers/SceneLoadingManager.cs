@@ -104,22 +104,21 @@ namespace Project.Runtime.Global
         private IEnumerator BeginAdditiveLoad(string sceneName)
         {
             Scene prevScene = SceneManager.GetActiveScene();
+            SceneManager.UnloadSceneAsync(prevScene);
             Debug.Log("Loading " + sceneName);
             operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         
             //PersistentPlayerCharacter.ppc.Profile.lastVisitedScene = SceneManager.GetActiveScene();
             while (!operation.isDone)
             {
-                progress = operation.progress;
-                Debug.Log(progress.ToString());
+                progress = operation.progress; 
+                Debug.Log("LoadProgress: " + progress.ToString());
                 yield return null;
             }
             operation = null;
             
             if (OnComplete != null)
                 OnComplete();
-            PersistentPlayerCharacter.ppc.metaState = PersistentPlayerCharacter.MetaState.AWAKE;
-            SceneManager.UnloadSceneAsync(prevScene);
             
             
         }

@@ -34,7 +34,7 @@ public class PlayerMovement : InterpolatedTransform
     private float forceTime = 0;
     private float jumpPower;
     UnityEvent onReset = new UnityEvent();
-    [SerializeField] private bool input;
+    [SerializeField] private bool _isMoving;
 
     public override void OnEnable()
     {
@@ -70,7 +70,7 @@ public class PlayerMovement : InterpolatedTransform
 
     public override void Update()
     {
-        input = Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;
+        _isMoving = PlayerInputManager.i.inputWalk || PlayerInputManager.i.inputSprint;
         Vector3 newestTransform = m_lastPositions[m_newTransformIndex];
         Vector3 olderTransform = m_lastPositions[OldTransformIndex()];
 
@@ -82,7 +82,7 @@ public class PlayerMovement : InterpolatedTransform
         if (forceTime > 0)
             forceTime -= Time.deltaTime;
 
-        if (input)
+        if (_isMoving)
         {
             walkAnimator.SetBool("walk", true);
         }
@@ -131,7 +131,7 @@ public class PlayerMovement : InterpolatedTransform
         {
             Vector3 adjust = new Vector3(input.x, 0, input.y);
             adjust = transform.TransformDirection(adjust);
-            jumpedDir += adjust * Time.fixedDeltaTime * jumpPower * 2f;
+            jumpedDir += jumpPower * (2f * adjust) * Time.fixedDeltaTime;
             jumpedDir = Vector3.ClampMagnitude(jumpedDir, jumpPower);
             moveDirection.x = jumpedDir.x;
             moveDirection.z = jumpedDir.z;

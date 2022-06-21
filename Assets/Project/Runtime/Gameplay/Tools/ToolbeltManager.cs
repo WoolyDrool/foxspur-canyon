@@ -49,8 +49,7 @@ namespace Project.Runtime.Gameplay.Tools
             _controller = GetComponentInParent<PlayerController>();
             _inputManager = GetComponentInParent<PlayerInputManager>();
             _containerStartPos = container.localPosition;
-
-
+            
             _prev = _inputManager.prevToolAction;
             _next = _inputManager.nextToolAction;
         }
@@ -64,14 +63,14 @@ namespace Project.Runtime.Gameplay.Tools
         {
             int previousSelectedTool = _selectedTool;
             
-            if (_prev.triggered)
+            if (_inputManager.shoulderRight)
             {
                 if (_selectedTool >= equippableInventory.Length - 1)
                     _selectedTool = 0;
                 else
                     _selectedTool++;
             }
-            if (_next.triggered)
+            if (_inputManager.shoulderLeft)
             {
                 if (_selectedTool <= 0)
                     _selectedTool = equippableInventory.Length - 1;
@@ -111,24 +110,7 @@ namespace Project.Runtime.Gameplay.Tools
                 container.localPosition = _containerStartPos;
             }
         }
-
-        public void IncreaseEquipIndex(InputAction.CallbackContext value)
-        {
-            if (_selectedTool >= equippableInventory.Length - 1)
-                _selectedTool = 0;
-                else
-                _selectedTool++;
-
-        }
-
-        public void DecreaseEquipIndex(InputAction.CallbackContext value)
-        {
-            if (_selectedTool <= 0)
-                _selectedTool = equippableInventory.Length - 1;
-            else
-                _selectedTool--;
-        }
-
+        
         void SwitchEquipped()
         {
             selectedText.gameObject.SetActive(true);

@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
     public bool shouldSprint()
     {
         bool sprint = false;
-        sprint = (_playerInputManager.run && _playerInputManager.input.y > 0);
+        sprint = (_playerInputManager.inputSprint && _playerInputManager.input.y > 0);
         if (status != Status.sliding)
         {
             if (!isSprinting()) //If we want to sprint
@@ -257,7 +257,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!movement.grounded || (int)status > 2) return;
 
-        if (_playerInputManager.run)
+        if (_playerInputManager.inputSprint)
         {
             Uncrouch();
             return;

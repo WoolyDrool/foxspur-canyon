@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Paper Wad
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 6376754355967011689, guid: 7d2b5c60352f627468599dcdc2ea2670, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

@@ -24,8 +24,9 @@ namespace Project.Runtime.Gameplay.Tools
             _source = GetComponent<AudioSource>();
         }
 
-        void Update()
+        public override void Update()
         {
+            base.Update();
             if (inputManager.fire1 && canUse)
             {
                 _source.PlayOneShot(digSound);

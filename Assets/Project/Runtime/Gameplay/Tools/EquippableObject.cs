@@ -48,5 +48,9 @@ namespace Project.Runtime.Gameplay.Tools
             }
         }
 
+        public virtual void Update()
+        {
+            canUse = !GameManager.instance._isPaused;
+        }
     }
 }

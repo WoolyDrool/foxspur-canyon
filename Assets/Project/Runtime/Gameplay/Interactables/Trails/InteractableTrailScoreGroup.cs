@@ -32,9 +32,12 @@ namespace Project.Runtime.Gameplay.Interactables
         {
             if (groupOfItems != null && groupScore > 0)
             {
-                _currentDistanceToPlayer = Vector3.Distance(GameManager.instance.currentPlayerPosition, transform.position);
+                if (GameManager.instance)
+                {
+                    _currentDistanceToPlayer = Vector3.Distance(GameManager.instance.currentPlayerPosition, transform.position);
+                }
 
-                if (_currentDistanceToPlayer > 150)
+                if (_currentDistanceToPlayer > 90)
                 {
                     if (groupOfItems.gameObject.activeSelf)
                     {

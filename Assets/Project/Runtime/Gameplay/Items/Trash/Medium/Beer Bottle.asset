@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Beer Bottle
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 7887340270707501176, guid: fd3860e18576aab44b8deb2539a06aae, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Chip Bag
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 1411314027899340309, guid: f643210282258cd4096861d587298910, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

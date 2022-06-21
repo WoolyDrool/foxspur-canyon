@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Trail Mix
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 8527311941881041661, guid: 2cfd833b55c640f4daf803f7cdffc748, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

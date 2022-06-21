@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Sandwich Bag
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 214433638908311191, guid: 79d18b01529522445ae0941af2265369, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

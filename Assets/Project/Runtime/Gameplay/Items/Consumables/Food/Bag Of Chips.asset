@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656147f8102d4bc081cb3ef8971a67bf, type: 3}
   m_Name: Bag Of Chips
   m_EditorClassIdentifier: 
+  completedItem: {fileID: 5471684731858482970, guid: f310508ee4132d74d821cd492fe49271, type: 3}
   itemClass: 0
   isCurrentlyEquipped: 0
   canBeDropped: 1

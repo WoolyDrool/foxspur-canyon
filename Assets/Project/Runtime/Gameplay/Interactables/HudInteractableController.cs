@@ -25,7 +25,7 @@ namespace Project.Runtime.Gameplay.Interactables
 
             ui = FindObjectOfType<HudInteraction>();
             if (ui == null) Debug.LogError("InteractionControllerUI not found, please add PlayerUI prefab");
-            if (ui) ui.SetCode(_inputManager.interactKey.ToString());
+            //if (ui) ui.SetCode(_inputManager.interactKey.ToString());
         }
 
         void Update()

@@ -1,6 +1,8 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 namespace Project.Runtime.Gameplay.Inventory
 {
@@ -9,6 +11,7 @@ namespace Project.Runtime.Gameplay.Inventory
         public ItemObsProp hoveredItemAsset;
         public Item item;
         public TextMeshProUGUI equippedText;
+        public Image previewImage;
         public int currentEquipSlot;
 
         private void OnEnable()

@@ -24,7 +24,7 @@ namespace Project.Runtime.Gameplay.Player
         public Animator playerAnimator;
         public Image deathOverlay;
         public GameObject tools;
-        private PlayerProfileInterpreter _interpreter;
+        [SerializeField] private PlayerProfileInterpreter _interpreter;
         private BaseVital _health;
         private PlayerVitals _vitals;
         private AudioClip[] _damageSounds;
@@ -37,8 +37,13 @@ namespace Project.Runtime.Gameplay.Player
 
         public void Start()
         {
-            _interpreter = FindObjectOfType<PlayerProfileInterpreter>();
-            _damageSounds = _interpreter.gender.damageSounds;
+            if (!_interpreter)
+                _interpreter = GameManager.instance.ppi;
+            
+            if(!_interpreter)
+                return;
+            
+            //_damageSounds = _interpreter.gender.damageSounds;
             _vitals = GetComponent<PlayerVitals>();
             _health = _vitals.healthStat;
         }

@@ -72,18 +72,18 @@ public class InteractableCaveDoor : MonoBehaviour
         
         IEnumerator Transition()
         {
-            if (!fadein.activeSelf)
-            {
-                fadein.SetActive(true);
-            }
+            //if (!fadein.activeSelf)
+            //{
+            //   fadein.SetActive(true);
+            //}
 
-            yield return new WaitForSeconds(3);
+            //yield return new WaitForSeconds(3);
             
             _playerTransform.GetComponent<PlayerMovement>().ForceNewPosition(destination.position);
             _playerTransform.SetPositionAndRotation(destination.position, destination.rotation);
             
-            fadein.SetActive(false);
-            fadeout.SetActive(true);
+            //fadein.SetActive(false);
+            //fadeout.SetActive(true);
 
             if (!reverseOrder)
             {
@@ -93,7 +93,8 @@ public class InteractableCaveDoor : MonoBehaviour
             {
                 _lightingManager.preset = defaultPreset;
             }
+            
+            yield break;
         }
-        
     }
 }

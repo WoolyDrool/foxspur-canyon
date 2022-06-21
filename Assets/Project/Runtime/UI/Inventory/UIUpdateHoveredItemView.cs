@@ -1,8 +1,7 @@
 ﻿using Project.Runtime.Gameplay.Inventory;
 using TMPro;
 
-
-namespace Project.Runtime.UI.Elements
+namespace Project.Runtime.UI.Inventory
 {
     public class UIUpdateHoveredItemView : MonoSOObserver
     {

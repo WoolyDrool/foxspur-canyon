@@ -1,0 +1,16 @@
+{
+    "name": "Project.Runtime.Plugins",
+    "rootNamespace": "",
+    "references": [
+        "GUID:18a7f4aa7d7361442b6f1a9be5722ae6"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
