@@ -74,51 +74,41 @@ namespace Project.Runtime.Gameplay.Player
             ChangeState(CurrentSleepState.DROWSY);
         }
 
-        private void Update()
         private void CheckCurrentSleep()
         {
-
-            if (_sleep.CheckCurrentValue(true) > restedThreshold)
+            int curSleep = (int)_sleep.currentValue;
+            
+            if (curSleep > restedThreshold)
             {
                 ChangeState(CurrentSleepState.RESTED);
             }
             
-            if (_sleep.CheckCurrentValue(true) < restedThreshold && currentSleepState == CurrentSleepState.RESTED)
+            if (curSleep < restedThreshold && currentSleepState == CurrentSleepState.RESTED)
             {
                 ChangeState(CurrentSleepState.NORMAL);
             }
             
-            if (_sleep.CheckCurrentValue(true)  <= normalThreshhold && currentSleepState == CurrentSleepState.RESTED)
+            if (curSleep  <= normalThreshhold && currentSleepState == CurrentSleepState.RESTED)
             {
                 ChangeState(CurrentSleepState.NORMAL);
             }
             
-            if (_sleep.CheckCurrentValue(true)  <= drowsyThreshold && currentSleepState == CurrentSleepState.NORMAL)
+            if (curSleep  <= drowsyThreshold && currentSleepState == CurrentSleepState.NORMAL)
             {
                 if(!_isDrowsy)
                     ChangeState(CurrentSleepState.DROWSY);
             }
 
-            if (_sleep.CheckCurrentValue(true)  <= exhuastedThreshold && currentSleepState == CurrentSleepState.DROWSY)
+            if (curSleep  <= exhuastedThreshold && currentSleepState == CurrentSleepState.DROWSY)
             {
                 ChangeState(CurrentSleepState.EXHAUSTED);
             }
             
-            if (_sleep.CheckCurrentValue(true)  <= sleepThreshold && currentSleepState == CurrentSleepState.EXHAUSTED)
+            if (curSleep  <= sleepThreshold && currentSleepState == CurrentSleepState.EXHAUSTED)
             {
                 ChangeState(CurrentSleepState.ASLEEP);
             }
 
-            if (_sleep.CheckCurrentValue(true) > exhuastedThreshold && currentSleepState == CurrentSleepState.EXHAUSTED)
-            {
-                ChangeState(CurrentSleepState.DROWSY);
-            }
-            
-            if (_sleep.CheckCurrentValue(true) > drowsyThreshold && currentSleepState == CurrentSleepState.DROWSY)
-            {
-                ChangeState(CurrentSleepState.NORMAL);
-            }
-            
             if (currentSleepState == CurrentSleepState.EXHAUSTED)
             {
                 if (_sleep.currentValue > exhuastedThreshold)
