@@ -48,7 +48,7 @@ namespace Project.Runtime.Gameplay.Player
             _vitals = GetComponent<PlayerVitals>();
             _hydration = _vitals.hydrationStat;
             _health = GetComponent<VitalHealthFunctionality>();
-
+            InvokeRepeating(nameof(CheckCurrentHydration), 0, 1);
         }
         
         //DEBUG_COMMAND
@@ -59,8 +59,10 @@ namespace Project.Runtime.Gameplay.Player
         }
         
 
-        private void Update()
+        private void CheckCurrentHydration()
         {
+            int currentHydration = (int)_hydration.currentValue;
+            
             if (_hydration.CheckCurrentValue(true) > fullThreshold)
             {
                 ChangeState(CurrentHydrationState.HYDRATED);
@@ -83,7 +85,7 @@ namespace Project.Runtime.Gameplay.Player
                 ChangeState(CurrentHydrationState.MILDDEHYDRATION);
             }
 
-            /*if (currentHydrationState == CurrentHydrationState.DEHYDRATED)
+            if (currentHydrationState == CurrentHydrationState.DEHYDRATED)
             {
                 if (_hydration.currentValue >= dehydrationThreshold)
                 {
@@ -92,7 +94,7 @@ namespace Project.Runtime.Gameplay.Player
                         StopHealthDamage();
                     }
                 }
-            }*/
+            }
         }
 
         public void ChangeState(CurrentHydrationState hungerState)
